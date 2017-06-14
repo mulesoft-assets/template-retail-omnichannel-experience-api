@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <flow name="getCustomerFromSFDC">
+        <http:request config-ref="retail-customer-system-api" path="/customers/{customerId}" method="GET" doc:name="GET/customers/{customerId}">
+            <http:request-builder>
+                <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Mapping Response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	identifier: payload.customerId,
+	firstName: payload.firstName,
+	lastName: payload.lastName,
+	paymentMethods: [{
+		paymentMethodType: {
+			issuer: "BANK",
+			medium: "CARD",
+			name: "VISA"
+		}
+	}],
+	deliveryAddresses: [{
+		address: payload.postalAddress.street,
+		city: payload.postalAddress.city,
+		country: payload.postalAddress.country,
+		postalCode: payload.postalAddress.postalCode,
+		recipient: (payload.firstName ++ " " ++ payload.lastName),
+		state: payload.postalAddress.state,
+		attention: "",
+		mailStopCode: "",
+		secondaryAddress:""
+	},
+	{
+		address: payload.deliveryAddress.street,
+		city: payload.deliveryAddress.city,
+		country: payload.deliveryAddress.country,
+		postalCode: payload.deliveryAddress.postalCode,
+		recipient: (payload.firstName ++ " " ++ payload.lastName),
+		state: payload.deliveryAddress.state,
+		attention: "",
+		mailStopCode: "",
+		secondaryAddress:""
+	}]
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

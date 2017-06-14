@@ -1,0 +1,34 @@
+#%RAML 1.0 Library
+
+usage:
+  defines data types specific to the experience layer order API
+  
+uses:
+  common: types/common-types.raml
+  item: types/orderItem-types.raml
+  fulfillment: types/fulfillment-types.raml
+  
+types:
+  
+  SalesOrderItem:
+    type: item.OrderItem
+    
+  SalesOrderItems:
+    type: object
+    properties:
+      orderItems:
+        type: SalesOrderItem[]
+    
+  SalesOrderHeader:
+    type: object
+    properties:
+      customerId: common.resourceId
+      fulfillment:
+        type: fulfillment.Fulfillment
+    
+  SalesOrder:
+    type: SalesOrderHeader
+    properties:
+      orderItems:
+        type: SalesOrderItem[]
+        

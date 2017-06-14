@@ -1,0 +1,45 @@
+#%RAML 1.0 Library
+
+usage:
+  defines reusable data types for customer contact methods for experience layer APIs
+  
+uses:
+  common: common-types.raml
+  geography: geography-types.raml
+  
+types:
+  
+  ContactMethodType:
+    type: string
+    enum: [
+      PHONE, EMAIL, POSTAL
+    ]
+    
+  ContactMethod:
+    type: object
+    discriminator: contactMethodType
+    properties: 
+      contactMethodType: ContactMethodType
+      
+  PhoneContactMethod:
+    type: ContactMethod
+    discriminatorValue: PHONE
+    properties: 
+      phoneNumber:
+        type: string
+        pattern: "[0-9]{3}[ -][0-9]{3}[ -][0-9]{4}"
+        
+  EmailContactMethod:
+    type: ContactMethod
+    discriminatorValue: EMAIL
+    properties: 
+      emailAddress:
+        type: string
+        
+  PostalContactMethod:
+    type: ContactMethod
+    discriminatorValue: POSTAL
+    properties: 
+      postalAddress:
+        type: geography.PostalAddress  
+        

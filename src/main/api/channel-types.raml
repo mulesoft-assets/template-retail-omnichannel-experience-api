@@ -1,0 +1,44 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides data types for the experience
+  layer channel resources
+  
+uses:
+  common: types/common-types.raml
+  
+types:
+  
+  ChannelType:
+    type: string
+    enum: [
+      STORE, WEB, MOBILE
+    ]
+    
+  Channel:
+    type: object
+    discriminator: channelType
+    properties: 
+      channelType: ChannelType
+      
+  StoreChannel:
+    type: Channel
+    discriminatorValue: STORE
+    properties:
+      storeNumber:
+        type: string
+        
+  WebChannel:
+    type: Channel
+    discriminatorValue: WEB
+    properties:
+      url:
+        type: common.url
+      
+  MobileChannel:
+    type: Channel
+    discriminatorValue: MOBILE
+    properties: 
+      name:
+        type: string
+    

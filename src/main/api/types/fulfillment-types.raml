@@ -1,0 +1,57 @@
+#%RAML 1.0 Library
+
+usage: |
+  definitions of data types that describe order fulfillment
+  and delivery options
+
+
+uses:
+  common: common-types.raml
+  geography: geography-types.raml
+
+
+types:
+
+  ReceiptType:
+    type: string
+    enum: [
+      PICKUP, SELFSERVE, SHIPMENT
+    ]
+
+  CarrierType:
+    type: string
+    enum: [
+      POSTAL, COMMERCIAL, FREIGHT, NONE
+    ]
+
+  TimeframeType:
+    type: string
+    enum: [
+      HOURS, DAYS, WEEKS
+    ]
+
+  Fulfillment:
+    type: object
+    properties:
+      receipt: ReceiptType
+      carrier: CarrierType
+      deliveryAddress?:
+        type: geography.PostalAddress
+  
+
+
+
+#
+#
+# NRF Courier Type
+# Express, Ground, Overnight
+#
+#
+# NRF Delivery Service Level
+# Next Day, Saturday, Second Busines Day, Next Day By 9AM, Air, Ground, First Class, etc...
+#
+#
+# shipping fees
+#
+#
+#

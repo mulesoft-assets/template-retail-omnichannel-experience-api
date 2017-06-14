@@ -1,0 +1,30 @@
+#%RAML 1.0 Library
+
+usage: |
+  reusable sales order data types
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+  money: monetary-types.raml
+  price: pricing-types.raml
+  quantity: quantity-types.raml
+  product: product-types.raml
+
+types:
+
+  OrderItem:
+    description: |
+      an individual component of an order
+    type: common.Identified
+    properties:
+      quantity:
+        type: quantity.Quantity
+      item:
+        type: product.ProductVariant
+      itemUnitPrice:
+        type: price.Price
+      itemExtendedPrice:
+        type: money.MonetaryValue
+        

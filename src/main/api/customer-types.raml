@@ -1,0 +1,52 @@
+#%RAML 1.0 Library
+
+usage: |
+  data types specific to the experience layer customer api
+
+uses:
+  common: types/common-types.raml
+  meta: types/metadata-types.raml
+  hyper: types/hypermedia-types.raml
+  payment: types/payment-types.raml
+  geography: types/geography-types.raml
+
+types:
+
+  Customer:
+    type: common.Identified
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      paymentMethods:
+        type: payment.PaymentMethod[]
+      deliveryAddresses:
+        type: geography.PostalAddress[]
+
+  CustomerCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      customers: Customer[]
+    
+  CustomerResponse:
+    type: Customer
+    
+  DeliveryAddressCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      deliveryAddresses: geography.PostalAddress[]
+  
+  DeliveryAddressResponse:
+    type: geography.PostalAddress
+    
+
+  PaymentMethodCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      paymentMethods: payment.PaymentMethod[]
+      
+      
+  PaymentMethodResponse:
+    type: payment.PaymentMethod
+   

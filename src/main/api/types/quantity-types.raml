@@ -1,0 +1,79 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides a set of resusable data types that describe concepts
+  related to quantities and measurements
+
+uses:
+  common: common-types.raml
+  hyper: hypermedia-types.raml
+
+types:
+
+  Measure:
+    type: object
+    description: |
+      a physical property that can be quantified with a numeric value
+    properties:
+      name: string
+      description: string
+    examples:
+      length:
+        name: length
+        description: the greatest dimension of an object
+      temperature:
+        name: temperature
+        description: the degree of heat held in an object
+      time:
+        name: time
+        description: a duration of existance
+
+  MeasurementSystem:
+    type: object
+    description: |
+      a standard that codifies a set of UnitOfMeasure. typically defined by a governmental
+      or international agency.
+    properties:
+      code: string
+      name: string
+      description: string
+    example:
+      code: SI
+      name: International System of Units
+      description: Defined by NIST. Commonly referred to as the "metric system".
+
+  QuantityType:
+    type: string
+    enum: [
+      DISCRETE, CONTINUOUS
+    ]
+    
+  QuantityUnit:
+    type: string
+    enum: [
+      EA
+    ]
+
+  Quantity:
+    type: object
+    discriminator: quantityType
+    properties:
+      quantityType: QuantityType
+      amount:
+        type: number
+        minimum: 0
+      unit:
+        type: QuantityUnit
+        default: EA
+
+  DiscreteQuantity:
+    type: Quantity
+    discriminatorValue: DISCRETE
+    properties:
+      amount:
+        type: integer
+
+  ContinuousQuantity:
+    type: Quantity
+    discriminatorValue: CONTINUOUS
+    properties:

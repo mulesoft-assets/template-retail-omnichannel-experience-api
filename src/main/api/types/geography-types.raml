@@ -1,0 +1,98 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides a set of resusable data types that describe geographic
+  concepts
+  
+uses:
+  common: common-types.raml
+  hyper: hypermedia-types.raml
+  
+types:
+        
+  AddressUnitWithRequiredUnitNumber:
+    type: object
+    properties: 
+      unitType:
+        type: string
+        description: |
+          the unit type abbreviations recognized by the USPS for
+          secondary units that require a unit number
+        enum: [ APT, \#, BLDG, DEPT, FL, HNGR, KEY, LOT, PIER, RM, SLIP, SPC, STOP, STE, TRLR, UNIT ]
+      unitNumber:
+        type: string
+        required: true
+        
+  AddressUnitWithOptionalUnitNumber:
+    type: object
+    properties: 
+      unitType:
+        type: string
+        description: |
+          the unit type abbreviations recognized by the USPS for
+          secondary units for which a unit number may not be necessary
+        enum: [ BSMT, FRNT, LBBY, LOWR, OFC, PH, REAR, SIDE, UPPR ]
+      unitNumber:
+        type: string
+        required: false
+        
+  AddressUnit:
+    type: AddressUnitWithRequiredUnitNumber | AddressUnitWithOptionalUnitNumber
+    
+  PostalAddress:
+    type: object
+    properties:
+      mailStopCode?:
+        type: string
+        description: |
+          an internal organization mail delivery location
+          or box number
+      attention?:
+        type: string
+        description: |
+          the name of an individual who should receive
+          deliveries on behalf of a recipient organization
+      type:
+        type: string
+        enum: [ BILLING, SHIPPING] 
+      recipient:
+        type: string
+        description: |
+          the name of the party responsible for receiving
+          deliveries to this address
+      address:
+        type: string
+        description: |
+          the unit number and street name
+      addressUnit?:
+        type: AddressUnit
+        description: |
+          a subdivision within the address, such as an apartment or floor
+      secondaryAddress?:
+        type: string
+        description: |
+          any additional addressing information needed to describe a
+          delivery location that does not fit within address or
+          secondaryUnit
+      city:
+        type: string
+        description: |
+          the municipality of the address
+      state:
+        type: string
+        description: |
+          the state or other national region of the address
+      postalCode:
+        type: string
+        description: |
+          the delivery code assigned to this address by a national
+          or governmental postal agency
+      country?:
+        type: string
+        description: |
+          the two character ISO 3166 country code
+          [http://www.iso.org/iso/home/standards/country_codes.htm]
+        default: US
+        minLength: 2
+        maxLength: 2
+        

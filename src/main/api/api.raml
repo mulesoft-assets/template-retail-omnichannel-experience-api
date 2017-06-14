@@ -1,0 +1,654 @@
+#%RAML 1.0
+#baseUri: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c
+title: experience layer API
+baseUri: https://localhost:8082/api
+
+uses:
+
+  common: types/common-types.raml
+  meta: types/metadata-types.raml
+  hyper: types/hypermedia-types.raml
+  collection: collections.raml
+  geography: types/geography-types.raml
+  payment: types/payment-types.raml
+  contact: types/contact-types.raml
+  fulfillment: types/fulfillment-types.raml
+  taxonomy: types/taxonomy-types.raml
+  customer: customer-types.raml
+  channel: channel-types.raml
+  order: order-types.raml
+  product: types/product-types.raml
+  session: session-types.raml
+  inventory: types/inventory-types.raml
+
+types:
+        
+  ContactMethodCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      contactMethods: contact.ContactMethod[]
+      
+  ContactMethodResponse:
+    type: contact.ContactMethod
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  ChannelCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      channels: hyper.Link[]
+      
+  ChannelResponse:
+    type: channel.Channel
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          paymentMethods: hyper.Link
+#          fulfillmentMethods: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  FulfillmentMethodCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      fulfillmentMethods: fulfillment.Fulfillment[]
+
+  StoreCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      stores: hyper.Link[]
+ 
+  StoreResponse:
+    type: channel.StoreChannel
+ #   properties:
+ #     _links:
+ #       type: hyper.Links
+ #       properties:
+ #         self: hyper.Link
+ #         paymentMethods: hyper.Link
+ #         fulfillmentMethods: hyper.Link
+ #         nearbyStores: hyper.Link
+ #     _meta:
+ #       type: hyper.ResponseMetadata
+
+
+  CategoryCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      categories: hyper.Link[]
+      
+  CategoryResponse:
+    type: taxonomy.Category
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          parentCategory?: hyper.Link
+#          subCategories?: hyper.Link
+#          products: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  SalesOrderCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      paymentMethods: hyper.Link[]
+      
+  SalesOrderResponse:
+    type: order.SalesOrderHeader
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          orderItems: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+  
+  SalesOrderPaymentMethodResponse:
+    type: payment.PaymentMethod
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          salesOrder: hyper.Link
+    
+  SalesOrderFulfillmentResponse:
+    type: fulfillment.Fulfillment
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          salesOrder: hyper.Link
+        
+  SalesOrderItemCollectionResponse:
+    type: order.SalesOrderItems
+    properties:
+      _links:
+        type: hyper.Links
+        properties:
+          self: hyper.Link
+          salesOrder: hyper.Link
+
+  ProductResponse:
+    type: product.Product
+    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          features: hyper.Link
+#          variants: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  ProductCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      products: product.Product[]
+  
+  FeatureCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      features: hyper.Link[]
+
+  FeatureResponse:
+    type: product.ProductFeature
+    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  ProductVariantCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      variants: product.ProductVariant[]
+
+  ProductVariantResponse:
+    type: product.ProductVariant
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          product: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+        
+  ProductVariantAvailabilityResponse:
+    type: inventory.Availability
+    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#          productVariant: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  ShoppingCartCollectionResponse:
+    type: hyper.CollectionResponse
+    properties:
+      shoppingCarts: session.ShoppingCart[]
+      
+  ShoppingCartResponse:
+    type: session.ShoppingCart
+#    properties:
+#      _links:
+#        type: hyper.Links
+#        properties:
+#          self: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+  InventoryCollectionResponse:
+    type: hyper.CollectionResponse
+    properties: 
+      inventory: inventory.Inventory[]
+      
+  InventoryResponse:
+    type: inventory.Inventory
+    properties:
+#      _links:
+#        type: hyper.Links
+#        properties: 
+#          self: hyper.Link
+#      _meta:
+#        type: hyper.ResponseMetadata
+
+/customers:
+  type:
+    collection.collection:
+      collectionResponseType: customer.CustomerCollectionResponse
+      collectionMemberPrototypeType: customer.Customer
+      collectionMemberResponseType: customer.CustomerResponse
+  post:
+    body:
+      application/json:
+        example: 
+          {
+              "firstName": "Jason",
+              "lastName": "Bourne",
+              "paymentMethods" : [
+                {
+                  "paymentMethodType":{  
+                    "medium":"CARD",
+                    "issuer":"BANK",
+                    "name":"VISA"
+                  }
+                }
+              ],
+              "deliveryAddresses": [
+                {
+                  "type": "BILLING",
+                  "address":"Main street 122",
+                  "city":"San Francisco",
+                  "state":"California",
+                  "postalCode":"90210",
+                  "recipient":"Jason Bourne",
+                  "country":"US",
+                  "secondaryAddress":"",
+                  "mailStopCode":"",
+                  "attention":""
+                }
+              ]
+          }
+
+    responses:
+      201:
+        body: 
+          application/json:    
+            example: 
+              {
+                "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                "firstName": "Jason",
+                "lastName": "Bourne",
+                "paymentMethods": [
+                    {
+                      "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                      "paymentMethodType":{  
+                        "medium":"CARD",
+                        "issuer":"BANK",
+                        "name":"VISA"
+                      }
+                    }
+                ],
+                "deliveryAddresses": [
+                    {
+                      "type": "BILLING",
+                      "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                      "address":"Main street 122",
+                      "city":"San Francisco",
+                      "state":"California",
+                      "postalCode":"90210",
+                      "recipient":"Jason Bourne",
+                      "country":"US",
+                      "secondaryAddress":"",
+                      "mailStopCode":"",
+                      "attention":""
+                    }
+                ]
+              }
+              
+  get:
+    is: &queryableCollection [ collection.pageable, collection.sortable ]
+    queryParameters:
+      firstName: string
+      lastName: string
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: 
+              {
+                "_links": {
+                  "self": {
+                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers"
+                  }
+                },
+                "_meta": {
+                  "messages": [],
+                  "totalItems": 1,
+                  "offset": 0,
+                  "limit": 10                
+                },
+                "customers": [
+                  {
+                    "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName": "Jason",
+                    "lastName": "Bourne",
+                    "paymentMethods": [
+                        {
+                          "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                          "paymentMethodType":{  
+                            "medium":"CARD",
+                            "issuer":"BANK",
+                            "name":"VISA"
+                          }
+                        }
+                    ],
+                    "deliveryAddresses": [
+                        {
+                          "type": "BILLING",
+                          "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                          "address":"Main street 122",
+                          "city":"San Francisco",
+                          "state":"California",
+                          "postalCode":"90210",
+                          "recipient":"Jason Bourne",
+                          "country":"US",
+                          "secondaryAddress":"",
+                          "mailStopCode":"",
+                          "attention":""
+                        }
+                    ]
+                  }
+                ]
+              }
+  /{customerId}:
+    uriParameters:
+      customerId:
+        type: string
+    type:
+      collection.collectionMember:
+        collectionMemberResponseType: customer.CustomerResponse
+        collectionMemberPrototypeType: customer.Customer
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: 
+                  
+                  {  
+                    "_meta":{  
+                      "messages":[  
+                      ]
+                    },
+                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName":"Jason",
+                    "lastName":"Bourne",
+                    "paymentMethods":[  
+                      {  
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ],
+                    "deliveryAddresses":[  
+                      {
+                        "type": "BILLING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }, 
+                      {
+                        "type": "SHIPPING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }
+                    ]
+                  }
+                
+              
+              
+    /deliveryAddresses:
+      type:
+        collection.collection:
+          collectionResponseType: customer.DeliveryAddressCollectionResponse
+          collectionMemberPrototypeType: geography.PostalAddress
+          collectionMemberResponseType: customer.DeliveryAddressResponse
+      get:
+        is: *queryableCollection
+        responses: 
+          200:
+            body: 
+              application/json:
+                example:  
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/deliveryAddresses"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 10                
+                    },
+                    "deliveryAddresses": [
+                      {
+                        "type": "BILLING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }
+                    ]
+                  }
+                  
+        
+      /{deliveryAddressId}:
+        uriParameters:
+          deliveryAddressId:
+            type: common.resourceId
+        type:
+          collection.collectionMember:
+            collectionMemberResponseType: customer.DeliveryAddressResponse
+            collectionMemberPrototypeType: geography.PostalAddress
+            
+        get:
+          responses: 
+            200:
+              body: 
+                application/json:
+                  example: 
+                    {
+                      "_links": {
+                        "self": {
+                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/custoemrs/deb89058-77fb-4e97-8c83-6506c38cacf8/deliveryAddresses/a295a217-d0b7-4e55-ace8-2ef09dba96ba"
+                        }
+                      },
+                      "_meta": {
+                        "messages": []
+                      },
+                      "type": "BILLING",
+                      "address": "Main street 122",
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
+                      "secondaryAddress": "",
+                      "mailStopCode": "",
+                      "attention": ""
+                    }
+    /contactMethods:
+      type:
+        collection.collection:
+          collectionResponseType: ContactMethodCollectionResponse
+          collectionMemberPrototypeType: contact.ContactMethod
+          collectionMemberResponseType: ContactMethodResponse
+      get:
+        is: *queryableCollection
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: | 
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/contactMethods"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 10                
+                    },
+                    "contactMethods": [
+                      {
+                        "contactMethodType": "EMAIL",
+                        "emailAddress": "jason.bourne@example.com"
+                      }
+                    ]
+                  }
+      /{contactMethodId}:
+        uriParameters:
+          contactMethodId:
+            type: common.resourceId
+        type:
+          collection.collectionMember:
+            collectionMemberResponseType: ContactMethodResponse
+            collectionMemberPrototypeType: contact.ContactMethod
+        get:
+          responses: 
+            200:
+              body: 
+                application/json:
+                  example: |
+                    {
+                      "contactMethodType": "EMAIL",
+                      "emailAddress": "jason.bourne@example.com"
+                    }
+    /paymentMethods:
+      type:
+        collection.collection:
+          collectionResponseType: customer.PaymentMethodCollectionResponse
+          collectionMemberPrototypeType: payment.PaymentMethod
+          collectionMemberResponseType: customer.PaymentMethodResponse
+      get:
+        is: *queryableCollection
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 10                
+                    },
+                    "paymentMethods": [
+                      {
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ]
+                  }
+      /{paymentMethodId}:
+        uriParameters:
+          paymentMethodId:
+            type: common.resourceId
+        type:
+          collection.collectionMember:
+            collectionMemberResponseType: customer.PaymentMethodResponse
+            collectionMemberPrototypeType: payment.PaymentMethod
+        get:
+          responses: 
+            200:
+              body: 
+                application/json:
+                  example: |
+                    {
+                      "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                      "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
+                      }
+                    }
+    /orders:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: SalesOrderCollectionResponse
+      get:
+        is: *queryableCollection
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/orders"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 3,
+                      "offset": 0,
+                      "limit": 10                
+                    },
+                    "paymentMethods": [],
+                    "orders": [
+                      {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
+                      },
+                      {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d6cfcfd8-a782-4a69-a683-c83a44d1447f"
+                      },
+                      {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d78541c7-3897-4498-a8b7-52d29601b118"
+                      }
+                    ]
+                  }
+                  
+    /shoppingCarts:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ShoppingCartCollectionResponse
+      get:
+        is: *queryableCollection

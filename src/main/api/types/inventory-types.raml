@@ -1,0 +1,55 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides a set of resusable data types that describe concepts
+  related to inventory and availability
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+  quantity: quantity-types.raml
+
+types:
+  
+  AvailabileQuantity:
+    type: object
+    properties: 
+      date:
+        type: date-only
+      available:
+        type: quantity.Quantity
+        
+  Availability:
+    type: object
+    properties: 
+      availableToPromise:
+        type: array
+        items: AvailabileQuantity
+        
+  Inventory:
+    type: object
+    description: |
+      a simple expression of item inventory
+    properties: 
+      itemId:
+        description: |
+          the id of the item for this inventory record
+        type: common.resourceId
+      warehouseId:
+        description: |
+          the id of the warehouse where the item for this
+          inventory record is stored
+        type: common.resourceId
+      inventoryDate:
+        description: |
+          the timestamp of the last update of the quantityOnHand
+          of an item in a warehouse
+        type: datetime
+      quantityOnHand:
+        description: |
+          the number of items that can be found in its storage location
+          in the warehouse
+        type: integer
+        minimum: 0
+        

@@ -1,0 +1,32 @@
+#%RAML 1.0 Library
+
+usage:
+  reusable data types for monetray values used in experience layer APIs
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+
+types:
+
+  CurrencyType:
+    description: |
+      describes the currency of the amount of a monetary value
+    type: string
+    enum: [
+      USD, EUR, CAD, MEX
+    ]
+
+  MonetaryValue:
+    description: |
+      represents an amount in a given currency
+    type: object
+    properties:
+      name: string
+      currency:
+        type: CurrencyType
+        default: USD
+      currencyValue:
+        type: number
+        minimum: 0

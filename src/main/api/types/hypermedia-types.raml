@@ -1,0 +1,62 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides a set of resusable data types that extend common types
+  to add linking and hypermedia to REST APIs
+
+uses:
+    metadata: metadata-types.raml
+    common: common-types.raml
+
+types:
+  
+  Link:
+    type: object
+    properties:
+      href:
+        type: common.url
+      title?:
+        type: string
+        
+  Links:
+    type: object
+    properties:
+      //:
+        type: Link
+      
+  Message:
+    type: metadata.Message
+    properties:
+      href?: Link
+      
+  CollectionPagingLinks:
+    type: Links
+    properties:
+      self?:
+        type: Link
+      first?:
+        type: Link
+      prev?:
+        type: Link
+      next?:
+        type: Link
+      last?:
+        type: Link
+        
+  ResponseMetadata:
+    type: metadata.ResponseMetadata
+    properties:
+      messages:
+        type: Message[]
+        
+  DefaultResponse:
+    type: metadata.DefaultResponse
+        
+  CollectionResponse:
+    type: DefaultResponse
+    properties:
+      _meta: ResponseMetadata
+      _links: CollectionPagingLinks
+      
+  ErrorResponse:
+    type: DefaultResponse

@@ -1,0 +1,66 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides a resuable set of data types that can used and extended
+  to implement queries and response objects for RESTful APIs
+  
+uses:
+  common: common-types.raml
+
+types:
+  
+  collectionTotalItems:
+    type: integer
+    minimum: 0
+    
+  pagingOffset:
+    type: integer
+    minimum: 0
+    default: 0
+    
+  pagingLimit:
+    type: integer
+    minimum: 5
+    default: 10
+    maximum: 20
+    
+  sortingSortKey:
+    type: string
+    
+  Message:
+    type: object
+    properties:
+      severity:
+        type: string
+        enum: [ INFO, WARN, ERROR, FATAL ]
+      code: string
+      description: string
+       
+  ResponseMetadata:
+    type: object
+    properties:
+      messages?:
+        type: Message[]
+        
+  CollectionResponseMetadata:
+    type: ResponseMetadata
+    properties:
+      totalItems?: collectionTotalItems
+      offset?: pagingOffset
+      limit?: pagingLimit
+      sortBy?: sortingSortKey
+      
+  DefaultResponse:
+    type: object
+    properties:
+      _meta:
+        type: ResponseMetadata
+        
+  CollectionResponse:
+    type: DefaultResponse
+    properties:
+      _meta: CollectionResponseMetadata
+      
+  ErrorResponse:
+    type: DefaultResponse
+    

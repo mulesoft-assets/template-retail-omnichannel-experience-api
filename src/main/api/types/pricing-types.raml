@@ -1,0 +1,34 @@
+#%RAML 1.0 Library
+
+usage:
+  reusable data types for defining product prices in experience layer APIs
+  
+uses:
+  common: common-types.raml
+  money: monetary-types.raml
+  
+types: 
+  
+  SalesUnit:
+    description: |
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+    examples:
+      each:
+        code: EA
+        name: Each
+      case:
+        code: CS
+        name: case
+        
+  Price:
+    description: |
+    type: object
+    properties: 
+      salesUnit: SalesUnit
+      amount: money.MonetaryValue
+      

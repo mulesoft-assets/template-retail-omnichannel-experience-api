@@ -1,0 +1,20 @@
+#%RAML 1.0 Library
+
+usage: |
+  resusable data types that describe merchandising product
+  taxonomy, categories and hierarchies
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+
+types:
+
+  Category:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string  

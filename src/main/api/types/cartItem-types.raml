@@ -1,0 +1,24 @@
+#%RAML 1.0 Library
+
+usage: |
+  reusable cart order data types
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  quantity: quantity-types.raml
+  hyper: hypermedia-types.raml
+  product: product-types.raml
+
+types:
+
+  CartItem:
+    description: |
+      an individual component of an order
+    type: common.Identified
+    properties:
+      quantity:
+        type: quantity.Quantity
+      item:
+        type: product.ProductVariant
+        

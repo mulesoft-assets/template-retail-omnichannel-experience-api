@@ -1,0 +1,21 @@
+#%RAML 1.0 Library
+
+usage:
+  defines data types specific to the experience layer session API
+  
+uses:
+  common: types/common-types.raml
+  item: types/cartItem-types.raml
+  
+types:
+  
+  ShoppingCartItem:
+    type: item.CartItem
+    
+  ShoppingCart:
+    type: object
+    properties:
+      customerId: common.resourceId
+      items:
+        type: ShoppingCartItem[]
+        
