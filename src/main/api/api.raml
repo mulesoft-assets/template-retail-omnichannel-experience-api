@@ -1,6 +1,6 @@
 #%RAML 1.0
 #baseUri: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c
-title: experience layer API
+title: Retail Omnichannel Experience API
 baseUri: https://localhost:8082/api
 
 uses:
@@ -372,6 +372,105 @@ types:
           body: 
             application/json:
               example: 
+                  {
+                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName":"Jason",
+                    "lastName":"Bourne",
+                    "paymentMethods":[  
+                      {  
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ],
+                    "deliveryAddresses":[  
+                      {
+                        "type": "BILLING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }, 
+                      {
+                        "type": "SHIPPING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }
+                    ]
+                  }
+    put:
+      body: 
+            application/json:
+              example:  
+                  { 
+                    "_meta":{  
+                      "messages":[  
+                      ]
+                    }, 
+                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName":"Jason",
+                    "lastName":"Bourne",
+                    "paymentMethods":[  
+                      {  
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ],
+                    "deliveryAddresses":[  
+                      {
+                        "type": "BILLING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }, 
+                      {
+                        "type": "SHIPPING",
+                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress":"",
+                        "mailStopCode":"",
+                        "attention":""
+                      }
+                    ]
+                  }
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: 
                   
                   {  
                     "_meta":{  
@@ -419,8 +518,7 @@ types:
                         "attention":""
                       }
                     ]
-                  }
-                
+                  }                
               
               
     /deliveryAddresses:

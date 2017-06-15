@@ -49,18 +49,18 @@ types:
           or box number
       attention?:
         type: string
-        description: |
+        description: 
           the name of an individual who should receive
           deliveries on behalf of a recipient organization
-      type:
+      type?:
         type: string
         enum: [ BILLING, SHIPPING] 
-      recipient:
+      recipient?:
         type: string
         description: |
           the name of the party responsible for receiving
           deliveries to this address
-      address:
+      address?:
         type: string
         description: |
           the unit number and street name
@@ -74,15 +74,15 @@ types:
           any additional addressing information needed to describe a
           delivery location that does not fit within address or
           secondaryUnit
-      city:
-        type: string
+      city?:
+        type: string 
         description: |
           the municipality of the address
-      state:
+      state?:
         type: string
         description: |
           the state or other national region of the address
-      postalCode:
+      postalCode?:
         type: string
         description: |
           the delivery code assigned to this address by a national
