@@ -18,5 +18,6 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
     <context:property-placeholder location="common.properties, mule.${mule.env}.properties" />
 	 <http:request-config name="retail-customer-system-api" protocol="HTTPS" host="${customer-system-api.host}" port="${customer-system-api.port}" basePath="${customer-system-api.baseUrl}" doc:name="HTTP Request Configuration">
         <http:raml-api-configuration location="retail-customer-system-api/system-api.raml"/>
+
     </http:request-config>
 </mule>
