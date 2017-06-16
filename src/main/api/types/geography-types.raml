@@ -43,25 +43,25 @@ types:
     type: object
     properties:
       mailStopCode?:
-        type: string
+        type: string?
         description: |
           an internal organization mail delivery location
           or box number
       attention?:
-        type: string
+        type: string?
         description: 
           the name of an individual who should receive
           deliveries on behalf of a recipient organization
-      type?:
+      type:
         type: string
         enum: [ BILLING, SHIPPING] 
       recipient?:
-        type: string
+        type: string?
         description: |
           the name of the party responsible for receiving
           deliveries to this address
       address?:
-        type: string
+        type: string?
         description: |
           the unit number and street name
       addressUnit?:
@@ -69,21 +69,21 @@ types:
         description: |
           a subdivision within the address, such as an apartment or floor
       secondaryAddress?:
-        type: string
+        type: string?
         description: |
           any additional addressing information needed to describe a
           delivery location that does not fit within address or
           secondaryUnit
       city?:
-        type: string 
+        type: string?
         description: |
           the municipality of the address
       state?:
-        type: string
+        type: string?
         description: |
           the state or other national region of the address
       postalCode?:
-        type: string
+        type: string?
         description: |
           the delivery code assigned to this address by a national
           or governmental postal agency
