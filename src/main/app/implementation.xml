@@ -73,27 +73,27 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 {
 	
 	customerId: payload.identifier,
-	firstName: payload.firstName,
+	(firstName: payload.firstName) when payload.firstName?,
 	lastName: payload.lastName, 
 	(payload.deliveryAddresses filter ($.type == 'BILLING') map {
 		postalAddress:{
-				street: $.address,
-				city: $.city,
-				postalCode: $.postalCode, 
-				state: $.state,
-				country: $.country			
-				}
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?		
+		}
 				
 	}),
 	(payload.deliveryAddresses filter ($.type == 'SHIPPING') map {
 		deliveryAddress:{	
-			street: $.address, 
-			city: $.city,
-			postalCode: $.postalCode, 
-			state: $.state,
-			country: $.country
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?
 		}	
-	})
+	}) 
 }]]></dw:set-payload>
         </dw:transform-message>
 
