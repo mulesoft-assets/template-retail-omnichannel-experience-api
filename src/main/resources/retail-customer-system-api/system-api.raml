@@ -15,14 +15,14 @@ types:
   contact:
     type: object
     properties:
-      id?: string
-      customerId?: string
+      id?: string?
+      customerId?: string?
       firstName?: string?
       lastName: string
       phone?: string?
-      email?: string
-      deliveryAddress?: address? 
-      postalAddress?: address?
+      email?: string?
+      deliveryAddress?: address
+      postalAddress?: address
   
 /customers:
   displayName: Customer contact
@@ -38,8 +38,8 @@ types:
           application/json: 
             example: |
               {
-                "id": "sfdc|1234567890",
-                "customerId": "provider|0123456789"
+                "id": "sfdc_1234567890",
+                "customerId": "provider_0123456789"
               }
               
   /{customerId}:          
