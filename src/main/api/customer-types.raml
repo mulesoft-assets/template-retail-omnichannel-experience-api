@@ -15,13 +15,13 @@ types:
   Customer:
     type: common.Identified
     properties:
-      firstName:
-        type: string
+      firstName?:
+        type: string?
       lastName:
         type: string
       paymentMethods?:
         type: payment.PaymentMethod[]
-      deliveryAddresses?:
+      deliveryAddresses:
         type: geography.PostalAddress[]
 
   CustomerCollectionResponse:

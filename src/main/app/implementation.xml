@@ -26,74 +26,75 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 	identifier: payload.customerId,
 	firstName: payload.firstName,
 	lastName: payload.lastName,
-	paymentMethods: [{
-		paymentMethodType: {
-			identifier: payload.customerId,
-			issuer: "BANK",
-			medium: "CARD",
-			name: "VISA"
+	paymentMethods: [
+		{
+			paymentMethodType: 	{
+				issuer: "BANK",
+				medium: "CARD",
+				name: "VISA"
+			}
 		}
-	}],
-	deliveryAddresses: [{
-		type: "BILLING",
-		identifier: payload.customerId,
-		address: payload.postalAddress.street when payload.postalAddress.street != null otherwise "",
-		city: payload.postalAddress.city when payload.postalAddress.city != null otherwise "",
-		country: payload.postalAddress.country when payload.postalAddress.country != null otherwise "",
-		postalCode: payload.postalAddress.postalCode when payload.postalAddress.postalCode != null otherwise "",
-		recipient: (payload.firstName ++ " " ++ payload.lastName),
-		state: payload.postalAddress.state when payload.postalAddress.state != null otherwise "",
-		attention: "",
-		mailStopCode: "",
-		secondaryAddress: ""
-	},
-	{
-		type: "SHIPPING",
-		identifier: payload.customerId,
-		address: payload.deliveryAddress.street when payload.deliveryAddress.street != null otherwise "",
-		city: payload.deliveryAddress.city when payload.deliveryAddress.city != null otherwise "",
-		country: payload.deliveryAddress.country when payload.deliveryAddress.country != null otherwise "",
-		postalCode: payload.deliveryAddress.postalCode when payload.deliveryAddress.postalCode != null otherwise "",
-		recipient: (payload.firstName ++ " " ++ payload.lastName),
-		state: payload.deliveryAddress.state when payload.deliveryAddress.state != null otherwise "",
-		attention: "",
-		mailStopCode: "",
-		secondaryAddress: ""
-	}]
+	],
+	deliveryAddresses: [
+		{
+			type: "BILLING",
+			address: payload.postalAddress.street,
+			city: payload.postalAddress.city,
+			country: payload.postalAddress.country,
+			postalCode: payload.postalAddress.postalCode,
+			recipient: (payload.firstName ++ " " ++ payload.lastName),
+			state: payload.postalAddress.state,
+			attention: null,
+			mailStopCode: null,
+			secondaryAddress: null
+		},
+		{
+			type: "SHIPPING",
+			address: payload.deliveryAddress.street,
+			city: payload.deliveryAddress.city,
+			country: payload.deliveryAddress.country,
+			postalCode: payload.deliveryAddress.postalCode,
+			recipient: (payload.firstName ++ " " ++ payload.lastName),
+			state: payload.deliveryAddress.state,
+			attention: null,
+			mailStopCode: null,
+			secondaryAddress: null
+		}
+	]
 }]]></dw:set-payload>
         </dw:transform-message>
     </flow>
     <flow name="putCustomerSFDC">
         <logger message="#[payload]" level="INFO" doc:name="input"/>
         <dw:transform-message doc:name="Input transform for PUT operation">
-        <dw:input-payload mimeType="application/json"/>
+        <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 {
 	
 	customerId: payload.identifier,
-	firstName: payload.firstName,
+	(firstName: payload.firstName) when payload.firstName?,
 	lastName: payload.lastName, 
 	(payload.deliveryAddresses filter ($.type == 'BILLING') map {
 		postalAddress:{
-				street: $.address,
-				city: $.city,
-				postalCode: $.postalCode, 
-				state: $.state,
-				country: $.country			
-				}
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?		
+		}
 				
 	}),
 	(payload.deliveryAddresses filter ($.type == 'SHIPPING') map {
 		deliveryAddress:{	
-			street: $.address, 
-			city: $.city,
-			postalCode: $.postalCode, 
-			state: $.state,
-			country: $.country
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?
 		}	
-	})
+	}) 
 }]]></dw:set-payload>
         </dw:transform-message>
 
