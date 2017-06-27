@@ -12,11 +12,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 
-
-	<http:listener-config name="httpListenerConfig" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
-	<apikit:config name="experience-api-config" raml="api.raml" consoleEnabled="true" doc:name="Router" keepRamlBaseUri="false"/>
+    <http:listener-config name="httpListenerConfig" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="api-config" raml="api.raml" consoleEnabled="true" doc:name="Router" keepRamlBaseUri="false"/>
     <context:property-placeholder location="common.properties, mule.${mule.env}.properties" />
 	 <http:request-config name="retail-customer-system-api" protocol="HTTPS" host="${customer-system-api.host}" port="${customer-system-api.port}" basePath="${customer-system-api.baseUrl}" doc:name="HTTP Request Configuration">
         <http:raml-api-configuration location="retail-customer-system-api/system-api.raml"/>
+
     </http:request-config>
 </mule>

@@ -9,13 +9,16 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    
+    
     <flow name="getCustomerFromSFDC">
         <http:request config-ref="retail-customer-system-api" path="/customers/{customerId}" method="GET" doc:name="GET/customers/{customerId}">
             <http:request-builder>
                 <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Mapping Response">
+        <dw:transform-message doc:name="Response Message">
+        <dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
@@ -23,36 +26,86 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 	identifier: payload.customerId,
 	firstName: payload.firstName,
 	lastName: payload.lastName,
-	paymentMethods: [{
-		paymentMethodType: {
-			issuer: "BANK",
-			medium: "CARD",
-			name: "VISA"
+	paymentMethods: [
+		{
+			paymentMethodType: 	{
+				issuer: "BANK",
+				medium: "CARD",
+				name: "VISA"
+			}
 		}
-	}],
-	deliveryAddresses: [{
-		address: payload.postalAddress.street,
-		city: payload.postalAddress.city,
-		country: payload.postalAddress.country,
-		postalCode: payload.postalAddress.postalCode,
-		recipient: (payload.firstName ++ " " ++ payload.lastName),
-		state: payload.postalAddress.state,
-		attention: "",
-		mailStopCode: "",
-		secondaryAddress:""
-	},
-	{
-		address: payload.deliveryAddress.street,
-		city: payload.deliveryAddress.city,
-		country: payload.deliveryAddress.country,
-		postalCode: payload.deliveryAddress.postalCode,
-		recipient: (payload.firstName ++ " " ++ payload.lastName),
-		state: payload.deliveryAddress.state,
-		attention: "",
-		mailStopCode: "",
-		secondaryAddress:""
-	}]
+	],
+	deliveryAddresses: [
+		{
+			type: "BILLING",
+			address: payload.postalAddress.street,
+			city: payload.postalAddress.city,
+			country: payload.postalAddress.country,
+			postalCode: payload.postalAddress.postalCode,
+			recipient: (payload.firstName ++ " " ++ payload.lastName),
+			state: payload.postalAddress.state,
+			attention: null,
+			mailStopCode: null,
+			secondaryAddress: null
+		},
+		{
+			type: "SHIPPING",
+			address: payload.deliveryAddress.street,
+			city: payload.deliveryAddress.city,
+			country: payload.deliveryAddress.country,
+			postalCode: payload.deliveryAddress.postalCode,
+			recipient: (payload.firstName ++ " " ++ payload.lastName),
+			state: payload.deliveryAddress.state,
+			attention: null,
+			mailStopCode: null,
+			secondaryAddress: null
+		}
+	]
 }]]></dw:set-payload>
         </dw:transform-message>
+    </flow>
+    <flow name="putCustomerSFDC">
+        <logger message="#[payload]" level="INFO" doc:name="input"/>
+        <dw:transform-message doc:name="Input transform for PUT operation">
+        <dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	
+	customerId: payload.identifier,
+	(firstName: payload.firstName) when payload.firstName?,
+	lastName: payload.lastName, 
+	(payload.deliveryAddresses filter ($.type == 'BILLING') map {
+		postalAddress:{
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?		
+		}
+				
+	}),
+	(payload.deliveryAddresses filter ($.type == 'SHIPPING') map {
+		deliveryAddress:{	
+			(street: $.address) when $.address?, 
+			(city: $.city)  when $.city?,
+			(postalCode: $.postalCode) when $.postalCode?, 
+			(state: $.state) when $.state?,
+			(country: $.country) when $.country?
+		}	
+	}) 
+}]]></dw:set-payload>
+        </dw:transform-message>
+
+
+        <http:request config-ref="retail-customer-system-api" path="/customers/{customerId}" method="PUT" doc:name="PUT/customers/{customerId}">
+            <http:request-builder>
+                <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
+            </http:request-builder>
+        </http:request>
+        <logger message="Customer was updated" level="INFO" doc:name="Success operation "/>
+
+
     </flow>
 </mule>

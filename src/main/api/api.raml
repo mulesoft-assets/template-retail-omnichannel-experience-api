@@ -1,6 +1,6 @@
 #%RAML 1.0
 #baseUri: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c
-title: experience layer API
+title: Retail Omnichannel Experience API
 baseUri: https://localhost:8082/api
 
 uses:
@@ -137,8 +137,9 @@ types:
       _links:
         type: hyper.Links
         properties:
-          self: hyper.Link
-          salesOrder: hyper.Link
+          salesOrder?: hyper.Link
+          self?: hyper.Link
+         
 
   ProductResponse:
     type: product.Product
@@ -260,9 +261,9 @@ types:
                   "postalCode":"90210",
                   "recipient":"Jason Bourne",
                   "country":"US",
-                  "secondaryAddress":"",
-                  "mailStopCode":"",
-                  "attention":""
+                  "secondaryAddress": null,
+                  "mailStopCode": null,
+                  "attention": null
                 }
               ]
           }
@@ -296,9 +297,9 @@ types:
                       "postalCode":"90210",
                       "recipient":"Jason Bourne",
                       "country":"US",
-                      "secondaryAddress":"",
-                      "mailStopCode":"",
-                      "attention":""
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
                     }
                 ]
               }
@@ -372,18 +373,12 @@ types:
           body: 
             application/json:
               example: 
-                  
-                  {  
-                    "_meta":{  
-                      "messages":[  
-                      ]
-                    },
+                  {
                     "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
                     "firstName":"Jason",
                     "lastName":"Bourne",
                     "paymentMethods":[  
                       {  
-                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
                         "paymentMethodType":{  
                           "medium":"CARD",
                           "issuer":"BANK",
@@ -394,33 +389,120 @@ types:
                     "deliveryAddresses":[  
                       {
                         "type": "BILLING",
-                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
                         "address":"Main street 122",
                         "city":"San Francisco",
                         "state":"California",
                         "postalCode":"90210",
                         "recipient":"Jason Bourne",
                         "country":"US",
-                        "secondaryAddress":"",
-                        "mailStopCode":"",
-                        "attention":""
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
                       }, 
                       {
                         "type": "SHIPPING",
-                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
                         "address":"Main street 122",
                         "city":"San Francisco",
                         "state":"California",
                         "postalCode":"90210",
                         "recipient":"Jason Bourne",
                         "country":"US",
-                        "secondaryAddress":"",
-                        "mailStopCode":"",
-                        "attention":""
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
                       }
                     ]
                   }
-                
+    put:
+      body: 
+            application/json:
+              example:  
+                  { 
+                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName":"Jason",
+                    "lastName":"Bourne",
+                    "paymentMethods":[  
+                      {  
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ],
+                    "deliveryAddresses":[  
+                      {
+                        "type": "BILLING",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention":null
+                      }, 
+                      {
+                        "type": "SHIPPING",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                      }
+                    ]
+                  }
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: 
+                  
+                  {  
+                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "firstName":"Jason",
+                    "lastName":"Bourne",
+                    "paymentMethods":[  
+                      {  
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ],
+                    "deliveryAddresses":[  
+                      {
+                        "type": "BILLING",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                      }, 
+                      {
+                        "type": "SHIPPING",
+                        "address":"Main street 122",
+                        "city":"San Francisco",
+                        "state":"California",
+                        "postalCode":"90210",
+                        "recipient":"Jason Bourne",
+                        "country":"US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                      }
+                    ]
+                  }                
               
               
     /deliveryAddresses:
@@ -652,3 +734,1279 @@ types:
           collectionResponseType: ShoppingCartCollectionResponse
       get:
         is: *queryableCollection
+        
+/channels:
+  type:
+    collection.readOnlyCollection:
+      collectionResponseType: ChannelCollectionResponse
+  get:
+    is: &queryableCollection [ collection.pageable, collection.sortable ]
+    queryParameters:
+      paymentMedium?: payment.PaymentMediumType
+      paymentIssuer?: payment.PaymentIssuerType
+      receipt?: fulfillment.ReceiptType
+      carrier?: fulfillment.CarrierType
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {
+                "_links": {
+                  "self": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8"
+                  },
+                  "paymentMethods": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods"
+                  },
+                  "fulfillmentMethods": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods"
+                  }
+                },
+                "_meta": {
+                  "messages": [],
+                  "totalItems": 3,
+                  "offset": 0,
+                  "limit": 10                
+                },
+                "channels": [
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "title": "WEB"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/6fc39639-6489-443c-bfc0-982bc4d6711b",
+                    "title": "STORE"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/cd1d9f52-89c0-4db4-a8fc-70dbd8600f22",
+                    "title": "MOBILE"
+                  }
+                ]
+              }
+  /{channelId}:
+    uriParameters:
+      channelId: common.resourceId
+    type:
+       collection.readOnlyCollectionMember:
+         collectionMemberResponseType: ChannelResponse
+    get: 
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_links": {
+                    "self": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8"
+                    },
+                    "paymentMethods": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods/1"
+                    },
+                    "fulfillmentMethods": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods/1"
+                    }
+                  },
+                  "_meta": {
+                    "messages": []
+                  },
+                  "channelType": "WEB",
+                  "url": "http://anypoint-store.surge.sh"
+                }
+    /paymentMethods:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: customer.PaymentMethodCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          paymentMedium: payment.PaymentMediumType
+          paymentIssuer: payment.PaymentIssuerType
+        
+    /fulfillmentMethods:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: FulfillmentMethodCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          receipt: fulfillment.ReceiptType
+          carrier: fulfillment.CarrierType
+    /products:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ProductCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          name?: string
+          minPrice?: integer
+          maxPrice?: integer
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "first": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      },
+                      "self": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      },
+                      "next": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                      },
+                      "last": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 5                
+                    },
+                    "products": [
+                      {
+                        "brand": "Anypoint",
+                        "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "model": "Smart Slim Micro Stripe Shirt",
+                        "rating": 5,
+                        "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                        "pictures": [
+                          "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                        ],
+                        "price": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.90,
+                            "name": "Amount"
+                          },
+                           "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        }
+                      }
+                    ]
+                  }
+    /categories:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: CategoryCollectionResponse
+      get:
+        is: *queryableCollection
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "first": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      },
+                      "self": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      },
+                      "next": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                      },
+                      "last": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 8,
+                      "offset": 0,
+                      "limit": 5                
+                    },
+                    "categories": [
+                      {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8",
+                        "title": "Sweaters"
+                      },
+                      {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1",
+                        "title": "Jeans"
+                      },
+                      {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9",
+                        "title": "Hats"
+                      },
+                      {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
+                        "title": "Shoes"
+                      },
+                      {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/b625ea67-e23f-46d2-be6a-653de1f620a8",
+                        "title": "Most popular items"
+                      }
+                    ]
+                  }
+
+/categories:
+  type:
+    collection.readOnlyCollection:
+      collectionResponseType: CategoryCollectionResponse
+  get:
+    is: *queryableCollection
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {
+                "_links": {
+                  "first": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                  },
+                  "self": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                  },
+                  "next": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                  },
+                  "last": {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
+                  }
+                },
+                "_meta": {
+                  "messages": [],
+                  "totalItems": 8,
+                  "offset": 0,
+                  "limit": 5                
+                },
+                "categories": [
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8",
+                    "title": "Sweaters"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1",
+                    "title": "Jeans"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9",
+                    "title": "Hats"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
+                    "title": "Shoes"
+                  },
+                  {
+                    "href": "http://mocksvc.mulesoft.com/mocks/e1595d14-f0ed-4098-8eb9-b920cbdbd191/categories/b625ea67-e23f-46d2-be6a-653de1f620a8",
+                    "title": "Most popular items"
+                  }
+                ]
+              }
+  /{categoryId}:
+    uriParameters:
+      categoryId: common.resourceId
+    type:
+       collection.readOnlyCollectionMember:
+         collectionMemberResponseType: CategoryResponse
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_links": {
+                    "self": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/ac741508-0aea-44f5-8db1-b85dd91c74b0"
+                    },
+                    "products": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products"
+                    },                    
+                    "parentCategory": {
+                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
+                      "title": "Shoes"
+                    }
+                  },
+                  "_meta": {
+                    "messages": [],
+                    "totalItems": 8,
+                    "offset": 0,
+                    "limit": 5                
+                  },
+                  "name": "Sneakers",
+                  "description": "Sneakers"
+                }
+                
+    /products:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ProductCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+            name?: string
+            minPrice?: integer
+            maxPrice?: integer
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/b625ea67-e23f-46d2-be6a-653de1f620a8/products?offset=0&limit=5"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 5              
+                    },
+                    "products": [
+                      {
+                        "brand": "Anypoint",
+                        "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "model": "Smart Slim Micro Stripe Shirt",
+                        "rating": 5,
+                        "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                        "pictures": [
+                          "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                        ],
+                        "price": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.90,
+                            "name": "Amount"
+                          },
+                           "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        }
+                      }
+                    ]
+                  }
+
+
+/stores:
+  type:
+    collection.readOnlyCollection:
+      collectionResponseType: StoreCollectionResponse
+  get:
+    is: *queryableCollection
+    queryParameters:
+      paymentMedium: payment.PaymentMediumType
+      paymentIssuer: payment.PaymentIssuerType
+      receipt: fulfillment.ReceiptType
+      carrier: fulfillment.CarrierType
+  /{storeId}:
+    uriParameters:
+      storeId: common.resourceId
+    type:
+       collection.readOnlyCollectionMember:
+         collectionMemberResponseType: StoreResponse
+    /paymentMethods:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: customer.PaymentMethodCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          paymentMedium: payment.PaymentMediumType
+          paymentIssuer: payment.PaymentIssuerType
+    /fulfillmentMethods:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: FulfillmentMethodCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          receipt: fulfillment.ReceiptType
+          carrier: fulfillment.CarrierType
+    /products:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ProductCollectionResponse
+      get:
+        is: *queryableCollection
+    /categories:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ProductCollectionResponse
+      get:
+        is: *queryableCollection
+    /nearbyStores:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: StoreCollectionResponse
+      get:
+        is: *queryableCollection
+        queryParameters:
+          radius:
+            type: number
+            default: 5
+            minimum: 0.5
+            maximum: 50
+            required: true
+
+/orders:
+  type:
+    collection.collection:
+      collectionResponseType: SalesOrderCollectionResponse
+      collectionMemberPrototypeType: order.SalesOrder
+      collectionMemberResponseType: SalesOrderResponse
+  get:
+    is: &queryableCollection [ collection.pageable, collection.sortable ]
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {
+                "_links": {
+                  "self": {
+                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders"
+                  }
+                },
+                "_meta": {
+                  "messages": [
+
+                  ]
+                },
+                "paymentMethods": [
+                  {
+                   "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod/c20a0db9-84d8-4ae5-9338-252fc41dc6c3"
+                  }
+                ]
+              }
+  post:
+    responses: 
+      201:
+        body: 
+          application/json:
+            example: 
+              {
+                 "_links": {
+                  "orderItems": {
+                     "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                  },
+                  "self": {
+                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders"
+                  }
+                },
+                "_meta": {
+                  "messages": []
+                },
+                "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                "fulfillment": {
+                  "carrier": "POSTAL",
+                  "deliveryAddress": {
+                        "type": "SHIPPING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                  },
+                  "receipt": "PICKUP"
+                }
+              }
+  /{salesOrderId}:
+    uriParameters:
+      salesOrderId:
+        type: common.resourceId
+    type:
+      collection.collectionMember:
+        collectionMemberResponseType: SalesOrderResponse
+        collectionMemberPrototypeType: order.SalesOrder
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: 
+                {
+                   "_links": {
+                      "orderItems": {
+                         "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                  },
+                    "self": {
+                      "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
+                    }
+                  },
+                
+                  "_meta": {
+                    "messages": [
+
+                    ]
+                  },
+                  "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "fulfillment": {
+                    "carrier": "POSTAL",
+                    "deliveryAddress": {
+                        "type": "SHIPPING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                    },
+                    "receipt": "PICKUP"
+                  }
+                }
+    put:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                   "_links": {
+                      "orderItems": {
+                         "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                  },
+                    "self": {
+                      "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
+                    }
+                  },
+                  "_meta": {
+                    "messages": []
+                  },
+                  "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "fulfillment": {
+                    "carrier": "POSTAL",
+                    "deliveryAddress": {
+                        "type": "SHIPPING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                    },
+                    "receipt": "PICKUP"
+                  }
+                }
+    delete:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_meta": {
+                    "messages": []
+                  }
+                }
+    /paymentMethod:
+      type:
+        collection.updatableCollectionMember:
+          collectionMemberPrototypeType: payment.PaymentMethod
+          collectionMemberResponseType: SalesOrderPaymentMethodResponse
+      get:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                     "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                    },
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod"
+                      }
+                    },
+                    "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
+                      }
+                  }
+      put:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                    },
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod"
+                      }
+                    },
+                    "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
+                      }
+                  }
+    /fulfillment:
+      type:
+        collection.updatableCollectionMember:
+          collectionMemberPrototypeType: fulfillment.Fulfillment
+          collectionMemberResponseType: SalesOrderFulfillmentResponse
+      get:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                    },
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment"
+                      }
+                    },
+                    "carrier": "POSTAL",
+                    "deliveryAddress": {
+                        "type": "SHIPPING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                    },
+                    "receipt": "PICKUP"
+                  }
+      put:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                    },
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment"
+                      }
+                    },
+                    "carrier": "POSTAL",
+                    "deliveryAddress": {
+                         "type": "SHIPPING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
+                    },
+                    "receipt": "PICKUP"
+                  }
+    /orderItems:
+      type:
+        collection.updatableCollectionMember:
+          collectionMemberPrototypeType: order.SalesOrderItems
+          collectionMemberResponseType: SalesOrderItemCollectionResponse
+      get:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                      },
+                        "self": {
+                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                        }
+                    },
+                    "orderItems": [
+                      {
+                        "item": {
+                          "configuration": [
+                            {
+                              "characteristic": {
+                                "code": "size",
+                                "description": "Size",
+                                "name": "Size of item"
+                              },
+                              "characteristicValue": {
+                                "code": "M",
+                                "name": "Medium"
+                              }
+                            },
+                            {
+                              "characteristic": {
+                                "code": "color",
+                                "name": "Color",
+                                "description": "Color"
+                              },
+                              "characteristicValue": {
+                                "code": "blue",
+                                "name": "Blue"
+                              }
+                            }
+                          ],
+                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                          "identifiers": {
+                            "SKU": "UGG-BB-PUR-06"
+                          }
+                        },
+                        "itemExtendedPrice": {
+                          "currency": "EUR",
+                          "currencyValue": 31.93,
+                          "name": "Amount"
+                        },
+                        "itemUnitPrice": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.90,
+                            "name": "Amount"
+                          },
+                          "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        },
+                        "quantity": {
+                          "amount": 2,
+                          "quantityType": "CONTINUOUS",
+                          "unit": "EA"
+                        }
+                      }
+                    ]
+                  }
+      put:
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                        "salesOrder": {
+                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
+                        },
+                        "self": {
+                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                        }
+                    },
+                    "orderItems": [
+                      {
+                        "item": {
+                          "configuration": [
+                            {
+                              "characteristic": {
+                                "code": "size",
+                                "description": "Size",
+                                "name": "Size of item"
+                              },
+                              "characteristicValue": {
+                                "code": "M",
+                                "name": "Medium"
+                              }
+                            },
+                            {
+                              "characteristic": {
+                                "code": "color",
+                                "name": "Color",
+                                "description": "Color"
+                              },
+                              "characteristicValue": {
+                                "code": "blue",
+                                "name": "Blue"
+                              }
+                            }
+                          ],
+                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                          "identifiers": {
+                            "SKU": "UGG-BB-PUR-06"
+                          }
+                        },
+                        "itemExtendedPrice": {
+                          "currency": "EUR",
+                          "currencyValue": 31.93,
+                          "name": "Amount"
+                        },
+                        "itemUnitPrice": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.90,
+                            "name": "Amount"
+                          },
+                          "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        },
+                        "quantity": {
+                          "amount": 2,
+                          "quantityType": "CONTINUOUS",
+                          "unit": "EA"
+                        }
+                      }
+                    ]
+                  }
+
+
+/products:
+  type:
+    collection.readOnlyCollection:
+      collectionResponseType: ProductCollectionResponse
+  get:
+    is: &queryableCollection [ collection.pageable, collection.sortable ]
+    queryParameters: 
+      name?: string
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {
+                "_links": {
+                  "self": {
+                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products?offset=0&limit=5"
+                  }
+                },
+                "_meta": {
+                  "messages": [],
+                  "totalItems": 1,
+                  "offset": 0,
+                  "limit": 5                
+                },
+                "products": [
+                  {
+                    "brand": "Anypoint",
+                    "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                    "model": "Smart Slim Micro Stripe Shirt",
+                    "rating": 5,
+                    "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                    "pictures": [
+                      "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                      "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                    ],
+                    "price": {
+                      "amount": {
+                        "currency": "USD",
+                        "currencyValue": 34.90,
+                        "name": "Amount"
+                      },
+                       "salesUnit": {
+                        "code": "EA",
+                        "name": "Each"
+                      }
+                    }
+                  }
+                ]
+              }
+              
+              
+  /{productId}:
+    uriParameters:
+      productId: string
+    type:
+       collection.readOnlyCollectionMember:
+         collectionMemberResponseType: ProductResponse
+    get:
+      responses: 
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "brand": "Anypoint",
+                  "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                  "model": "Smart Slim Micro Stripe Shirt",
+                  "rating": 5,
+                  "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                  "pictures": [
+                    "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                    "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                  ],
+                  "price": {
+                    "amount": {
+                      "currency": "USD",
+                      "currencyValue": 34.90,
+                      "name": "Amount"
+                    },
+                     "salesUnit": {
+                      "code": "EA",
+                      "name": "Each"
+                    }
+                  }
+                }
+           
+    /features:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: FeatureCollectionResponse
+      get:
+        is: &queryableCollection [ collection.pageable, collection.sortable ]
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "offset": 0,
+                      "limit": 10,
+                      "totalItems": 2
+                    },
+                    "features": [
+                      {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5",
+                        "title": "features 1"
+                      },
+                      {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/ba96bc50-2acc-4863-9a5c-7204582e64d1",
+                        "title": "features 2"
+                      }
+                    ]
+                  }
+      /{featureId}:
+        uriParameters:
+          featureId: common.resourceId
+        type:
+           collection.readOnlyCollectionMember:
+             collectionMemberResponseType: FeatureResponse
+        get:
+          responses: 
+            200:
+              body: 
+                application/json:
+                  example: |  
+                    {
+                      "_links": {
+                       "self": {
+                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5"
+                        }
+                      },
+                      "_meta": {
+                        "messages": [],
+                        "offset": 0,
+                        "limit": 10,
+                        "totalItems": 1
+                      },
+                      "characteristic": {
+                        "code": "color",
+                        "name": "Color",
+                        "description": "Color"
+                      },
+                      "characteristicValues": [{
+                        "code": "blue",
+                        "name": "Blue" 
+                      }] 
+                      
+                    }
+    /variants:
+      type:
+        collection.readOnlyCollection:
+          collectionResponseType: ProductVariantCollectionResponse
+      get:
+        is: &queryableCollection [ collection.pageable, collection.sortable ]
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: 
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "offset": 0,
+                      "limit": 10,
+                      "totalItems": 1
+                    },
+                    "variants": [
+                      {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "configuration": [
+                          {
+                            "characteristic": {
+                              "code": "size",
+                              "description": "Size",
+                              "name": "Size of item"
+                            },
+                            "characteristicValue": {
+                              "code": "M",
+                              "name": "Medium"
+                            }
+                          },
+                          {
+                            "characteristic": {
+                              "code": "color",
+                              "description": "Color",
+                              "name": "Color"
+                            },
+                            "characteristicValue": {
+                              "code": "blue",
+                              "name": "Blue"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+      /{productVariantId}:
+        uriParameters:
+          productVariantId: string
+        type:
+           collection.readOnlyCollectionMember:
+             collectionMemberResponseType: ProductVariantResponse
+        get:
+          responses: 
+            200:
+              body: 
+                application/json:
+                  example: 
+                    {
+                      "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                      "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                      "identifiers": {
+                        "SKU": "UGG-BB-PUR-06"
+                      },
+                      "configuration": [
+                        {
+                          "characteristic": {
+                            "code": "size",
+                            "description": "Size",
+                            "name": "Size of item"
+                          },
+                          "characteristicValue": {
+                            "code": "M",
+                            "name": "Medium"
+                          }
+                        },
+                        {
+                          "characteristic": {
+                            "code": "color",
+                            "description": "Color",
+                            "name": "Color"
+                          },
+                          "characteristicValue": {
+                            "code": "blue",
+                            "name": "Blue"
+                          }
+                        }
+                      ]
+                    }
+        /availability:
+          type:
+             collection.readOnlyCollectionMember:
+               collectionMemberResponseType: ProductVariantAvailabilityResponse
+          get:
+            responses: 
+              200:
+                body: 
+                  application/json:
+                    example: 
+                      {
+                        "_links": {
+                          "productVariant": {
+                            "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                            "title": "Blue"
+                          },
+                          "self": {
+                            "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051/availability"
+                          }
+                        },
+                        "_meta": {
+                          "messages": [],
+                          "offset": 0,
+                          "limit": 10,
+                          "totalItems": 2
+                        },
+                        "availableToPromise": [
+                          {
+                            "available": {
+                              "amount": 10,
+                              "quantityType": "DISCRETE",
+                              "unit": "EA"
+                            },
+                            "date": "2016-02-23"
+                          },
+                          {
+                            "available": {
+                              "amount": 5,
+                              "quantityType": "CONTINUOUS",
+                              "unit": "EA"
+                            },
+                            "date": "2016-02-10"
+                          }
+                        ]
+                      }
+
+/shoppingCarts:
+  type:
+    collection.collection:
+      collectionResponseType: ShoppingCartCollectionResponse
+      collectionMemberPrototypeType: session.ShoppingCart
+      collectionMemberResponseType: ShoppingCartResponse
+  get:
+    is: &queryableCollection [ collection.pageable, collection.sortable ]
+    responses:
+      200:
+        body:
+          application/json:
+            example: 
+              {
+                "_links": {
+                  "self": {
+                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/shoppingCarts/734a04dc-2f30-11e7-93ae-92361f002671"
+                  }
+                },
+                "_meta": {
+                  "messages": [],
+                  "totalItems": 1,
+                  "offset": 0,
+                  "limit": 10            
+                },
+                "shoppingCarts": [
+                  {
+                    "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
+                    "customerId": "11e7-93ae-92361f002671",
+                    "items": [
+                      {
+                        "item": {
+                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                          "identifiers": {
+                            "SKU": "UGG-BB-PUR-06"
+                          },
+                          "configuration": [
+                            {
+                              "characteristic": {
+                                "code": "size",
+                                "description": "Size",
+                                "name": "Size of item"
+                              },
+                              "characteristicValue": {
+                                "code": "M",
+                                "name": "Medium"
+                              }
+                            },
+                            {
+                              "characteristic": {
+                                "code": "color",
+                                "description": "Color",
+                                "name": "Color"
+                              },
+                              "characteristicValue": {
+                                "code": "blue",
+                                "name": "Blue"
+                              }
+                            }
+                          ]
+                        },
+                        "quantity": {
+                          "amount": 2,
+                          "quantityType": "DISCRETE",
+                          "unit": "EA"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+  /{shoppingCartId}:
+    uriParameters:
+      shoppingCartId: common.resourceId
+    type:
+       collection.collectionMember:
+         collectionMemberPrototypeType: session.ShoppingCart
+         collectionMemberResponseType: ShoppingCartResponse
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                {
+                  "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
+                  "customerId": "11e7-93ae-92361f002671",
+                  "items": [
+                    {
+                      "item": {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "configuration": [
+                          {
+                            "characteristic": {
+                              "code": "size",
+                              "description": "Size",
+                              "name": "Size of item"
+                            },
+                            "characteristicValue": {
+                              "code": "M",
+                              "name": "Medium"
+                            }
+                          },
+                          {
+                            "characteristic": {
+                              "code": "color",
+                              "description": "Color",
+                              "name": "Color"
+                            },
+                            "characteristicValue": {
+                              "code": "blue",
+                              "name": "Blue"
+                            }
+                          }
+                        ]
+                      },
+                      "quantity": {
+                        "amount": 2,
+                        "quantityType": "DISCRETE",
+                        "unit": "EA"
+                      }
+                    }
+                  ]
+                }
+        

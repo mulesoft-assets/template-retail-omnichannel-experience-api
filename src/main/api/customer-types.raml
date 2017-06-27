@@ -15,11 +15,11 @@ types:
   Customer:
     type: common.Identified
     properties:
-      firstName:
-        type: string
+      firstName?:
+        type: string?
       lastName:
         type: string
-      paymentMethods:
+      paymentMethods?:
         type: payment.PaymentMethod[]
       deliveryAddresses:
         type: geography.PostalAddress[]

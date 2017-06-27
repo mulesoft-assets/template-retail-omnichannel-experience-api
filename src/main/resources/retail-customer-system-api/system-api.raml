@@ -7,21 +7,21 @@ types:
   address: 
     type: object
     properties:
-      street?: string
-      city?: string
-      zipCode?: string
-      state?: string
-      country?: string
+      street?: string?
+      city?: string?
+      zipCode?: string?
+      state?: string?
+      country?: string?
   contact:
     type: object
     properties:
-      id?: string
-      customerId?: string
-      firstName?: string
+      id?: string?
+      customerId?: string?
+      firstName?: string?
       lastName: string
-      phone?: string
-      email?: string
-      deliveryAddress?: address 
+      phone?: string?
+      email?: string?
+      deliveryAddress?: address
       postalAddress?: address
   
 /customers:
@@ -38,8 +38,8 @@ types:
           application/json: 
             example: |
               {
-                "id": "sfdc|1234567890",
-                "customerId": "provider|0123456789"
+                "id": "sfdc_1234567890",
+                "customerId": "provider_0123456789"
               }
               
   /{customerId}:          

@@ -18,7 +18,7 @@ types:
   ContactMethod:
     type: object
     discriminator: contactMethodType
-    properties: 
+    properties:
       contactMethodType: ContactMethodType
       
   PhoneContactMethod:
@@ -32,14 +32,15 @@ types:
   EmailContactMethod:
     type: ContactMethod
     discriminatorValue: EMAIL
-    properties: 
+    properties:
       emailAddress:
         type: string
+       
         
   PostalContactMethod:
     type: ContactMethod
     discriminatorValue: POSTAL
-    properties: 
+    properties:
       postalAddress:
-        type: geography.PostalAddress  
+        type: geography.PostalAddress
         

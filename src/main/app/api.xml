@@ -1,0 +1,1458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:context="http://www.springframework.org/schema/context" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    
+    <flow name="api-main">
+        <http:listener config-ref="httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="api-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+    <flow name="api-console">
+        <http:listener config-ref="httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="api-config" doc:name="APIkit Console"/>
+    </flow>
+    <flow name="put:/orders/{salesOrderId}/fulfillment:application/json:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;salesOrder: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment&#xA;}&#xA;},&#xA;carrier: POSTAL,&#xA;deliveryAddress: {&#xA;type: SHIPPING,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: null,&#xA;mailStopCode: null,&#xA;attention: null&#xA;},&#xA;receipt: PICKUP&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/orders/{salesOrderId}/orderItems:application/json:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;salesOrder: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&#xA;}&#xA;},&#xA;orderItems: Array[{&#xA;item: {&#xA;configuration: Array[{&#xA;characteristic: {&#xA;code: size,&#xA;description: Size,&#xA;name: Size of item&#xA;},&#xA;characteristicValue: {&#xA;code: M,&#xA;name: Medium&#xA;}&#xA;},{&#xA;characteristic: {&#xA;code: color,&#xA;name: Color,&#xA;description: Color&#xA;},&#xA;characteristicValue: {&#xA;code: blue,&#xA;name: Blue&#xA;}&#xA;}],&#xA;productId: eb8c8ca7-3c42-4489-a820-3aa138430b75,&#xA;identifier: 88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;identifiers: {&#xA;SKU: UGG-BB-PUR-06&#xA;}&#xA;},&#xA;itemExtendedPrice: {&#xA;currency: EUR,&#xA;currencyValue: 31.93,&#xA;name: Amount&#xA;},&#xA;itemUnitPrice: {&#xA;amount: {&#xA;currency: USD,&#xA;currencyValue: 34.90,&#xA;name: Amount&#xA;},&#xA;salesUnit: {&#xA;code: EA,&#xA;name: Each&#xA;}&#xA;},&#xA;quantity: {&#xA;amount: 2,&#xA;quantityType: CONTINUOUS,&#xA;unit: EA&#xA;}&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/orders/{salesOrderId}/paymentMethod:application/json:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;      &quot;salesOrder&quot;: {&#xA;         &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&quot;&#xA;  },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod&quot;&#xA;    }&#xA;  },&#xA;  &quot;paymentMethodType&quot;: {&#xA;      &quot;medium&quot;: &quot;CARD&quot;,&#xA;      &quot;issuer&quot;: &quot;BANK&quot;,&#xA;      &quot;name&quot;: &quot;VISA&quot;&#xA;    }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/customers/{customerId}/contactMethods/{contactMethodId}:application/json:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/customers/{customerId}:application/json:api-config">
+        <flow-ref name="putCustomerSFDC" doc:name="putCustomerSFDC"/>
+
+    </flow>
+    <flow name="put:/customers/{customerId}/deliveryAddresses/{deliveryAddressId}:application/json:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/customers/{customerId}/paymentMethods/{paymentMethodId}:application/json:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/orders/{salesOrderId}:application/json:api-config">
+        <set-payload value="{&#xA;   &quot;_links&quot;: {&#xA;      &quot;orderItems&quot;: {&#xA;         &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&quot;&#xA;  },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: []&#xA;  },&#xA;  &quot;customerId&quot;: &quot;deb89058-77fb-4e97-8c83-6506c38cacf8&quot;,&#xA;  &quot;fulfillment&quot;: {&#xA;    &quot;carrier&quot;: &quot;POSTAL&quot;,&#xA;    &quot;deliveryAddress&quot;: {&#xA;        &quot;type&quot;: &quot;SHIPPING&quot;,&#xA;        &quot;address&quot;: &quot;Main street 122&quot;,&#xA;        &quot;city&quot;: &quot;San Francisco&quot;,&#xA;        &quot;state&quot;: &quot;California&quot;,&#xA;        &quot;postalCode&quot;: &quot;90210&quot;,&#xA;        &quot;recipient&quot;: &quot;Jason Bourne&quot;,&#xA;        &quot;country&quot;: &quot;US&quot;,&#xA;        &quot;secondaryAddress&quot;: null,&#xA;        &quot;mailStopCode&quot;: null,&#xA;        &quot;attention&quot;: null&#xA;    },&#xA;    &quot;receipt&quot;: &quot;PICKUP&quot;&#xA;  }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="put:/shoppingCarts/{shoppingCartId}:application/json:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/customers/{customerId}/contactMethods/{contactMethodId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/customers/{customerId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/customers/{customerId}/deliveryAddresses/{deliveryAddressId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/customers/{customerId}/paymentMethods/{paymentMethodId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/orders/{salesOrderId}:api-config">
+        <set-payload value="{&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: []&#xA;  }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="delete:/shoppingCarts/{shoppingCartId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}/variants/{productVariantId}/availability:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;productVariant: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;title: Blue&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051/availability&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;offset: 0,&#xA;limit: 10,&#xA;totalItems: 2&#xA;},&#xA;availableToPromise: Array[{&#xA;available: {&#xA;amount: 10,&#xA;quantityType: DISCRETE,&#xA;unit: EA&#xA;},&#xA;date: 2016-02-23&#xA;},{&#xA;available: {&#xA;amount: 5,&#xA;quantityType: CONTINUOUS,&#xA;unit: EA&#xA;},&#xA;date: 2016-02-10&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/categories:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;first&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&amp;limit=5&quot;&#xA;    },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&amp;limit=5&quot;&#xA;    },&#xA;    &quot;next&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&amp;limit=5&quot;&#xA;    },&#xA;    &quot;last&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&amp;limit=5&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 8,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 5                &#xA;  },&#xA;  &quot;categories&quot;: [&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8&quot;,&#xA;      &quot;title&quot;: &quot;Sweaters&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1&quot;,&#xA;      &quot;title&quot;: &quot;Jeans&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9&quot;,&#xA;      &quot;title&quot;: &quot;Hats&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca&quot;,&#xA;      &quot;title&quot;: &quot;Shoes&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/e1595d14-f0ed-4098-8eb9-b920cbdbd191/categories/b625ea67-e23f-46d2-be6a-653de1f620a8&quot;,&#xA;      &quot;title&quot;: &quot;Most popular items&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels/{channelId}/categories:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;first&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&amp;limit=5&quot;&#xA;    },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&amp;limit=5&quot;&#xA;    },&#xA;    &quot;next&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&amp;limit=5&quot;&#xA;    },&#xA;    &quot;last&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&amp;limit=5&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 8,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 5                &#xA;  },&#xA;  &quot;categories&quot;: [&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8&quot;,&#xA;      &quot;title&quot;: &quot;Sweaters&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1&quot;,&#xA;      &quot;title&quot;: &quot;Jeans&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9&quot;,&#xA;      &quot;title&quot;: &quot;Hats&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca&quot;,&#xA;      &quot;title&quot;: &quot;Shoes&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/b625ea67-e23f-46d2-be6a-653de1f620a8&quot;,&#xA;      &quot;title&quot;: &quot;Most popular items&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores/{storeId}/categories:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8&quot;&#xA;    },&#xA;    &quot;paymentMethods&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods&quot;&#xA;    },&#xA;    &quot;fulfillmentMethods&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 3,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 10                &#xA;  },&#xA;  &quot;channels&quot;: [&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8&quot;,&#xA;      &quot;title&quot;: &quot;WEB&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/6fc39639-6489-443c-bfc0-982bc4d6711b&quot;,&#xA;      &quot;title&quot;: &quot;STORE&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/cd1d9f52-89c0-4db4-a8fc-70dbd8600f22&quot;,&#xA;      &quot;title&quot;: &quot;MOBILE&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/contactMethods:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/contactMethods&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 1,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 10                &#xA;  },&#xA;  &quot;contactMethods&quot;: [&#xA;    {&#xA;      &quot;contactMethodType&quot;: &quot;EMAIL&quot;,&#xA;      &quot;emailAddress&quot;: &quot;jason.bourne@example.com&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 1,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;customers: Array[{&#xA;identifier: deb89058-77fb-4e97-8c83-6506c38cacf8,&#xA;firstName: Jason,&#xA;lastName: Bourne,&#xA;paymentMethods: Array[{&#xA;identifier: deb89058-77fb-4e97-8c83-6506c38c4444,&#xA;paymentMethodType: {&#xA;medium: CARD,&#xA;issuer: BANK,&#xA;name: VISA&#xA;}&#xA;}],&#xA;deliveryAddresses: Array[{&#xA;type: BILLING,&#xA;identifier: deb89058-77fb-4e97-8c83-6506c3855555,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: ,&#xA;mailStopCode: ,&#xA;attention: &#xA;}]&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/deliveryAddresses:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/deliveryAddresses&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 1,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;deliveryAddresses: Array[{&#xA;type: BILLING,&#xA;identifier: deb89058-77fb-4e97-8c83-6506c3855555,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: ,&#xA;mailStopCode: ,&#xA;attention: &#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}/features:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 10,&#xA;    &quot;totalItems&quot;: 2&#xA;  },&#xA;  &quot;features&quot;: [&#xA;    {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5&quot;,&#xA;      &quot;title&quot;: &quot;features 1&quot;&#xA;    },&#xA;    {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/ba96bc50-2acc-4863-9a5c-7204582e64d1&quot;,&#xA;      &quot;title&quot;: &quot;features 2&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/orders/{salesOrderId}/fulfillment:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;salesOrder: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment&#xA;}&#xA;},&#xA;carrier: POSTAL,&#xA;deliveryAddress: {&#xA;type: SHIPPING,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: null,&#xA;mailStopCode: null,&#xA;attention: null&#xA;},&#xA;receipt: PICKUP&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels/{channelId}/fulfillmentMethods:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores/{storeId}/fulfillmentMethods:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores/{storeId}/nearbyStores:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/orders/{salesOrderId}/orderItems:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;salesOrder: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&#xA;}&#xA;},&#xA;orderItems: Array[{&#xA;item: {&#xA;configuration: Array[{&#xA;characteristic: {&#xA;code: size,&#xA;description: Size,&#xA;name: Size of item&#xA;},&#xA;characteristicValue: {&#xA;code: M,&#xA;name: Medium&#xA;}&#xA;},{&#xA;characteristic: {&#xA;code: color,&#xA;name: Color,&#xA;description: Color&#xA;},&#xA;characteristicValue: {&#xA;code: blue,&#xA;name: Blue&#xA;}&#xA;}],&#xA;productId: eb8c8ca7-3c42-4489-a820-3aa138430b75,&#xA;identifier: 88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;identifiers: {&#xA;SKU: UGG-BB-PUR-06&#xA;}&#xA;},&#xA;itemExtendedPrice: {&#xA;currency: EUR,&#xA;currencyValue: 31.93,&#xA;name: Amount&#xA;},&#xA;itemUnitPrice: {&#xA;amount: {&#xA;currency: USD,&#xA;currencyValue: 34.90,&#xA;name: Amount&#xA;},&#xA;salesUnit: {&#xA;code: EA,&#xA;name: Each&#xA;}&#xA;},&#xA;quantity: {&#xA;amount: 2,&#xA;quantityType: CONTINUOUS,&#xA;unit: EA&#xA;}&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/orders:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [&#xA;&#xA;    ]&#xA;  },&#xA;  &quot;paymentMethods&quot;: [&#xA;    {&#xA;     &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod/c20a0db9-84d8-4ae5-9338-252fc41dc6c3&quot;&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/orders:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/orders&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 3,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;paymentMethods: Array[],&#xA;orders: Array[{&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671&#xA;},{&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d6cfcfd8-a782-4a69-a683-c83a44d1447f&#xA;},{&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d78541c7-3897-4498-a8b7-52d29601b118&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/orders/{salesOrderId}/paymentMethod:api-config">
+        <set-payload value="{&#xA;   &quot;_links&quot;: {&#xA;      &quot;salesOrder&quot;: {&#xA;         &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder&quot;&#xA;  },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod&quot;&#xA;    }&#xA;  },&#xA;  &quot;paymentMethodType&quot;: {&#xA;      &quot;medium&quot;: &quot;CARD&quot;,&#xA;      &quot;issuer&quot;: &quot;BANK&quot;,&#xA;      &quot;name&quot;: &quot;VISA&quot;&#xA;    }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels/{channelId}/paymentMethods:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/paymentMethods:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 1,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 10                &#xA;  },&#xA;  &quot;paymentMethods&quot;: [&#xA;    {&#xA;      &quot;identifier&quot;:&quot;deb89058-77fb-4e97-8c83-6506c38c4444&quot;,&#xA;      &quot;paymentMethodType&quot;:{  &#xA;        &quot;medium&quot;:&quot;CARD&quot;,&#xA;        &quot;issuer&quot;:&quot;BANK&quot;,&#xA;        &quot;name&quot;:&quot;VISA&quot;&#xA;      }&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores/{storeId}/paymentMethods:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores/{storeId}/products:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products?offset=0&amp;limit=5&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 1,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 5                &#xA;  },&#xA;  &quot;products&quot;: [&#xA;    {&#xA;      &quot;brand&quot;: &quot;Anypoint&quot;,&#xA;      &quot;identifier&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,&#xA;      &quot;model&quot;: &quot;Smart Slim Micro Stripe Shirt&quot;,&#xA;      &quot;rating&quot;: 5,&#xA;      &quot;description&quot;: &quot;Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,&#xA;      &quot;pictures&quot;: [&#xA;        &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,&#xA;        &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;&#xA;      ],&#xA;      &quot;price&quot;: {&#xA;        &quot;amount&quot;: {&#xA;          &quot;currency&quot;: &quot;USD&quot;,&#xA;          &quot;currencyValue&quot;: 34.90,&#xA;          &quot;name&quot;: &quot;Amount&quot;&#xA;        },&#xA;         &quot;salesUnit&quot;: {&#xA;          &quot;code&quot;: &quot;EA&quot;,&#xA;          &quot;name&quot;: &quot;Each&quot;&#xA;        }&#xA;      }&#xA;    }&#xA;  ]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels/{channelId}/products:api-config">
+        <set-payload value=" {
+                &quot;_links&quot;: {
+                  &quot;self&quot;: {
+                    &quot;href&quot;: &quot;/categories/12345/products?offset=0&amp;limit=5&quot;
+                  }
+                },
+                &quot;page&quot;: {
+                  &quot;messages&quot;: [],
+                  &quot;totalItems&quot;: 4,
+                  &quot;limit&quot;: 0,
+                  &quot;offset&quot;: 10                
+                },
+                &quot;products&quot;: [
+                  {
+                    &quot;identifier&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Smart Slim Micro Stripe Shirt&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                      &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 34.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Men's Chino Jogger Pants&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 47.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Men's Regular Fit V-Neck Knit Sweater&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 22.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;Machine Wash, Tumble Dry. True to Size.&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 12.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  }
+                ]
+              }" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/categories/{categoryId}/products:api-config">
+        <set-payload value="              {
+                &quot;_links&quot;: {
+                  &quot;self&quot;: {
+                    &quot;href&quot;: &quot;/categories/12345/products?offset=0&amp;limit=5&quot;
+                  }
+                },
+                &quot;page&quot;: {
+                  &quot;messages&quot;: [],
+                  &quot;totalItems&quot;: 4,
+                  &quot;limit&quot;: 0,
+                  &quot;offset&quot;: 10                
+                },
+                &quot;products&quot;: [
+                  {
+                    &quot;identifier&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Smart Slim Micro Stripe Shirt&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                      &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 34.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Men's Chino Jogger Pants&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 47.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Men's Regular Fit V-Neck Knit Sweater&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 22.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  },
+                  {
+                    &quot;identifier&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                    &quot;brand&quot;: &quot;Anypoint&quot;,
+                    &quot;model&quot;: &quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;description&quot;: &quot;Machine Wash, Tumble Dry. True to Size.&quot;,
+                    &quot;pictures&quot;: [
+                      &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
+                    ],
+                    &quot;price&quot;: {
+                      &quot;amount&quot;: {
+                        &quot;currency&quot;: &quot;USD&quot;,
+                        &quot;currencyValue&quot;: 12.95,
+                        &quot;name&quot;: &quot;Amount&quot;
+                      },
+                       &quot;salesUnit&quot;: {
+                        &quot;code&quot;: &quot;EA&quot;,
+                        &quot;name&quot;: &quot;Each&quot;
+                      }
+                    }
+                  }
+                ]
+              }" doc:name="Set Payload" mimeType="application/json"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/shoppingCarts:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/shoppingCarts:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/shoppingCarts/734a04dc-2f30-11e7-93ae-92361f002671&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 1,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;shoppingCarts: Array[{&#xA;identifier: 734a04dc-2f30-11e7-93ae-92361f002671,&#xA;customerId: 11e7-93ae-92361f002671,&#xA;items: Array[{&#xA;item: {&#xA;productId: eb8c8ca7-3c42-4489-a820-3aa138430b75,&#xA;identifier: 88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;identifiers: {&#xA;SKU: UGG-BB-PUR-06&#xA;},&#xA;configuration: Array[{&#xA;characteristic: {&#xA;code: size,&#xA;description: Size,&#xA;name: Size of item&#xA;},&#xA;characteristicValue: {&#xA;code: M,&#xA;name: Medium&#xA;}&#xA;},{&#xA;characteristic: {&#xA;code: color,&#xA;description: Color,&#xA;name: Color&#xA;},&#xA;characteristicValue: {&#xA;code: blue,&#xA;name: Blue&#xA;}&#xA;}]&#xA;},&#xA;quantity: {&#xA;amount: 2,&#xA;quantityType: DISCRETE,&#xA;unit: EA&#xA;}&#xA;}]&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/stores:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}/variants:api-config">
+         <choice doc:name="Choice">
+            <when expression="#[flowVars.productId == 'eb8c8ca7-3c42-4489-a820-3aa138430b75']">
+                <set-payload value="{
+                    &quot;_links&quot;: {
+                      &quot;self&quot;: {
+                        &quot;href&quot;: &quot;/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants&quot;
+                      }
+                    },
+                    &quot;_meta&quot;: {
+                      &quot;messages&quot;: [],
+                      &quot;offset&quot;: 0,
+                      &quot;limit&quot;: 10,
+                      &quot;totalItems&quot;: 2
+                    },
+                    &quot;variants&quot;: [
+                      {
+                        &quot;productId&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                        &quot;identifier&quot;: &quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        },
+                        &quot;pictures&quot;: [
+                          &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                          &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                        ],
+                        &quot;configuration&quot;:[
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;blue&quot;,
+                              &quot;name&quot;: &quot;Blue&quot;
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        &quot;identifier&quot;: &quot;4fbabbaa-7537-47bd-906b-989b0fbf520c&quot;,
+                        &quot;productId&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        },
+                        &quot;pictures&quot;: [
+                          &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                          &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;L&quot;,
+                              &quot;name&quot;: &quot;Large&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;blue&quot;,
+                              &quot;name&quot;: &quot;Blue&quot;
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <when expression="#[flowVars.productId == 'cd67cd8a-8901-48c5-890b-0a21f4a0f8ad']">
+                <set-payload value=" {
+                    &quot;_links&quot;: {
+                      &quot;self&quot;: {
+                        &quot;href&quot;: &quot;/products/cd67cd8a-8901-48c5-890b-0a21f4a0f8ad/variants&quot;
+                      }
+                    },
+                    &quot;_meta&quot;: {
+                      &quot;messages&quot;: [],
+                      &quot;offset&quot;: 0,
+                      &quot;limit&quot;: 10,
+                      &quot;totalItems&quot;: 3
+                    },
+                    &quot;variants&quot;: [
+                      {
+                        &quot;identifier&quot;: &quot;3c1eb223-811c-4e86-8ea3-4a06a002a79a&quot;,
+                        &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        },
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;army_gray&quot;,
+                              &quot;name&quot;: &quot;Army gray&quot;
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                        &quot;identifier&quot;: &quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        },
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;L&quot;,
+                              &quot;name&quot;: &quot;Large&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;tan&quot;,
+                              &quot;name&quot;: &quot;Tan&quot;
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                        &quot;identifier&quot;: &quot;beb3c34f-55b0-49c8-b7e2-5585727713ef&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;L&quot;,
+                              &quot;name&quot;: &quot;Large&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;khaki&quot;,
+                              &quot;name&quot;: &quot;Kaki&quot;
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <when expression="#[flowVars.productId == '7c9be8ad-0791-4362-b195-a53dcca4e1d7']">
+                <set-payload value="{
+                    &quot;_links&quot;: {
+                      &quot;self&quot;: {
+                        &quot;href&quot;: &quot;/products/7c9be8ad-0791-4362-b195-a53dcca4e1d7/variants&quot;
+                      }
+                    },
+                    &quot;_meta&quot;: {
+                      &quot;messages&quot;: [
+
+                      ],
+                      &quot;offset&quot;: 0,
+                      &quot;limit&quot;: 10,
+                      &quot;totalItems&quot;: 2
+                    },
+                    &quot;variants&quot;: [
+                      {
+                        &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                        &quot;identifier&quot;: &quot;dfc25820-c37d-456c-8867-4a89a51b7f75&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;ocean_river&quot;,
+                              &quot;name&quot;: &quot;Ocean River&quot;
+                            }
+                          }
+                        ]                      
+                      },
+                      {
+                        &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                        &quot;identifier&quot;: &quot;7500fd7a-4fe2-452a-88e8-0eb60788dd11&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;L&quot;,
+                              &quot;name&quot;: &quot;Large&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;ocean_river&quot;,
+                              &quot;name&quot;: &quot;Ocean River&quot;
+                            }
+                          }
+                        ]                      
+                      },
+                      {
+                        &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                        &quot;identifier&quot;: &quot;6a3c6342-af6c-402a-9f63-55e76a0de99a&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41SuDJi3xRL.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;hyper_blue&quot;,
+                              &quot;name&quot;: &quot;Hyper Blue&quot;
+                            }
+                          }
+                        ]                      
+                      }
+                    ]
+                  }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <otherwise>
+                <set-payload value="{
+                    &quot;_links&quot;: {
+                      &quot;self&quot;: {
+                        &quot;href&quot;: &quot;/products/e1c515f9-102d-4830-b353-18fe48065732/variants&quot;
+                      }
+                    },
+                    &quot;_meta&quot;: {
+                      &quot;messages&quot;: [],
+                      &quot;offset&quot;: 0,
+                      &quot;limit&quot;: 10,
+                      &quot;totalItems&quot;: 3
+                    },
+                    &quot;variants&quot;: [
+                      {
+                        &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                        &quot;identifier&quot;: &quot;fc3d4900-c5ac-4649-8bc8-cbbef4fe8fde&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;black&quot;,
+                              &quot;name&quot;: &quot;Black&quot;
+                            }
+                          }
+                        ]                      
+                      },
+                      {
+                        &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                        &quot;identifier&quot;: &quot;8cd5efc1-9110-4ee1-9ffd-1eaec687c0cc&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41imxB30l1L.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;burgundy&quot;,
+                              &quot;name&quot;: &quot;Burgundy&quot;
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                        &quot;identifier&quot;: &quot;84ce61ca-c1bd-495e-8111-d31b596886ed&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        }, 
+                        &quot;pictures&quot;: [
+                          &quot;https://images-na.ssl-images-amazon.com/images/I/41SuDJi3xRL.jpg&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;L&quot;,
+                              &quot;name&quot;: &quot;Large&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;burgundy&quot;,
+                              &quot;name&quot;: &quot;Burgundy&quot;
+                            }
+                          }
+                        ]                      
+                      }
+                    ]
+                  }" doc:name="Set Payload" mimeType="application/json"/>
+            </otherwise>
+        </choice>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="get:/categories/{categoryId}:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/ac741508-0aea-44f5-8db1-b85dd91c74b0&quot;&#xA;    },&#xA;    &quot;products&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products&quot;&#xA;    },                    &#xA;    &quot;parentCategory&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca&quot;,&#xA;      &quot;title&quot;: &quot;Shoes&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;totalItems&quot;: 8,&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 5                &#xA;  },&#xA;  &quot;name&quot;: &quot;Sneakers&quot;,&#xA;  &quot;description&quot;: &quot;Sneakers&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/channels/{channelId}:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8&quot;&#xA;    },&#xA;    &quot;paymentMethods&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods/1&quot;&#xA;    },&#xA;    &quot;fulfillmentMethods&quot;: {&#xA;      &quot;href&quot;: &quot;http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods/1&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: []&#xA;  },&#xA;  &quot;channelType&quot;: &quot;WEB&quot;,&#xA;  &quot;url&quot;: &quot;http://anypoint-store.surge.sh&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/contactMethods/{contactMethodId}:api-config">
+        <set-payload value="{&#xA;  &quot;contactMethodType&quot;: &quot;EMAIL&quot;,&#xA;  &quot;emailAddress&quot;: &quot;jason.bourne@example.com&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}:api-config">
+        <flow-ref name="getCustomerFromSFDC" doc:name="getCustomerFromSFDC"/>
+
+    </flow>
+    <flow name="get:/customers/{customerId}/deliveryAddresses/{deliveryAddressId}:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/custoemrs/deb89058-77fb-4e97-8c83-6506c38cacf8/deliveryAddresses/a295a217-d0b7-4e55-ace8-2ef09dba96ba&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[]&#xA;},&#xA;type: BILLING,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: ,&#xA;mailStopCode: ,&#xA;attention: &#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}/features/{featureId}:api-config">
+        <set-payload value="{&#xA;  &quot;_links&quot;: {&#xA;   &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: [],&#xA;    &quot;offset&quot;: 0,&#xA;    &quot;limit&quot;: 10,&#xA;    &quot;totalItems&quot;: 1&#xA;  },&#xA;  &quot;characteristic&quot;: {&#xA;    &quot;code&quot;: &quot;color&quot;,&#xA;    &quot;name&quot;: &quot;Color&quot;,&#xA;    &quot;description&quot;: &quot;Color&quot;&#xA;  },&#xA;  &quot;characteristicValues&quot;: [{&#xA;    &quot;code&quot;: &quot;blue&quot;,&#xA;    &quot;name&quot;: &quot;Blue&quot; &#xA;  }] &#xA;  &#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/customers/{customerId}/paymentMethods/{paymentMethodId}:api-config">
+        <set-payload value="{&#xA;  &quot;identifier&quot;:&quot;deb89058-77fb-4e97-8c83-6506c38c4444&quot;,&#xA;  &quot;paymentMethodType&quot;: {&#xA;    &quot;medium&quot;: &quot;CARD&quot;,&#xA;    &quot;issuer&quot;: &quot;BANK&quot;,&#xA;    &quot;name&quot;: &quot;VISA&quot;&#xA;  }&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/products/{productId}:api-config">
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.productId == 'eb8c8ca7-3c42-4489-a820-3aa138430b75']">
+                <set-payload value="{
+                  &quot;brand&quot;: &quot;Anypoint&quot;,
+                  &quot;identifier&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                  &quot;model&quot;: &quot;Smart Slim Micro Stripe Shirt&quot;,
+                  &quot;rating&quot;: 5,
+                  &quot;description&quot;: &quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,
+                  &quot;pictures&quot;: [
+                    &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                    &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                  ],
+                  &quot;price&quot;: {
+                    &quot;amount&quot;: {
+                      &quot;currency&quot;: &quot;USD&quot;,
+                      &quot;currencyValue&quot;: 34.95,
+                      &quot;name&quot;: &quot;Amount&quot;
+                    },
+                     &quot;salesUnit&quot;: {
+                      &quot;code&quot;: &quot;EA&quot;,
+                      &quot;name&quot;: &quot;Each&quot;
+                    }
+                  }
+                }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <when expression="#[flowVars.productId == '7c9be8ad-0791-4362-b195-a53dcca4e1d7']">
+                <set-payload value="{
+                  &quot;identifier&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                  &quot;brand&quot;: &quot;Anypoint&quot;,
+                  &quot;model&quot;: &quot;Men's Regular Fit V-Neck Knit Sweater&quot;,
+                  &quot;rating&quot;: 5,
+                  &quot;description&quot;: &quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,
+                  &quot;pictures&quot;: [
+                    &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                  ],
+                  &quot;price&quot;: {
+                    &quot;amount&quot;: {
+                      &quot;currency&quot;: &quot;USD&quot;,
+                      &quot;currencyValue&quot;: 22.95,
+                      &quot;name&quot;: &quot;Amount&quot;
+                    },
+                     &quot;salesUnit&quot;: {
+                      &quot;code&quot;: &quot;EA&quot;,
+                      &quot;name&quot;: &quot;Each&quot;
+                    }
+                  }
+                }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <when expression="#[flowVars.productId == 'cd67cd8a-8901-48c5-890b-0a21f4a0f8ad']">
+                <set-payload value="{                   &quot;brand&quot;: &quot;Anypoint&quot;,                   &quot;identifier&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,                   &quot;model&quot;: &quot;Men's Chino Jogger Pants&quot;,                   &quot;rating&quot;: 5,                   &quot;description&quot;: &quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,                   &quot;pictures&quot;: [                     &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,                     &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,                     &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;                   ],                   &quot;price&quot;: {                     &quot;amount&quot;: {                       &quot;currency&quot;: &quot;USD&quot;,                       &quot;currencyValue&quot;: 47.95,                       &quot;name&quot;: &quot;Amount&quot;                     },                      &quot;salesUnit&quot;: {                       &quot;code&quot;: &quot;EA&quot;,                       &quot;name&quot;: &quot;Each&quot;                     }                   }                 }" doc:name="Set Payload" mimeType="application/json"/>
+            </when>
+            <otherwise>
+                <set-payload value="{
+                  &quot;brand&quot;: &quot;Anypoint&quot;,
+                  &quot;identifier&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                  &quot;model&quot;: &quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,
+                  &quot;rating&quot;: 5,
+                  &quot;description&quot;: &quot;Machine Wash, Tumble Dry. True to Size.&quot;,
+                  &quot;pictures&quot;: [
+                    &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
+                  ],
+                  &quot;price&quot;: {
+                    &quot;amount&quot;: {
+                      &quot;currency&quot;: &quot;USD&quot;,
+                      &quot;currencyValue&quot;: 12.95,
+                      &quot;name&quot;: &quot;Amount&quot;
+                    },
+                     &quot;salesUnit&quot;: {
+                      &quot;code&quot;: &quot;EA&quot;,
+                      &quot;name&quot;: &quot;Each&quot;
+                    }
+                  }
+                  }" doc:name="Set Payload" mimeType="application/json"/>
+            </otherwise>
+        </choice>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+
+    </flow>
+    <flow name="get:/products/{productId}/variants/{productVariantId}:api-config">
+    	<choice doc:name="Choice">
+            <when expression="#[flowVars.productId == 'eb8c8ca7-3c42-4489-a820-3aa138430b75']">
+                <choice doc:name="Choice">
+                    <when expression="#[flowVars.productVariantId == '88668866-2c6d-4fa6-9e17-4b2c42e0f051']">
+                        <set-payload value=" {
+ 	&quot;productId&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+ 	&quot;identifier&quot;: &quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,
+ 	&quot;identifiers&quot;: {
+ 		&quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+ 	},
+ 	&quot;pictures&quot;: [&quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;, &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;],
+ 	&quot;configuration&quot;: [{
+ 		&quot;characteristic&quot;: {
+ 			&quot;code&quot;: &quot;size&quot;,
+ 			&quot;description&quot;: &quot;Size&quot;,
+ 			&quot;name&quot;: &quot;Size of item&quot;
+ 		},
+ 		&quot;characteristicValue&quot;: {
+ 			&quot;code&quot;: &quot;M&quot;,
+ 			&quot;name&quot;: &quot;Medium&quot;
+ 		}
+ 	}, {
+ 		&quot;characteristic&quot;: {
+ 			&quot;code&quot;: &quot;color&quot;,
+ 			&quot;description&quot;: &quot;Color&quot;,
+ 			&quot;name&quot;: &quot;Color&quot;
+ 		},
+ 		&quot;characteristicValue&quot;: {
+ 			&quot;code&quot;: &quot;blue&quot;,
+ 			&quot;name&quot;: &quot;Blue&quot;
+ 		}
+ 	}]
+ }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="{
+	&quot;identifier&quot;: &quot;4fbabbaa-7537-47bd-906b-989b0fbf520c&quot;,
+	&quot;productId&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+	&quot;identifiers&quot;: {
+		&quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+	},
+	&quot;pictures&quot;: [&quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;, &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;],
+	&quot;configuration&quot;: [{
+		&quot;characteristic&quot;: {
+			&quot;code&quot;: &quot;size&quot;,
+			&quot;description&quot;: &quot;Size&quot;,
+			&quot;name&quot;: &quot;Size of item&quot;
+		},
+		&quot;characteristicValue&quot;: {
+			&quot;code&quot;: &quot;L&quot;,
+			&quot;name&quot;: &quot;Large&quot;
+		}
+	}, {
+		&quot;characteristic&quot;: {
+			&quot;code&quot;: &quot;color&quot;,
+			&quot;description&quot;: &quot;Color&quot;,
+			&quot;name&quot;: &quot;Color&quot;
+		},
+		&quot;characteristicValue&quot;: {
+			&quot;code&quot;: &quot;blue&quot;,
+			&quot;name&quot;: &quot;Blue&quot;
+		}
+	}]
+}" doc:name="Set Payload" mimeType="application/json"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <when expression="#[flowVars.productId == 'cd67cd8a-8901-48c5-890b-0a21f4a0f8ad']">
+                <choice doc:name="Choice">
+                    <when expression="#[flowVars.productVariantId == '355d4130-1e3a-4795-aada-c960c89f6d9f']">
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                      &quot;identifier&quot;: &quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      },
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;L&quot;,
+                            &quot;name&quot;: &quot;Large&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;tan&quot;,
+                            &quot;name&quot;: &quot;Tan&quot;
+                          }
+                        }
+                      ]
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <when expression="#[flowVars.productVariantId == '3c1eb223-811c-4e86-8ea3-4a06a002a79a']">
+                        <set-payload value="{
+                      &quot;identifier&quot;: &quot;3c1eb223-811c-4e86-8ea3-4a06a002a79a&quot;,
+                      &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      },
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;M&quot;,
+                            &quot;name&quot;: &quot;Medium&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;army_gray&quot;,
+                            &quot;name&quot;: &quot;Army gray&quot;
+                          }
+                        }
+                      ]
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                      &quot;identifier&quot;: &quot;beb3c34f-55b0-49c8-b7e2-5585727713ef&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;L&quot;,
+                            &quot;name&quot;: &quot;Large&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;khaki&quot;,
+                            &quot;name&quot;: &quot;Kaki&quot;
+                          }
+                        }
+                      ]
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </otherwise>
+                </choice>
+            </when>
+            <when expression="#[flowVars.productId == '7c9be8ad-0791-4362-b195-a53dcca4e1d7']">
+                <choice doc:name="Choice">
+                    <when expression="#[flowVars.productVariantId == 'dfc25820-c37d-456c-8867-4a89a51b7f75']">
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                      &quot;identifier&quot;: &quot;dfc25820-c37d-456c-8867-4a89a51b7f75&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;M&quot;,
+                            &quot;name&quot;: &quot;Medium&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;ocean_river&quot;,
+                            &quot;name&quot;: &quot;Ocean River&quot;
+                          }
+                        }
+                      ]                      
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <when expression="#[flowVars.productVariantId == '7500fd7a-4fe2-452a-88e8-0eb60788dd11']">
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                      &quot;identifier&quot;: &quot;7500fd7a-4fe2-452a-88e8-0eb60788dd11&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;L&quot;,
+                            &quot;name&quot;: &quot;Large&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;ocean_river&quot;,
+                            &quot;name&quot;: &quot;Ocean River&quot;
+                          }
+                        }
+                      ]                      
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
+                      &quot;identifier&quot;: &quot;6a3c6342-af6c-402a-9f63-55e76a0de99a&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41SuDJi3xRL.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;M&quot;,
+                            &quot;name&quot;: &quot;Medium&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;hyper_blue&quot;,
+                            &quot;name&quot;: &quot;Hyper Blue&quot;
+                          }
+                        }
+                      ]                      
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </otherwise>
+                </choice>
+            </when>
+
+            <otherwise>
+                <choice doc:name="Choice">
+                    <when expression="#[flowVars.productVariantId == 'fc3d4900-c5ac-4649-8bc8-cbbef4fe8fde']">
+                        <set-payload value=" {
+                      &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                      &quot;identifier&quot;: &quot;fc3d4900-c5ac-4649-8bc8-cbbef4fe8fde&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;M&quot;,
+                            &quot;name&quot;: &quot;Medium&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;black&quot;,
+                            &quot;name&quot;: &quot;Black&quot;
+                          }
+                        }
+                      ]                      
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <when expression="#[flowVars.productVariantId == '8cd5efc1-9110-4ee1-9ffd-1eaec687c0cc']">
+                        <set-payload value="{
+                       &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                      &quot;identifier&quot;: &quot;8cd5efc1-9110-4ee1-9ffd-1eaec687c0cc&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41imxB30l1L.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;M&quot;,
+                            &quot;name&quot;: &quot;Medium&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;burgundy&quot;,
+                            &quot;name&quot;: &quot;Burgundy&quot;
+                          }
+                        }
+                      ]
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </when>
+                    <otherwise>
+                        <set-payload value="{
+                      &quot;productId&quot;: &quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
+                      &quot;identifier&quot;: &quot;84ce61ca-c1bd-495e-8111-d31b596886ed&quot;,
+                      &quot;identifiers&quot;: {
+                        &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                      }, 
+                      &quot;pictures&quot;: [
+                        &quot;https://images-na.ssl-images-amazon.com/images/I/41SuDJi3xRL.jpg&quot;
+                      ],
+                      &quot;configuration&quot;: [
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;size&quot;,
+                            &quot;description&quot;: &quot;Size&quot;,
+                            &quot;name&quot;: &quot;Size of item&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;L&quot;,
+                            &quot;name&quot;: &quot;Large&quot;
+                          }
+                        },
+                        {
+                          &quot;characteristic&quot;: {
+                            &quot;code&quot;: &quot;color&quot;,
+                            &quot;description&quot;: &quot;Color&quot;,
+                            &quot;name&quot;: &quot;Color&quot;
+                          },
+                          &quot;characteristicValue&quot;: {
+                            &quot;code&quot;: &quot;burgundy&quot;,
+                            &quot;name&quot;: &quot;Burgundy&quot;
+                          }
+                        }
+                      ]                      
+                    }" doc:name="Set Payload" mimeType="application/json"/>
+                    </otherwise>
+                </choice>
+            </otherwise>
+        </choice>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        
+    </flow>
+    <flow name="get:/orders/{salesOrderId}:api-config">
+        <set-payload value="{&#xA;_links: {&#xA;orderItems: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[]&#xA;},&#xA;customerId: deb89058-77fb-4e97-8c83-6506c38cacf8,&#xA;fulfillment: {&#xA;carrier: POSTAL,&#xA;deliveryAddress: {&#xA;type: SHIPPING,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: null,&#xA;mailStopCode: null,&#xA;attention: null&#xA;},&#xA;receipt: PICKUP&#xA;}&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="get:/shoppingCarts/{shoppingCartId}:api-config">
+        <set-payload value="{
+                  &quot;customerId&quot;: &quot;11e7-93ae-92361f002671&quot;,
+                  &quot;items&quot;: [
+                    {
+                      &quot;item&quot;: {
+                        &quot;productId&quot;: &quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
+                        &quot;identifier&quot;: &quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,
+                        &quot;identifiers&quot;: {
+                          &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                        },
+                        &quot;pictures&quot;: [
+                          &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
+                          &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
+                        ],
+                        &quot;configuration&quot;: [
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;size&quot;,
+                              &quot;description&quot;: &quot;Size&quot;,
+                              &quot;name&quot;: &quot;Size of item&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;M&quot;,
+                              &quot;name&quot;: &quot;Medium&quot;
+                            }
+                          },
+                          {
+                            &quot;characteristic&quot;: {
+                              &quot;code&quot;: &quot;color&quot;,
+                              &quot;description&quot;: &quot;Color&quot;,
+                              &quot;name&quot;: &quot;Color&quot;
+                            },
+                            &quot;characteristicValue&quot;: {
+                              &quot;code&quot;: &quot;blue&quot;,
+                              &quot;name&quot;: &quot;Blue&quot;
+                            }
+                          }
+                        ]
+                      },
+                      &quot;quantity&quot;: {
+                        &quot;amount&quot;: 1,
+                        &quot;quantityType&quot;: &quot;DISCRETE&quot;,
+                        &quot;unit&quot;: &quot;EA&quot;
+                      }
+                    },
+                      {
+                        &quot;item&quot;: {
+                          &quot;productId&quot;: &quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
+                          &quot;identifier&quot;: &quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,
+                          &quot;identifiers&quot;: {
+                            &quot;SKU&quot;: &quot;UGG-BB-PUR-06&quot;
+                          },
+                          &quot;pictures&quot;: [
+                            &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;
+                          ],
+                          &quot;configuration&quot;: [
+                            {
+                              &quot;characteristic&quot;: {
+                                &quot;code&quot;: &quot;size&quot;,
+                                &quot;description&quot;: &quot;Size&quot;,
+                                &quot;name&quot;: &quot;Size of item&quot;
+                              },
+                              &quot;characteristicValue&quot;: {
+                                &quot;code&quot;: &quot;L&quot;,
+                                &quot;name&quot;: &quot;Large&quot;
+                              }
+                            },
+                            {
+                              &quot;characteristic&quot;: {
+                                &quot;code&quot;: &quot;color&quot;,
+                                &quot;description&quot;: &quot;Color&quot;,
+                                &quot;name&quot;: &quot;Color&quot;
+                              },
+                              &quot;characteristicValue&quot;: {
+                                &quot;code&quot;: &quot;tan&quot;,
+                                &quot;name&quot;: &quot;Tan&quot;
+                              }
+                            }
+                          ]
+                        },
+                        &quot;quantity&quot;: {
+                          &quot;amount&quot;: 1,
+                          &quot;quantityType&quot;: &quot;DISCRETE&quot;,
+                          &quot;unit&quot;: &quot;EA&quot;
+                        }
+                      }
+                    ]
+                  }
+" doc:name="Set Payload" mimeType="application/json"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="get:/stores/{storeId}:api-config">
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/customers/{customerId}/contactMethods:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/customers:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="{&#xA;identifier: deb89058-77fb-4e97-8c83-6506c38cacf8,&#xA;firstName: Jason,&#xA;lastName: Bourne,&#xA;paymentMethods: Array[{&#xA;identifier: deb89058-77fb-4e97-8c83-6506c38c4444,&#xA;paymentMethodType: {&#xA;medium: CARD,&#xA;issuer: BANK,&#xA;name: VISA&#xA;}&#xA;}],&#xA;deliveryAddresses: Array[{&#xA;type: BILLING,&#xA;identifier: deb89058-77fb-4e97-8c83-6506c3855555,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: null,&#xA;mailStopCode: null,&#xA;attention: null&#xA;}]&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/customers/{customerId}/deliveryAddresses:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/orders:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="{&#xA;_links: {&#xA;orderItems: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[]&#xA;},&#xA;customerId: deb89058-77fb-4e97-8c83-6506c38cacf8,&#xA;fulfillment: {&#xA;carrier: POSTAL,&#xA;deliveryAddress: {&#xA;type: SHIPPING,&#xA;address: Main street 122,&#xA;city: San Francisco,&#xA;state: California,&#xA;postalCode: 90210,&#xA;recipient: Jason Bourne,&#xA;country: US,&#xA;secondaryAddress: null,&#xA;mailStopCode: null,&#xA;attention: null&#xA;},&#xA;receipt: PICKUP&#xA;}&#xA;}" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/customers/{customerId}/paymentMethods:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <flow name="post:/shoppingCarts:application/json:api-config">
+        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+    </flow>
+    <apikit:mapping-exception-strategy name="api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>
