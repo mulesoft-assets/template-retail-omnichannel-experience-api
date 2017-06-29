@@ -19,12 +19,12 @@ types:
     type: object
     discriminator: contactMethodType
     properties:
-    contactMethodType: ContactMethodType
-    
+      contactMethodType: ContactMethodType
+      
   PhoneContactMethod:
     type: ContactMethod
     discriminatorValue: PHONE
-    properties:
+    properties: 
       phoneNumber:
         type: string
         pattern: "[0-9]{3}[ -][0-9]{3}[ -][0-9]{4}"
@@ -35,6 +35,7 @@ types:
     properties:
       emailAddress:
         type: string
+       
         
   PostalContactMethod:
     type: ContactMethod
@@ -42,3 +43,4 @@ types:
     properties:
       postalAddress:
         type: geography.PostalAddress
+        

@@ -18,13 +18,29 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 
-As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods). 
+As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping card.  
 
 ### GET/customers/{customerId}
 This endpoint will trigger flow getCustomerFromSFDC which obtains a customer information based on customerId. 
 
 ### PUT/customers/{customerId}
 This endpoint will trigger flow putCustomerFromSFDC which updates a customer information based on customerId. 
+
+### GET/products
+This endpoint will trigger flow getProducts which obtaining mocked information about products from Product System API. 
+
+### GET/products/{productId}
+This endpoint will trigger flow getProducts which obtaining mocked information about product from Product System API based on productId. 
+
+### GET/products/{productId}/variants
+This endpoint will trigger flow getVariantsByProduct which obtaining mocked information about variants of product from Product System API based on productId.
+
+### GET/categories/{categoryId}/products
+This endpoint will trigger flow getProductsByCategory which obtaining mocked information about products from same category based on categoryId.
+
+### GET/shoppingCarts/{shoppingCartId}
+This endpoint will trigger flow get which obtaining mocked information about products in shopping card based on shoppingCartId.
+
 
 # Considerations <a name="considerations"/>
 
@@ -86,3 +102,7 @@ Detailed list with examples:
 + customer-system-api.host=`customer.example.com`
 + customer-system-api.port=`443`
 + customer-system-api.baseUrl=`/api`
+####Product system API
++ product-system-api.host=`product.example.com`
++ product-system-api.port=`443`
++ product-system-api.baseUrl=`/api`
