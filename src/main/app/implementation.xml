@@ -552,26 +552,46 @@ payload]]></dw:set-payload>
         
     </flow>
     <flow name="createOrder">
+        <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
+        <set-variable variableName="order" value="#[payload]" doc:name="save to var order"/>
+        <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
+        <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
+            <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="Get Product by Id">
+                <http:request-builder>
+                    <http:uri-param paramName="productId" value="#[payload.item.productId]"/>
+                </http:request-builder>
+            </http:request>
+            <dw:transform-message doc:name="Transform Message">
+                <dw:set-variable variableName="products"><![CDATA[%dw 1.0
+%output application/java
+---
+flowVars.products + {
+	productId: payload.identifier,
+	name: payload.brand ++ " " ++ payload.model
+}]]></dw:set-variable>
+            </dw:transform-message>
+        </foreach>
         <dw:transform-message doc:name="prepare request">
             <dw:input-payload/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
+using(orderRequest = flowVars.order)
 {
-	customerId: payload.customerId,
-	orderItems: payload.orderItems map ((orderItem) -> {
+	customerId: orderRequest.customerId,
+	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
 		quantity: orderItem.quantity.amount,
 		price: orderItem.itemUnitPrice.amount.currencyValue as :string,
-		name: ""
+		name: (flowVars.products filter ($.productId == orderItem.item.productId))[0].name
 	}),
-	price: payload.orderItems reduce (
+	price: orderRequest.orderItems reduce (
 		($$.quantity.amount * $$.itemUnitPrice.amount.currencyValue) + 
 		($.quantity.amount * $.itemUnitPrice.amount.currencyValue)
 	) as :string
 }]]></dw:set-payload>
         </dw:transform-message>
-        <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+
 
         <http:request config-ref="retail-order-fulfillment-api" path="/orders" method="POST" doc:name="POST /orders">
             <http:request-builder>

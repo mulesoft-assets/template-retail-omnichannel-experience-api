@@ -31,7 +31,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <http:raml-api-configuration location="retail-orders-system-api/system-api.raml"/>
     </http:request-config>
     
-    <http:request-config name="retail-order-fulfillment-api" host="${order-fullfilment-api.host}" port="${order-fullfilment-api.port}" basePath="${order-fullfilment-api.basePath}" doc:name="HTTP Request Configuration">
+    <http:request-config name="retail-order-fulfillment-api" host="${order-fulfillment-api.host}" port="${order-fulfillment-api.port}" basePath="${order-fulfillment-api.basePath}" doc:name="HTTP Request Configuration">
         <http:raml-api-configuration location="retail-order-fulfillment-api/order-fulfillment-api.raml"/>
     </http:request-config>
     
