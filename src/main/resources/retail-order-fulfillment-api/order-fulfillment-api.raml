@@ -1,0 +1,51 @@
+#%RAML 1.0
+title: Retail Order Fulfillment API
+version: dev
+baseUri: http://localhost:8081/api
+
+
+types:
+
+  OrderItem: 
+    properties:
+      itemId: string
+      quantity: integer
+      price?: string
+      name: string
+
+  Order:
+    properties:
+      customerId: string
+      orderItems: OrderItem[]
+      price: string
+      
+
+/orders:
+  post:
+    body: 
+      application/json: 
+        type: Order
+        example: |
+          {
+            "customerId" : "1",
+            "orderItems": [
+              {
+                "itemId": "1",
+                "name": "Men's polo shirt",
+                "quantity": 4
+              }
+            ],
+            "status": "draft",
+            "price": "39"
+          }
+    responses:
+      201: 
+        body: 
+          application/json: 
+            example: |
+              {
+                "status": "created",
+                "orderId": "123456789",
+                "message": null
+              }
+    

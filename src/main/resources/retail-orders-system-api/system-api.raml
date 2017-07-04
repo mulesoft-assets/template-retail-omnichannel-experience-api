@@ -1,0 +1,170 @@
+#%RAML 1.0
+baseUri: http://localhost:8081/api
+title: dev-retail-order-system-api
+version: v1
+
+types: 
+  orderItem:
+    properties: 
+      orderItemId: string
+      productName: string
+      quantity: integer
+      
+  order:
+    properties: 
+      id? : string
+      customerId?: string
+      orderItems: orderItem[]
+      status: status
+      price: string
+  statusRequest:
+    properties:
+      status: status
+  status:
+    enum: [Draft, Completed, Processing]
+     
+
+  orders: order[]
+  
+/orders:
+  /customer/{customerId}:
+    displayName: Order
+    get:
+  #     is: [ collection ]
+      description: Lists the user orders
+      queryParameters:
+        trackingNumber:
+          displayName: Order Tracking Number
+          required: false
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              type: orders
+              example: !include examples/order_collection_example.raml
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Resource not found"
+                }
+    post:
+      description: Create a new Order.
+      body:
+        application/json:
+          type: order
+          example: !include examples/order_post_request.raml
+      responses:
+        201:
+          body:
+            application/json:
+              example: !include examples/order_post_response.raml
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Bad Request"
+                }
+  /{id}:
+    displayName: Order ID
+    uriParameters:
+      id:
+        type: string
+        example: "8010J000001zdVsQAI"
+        minLength: 18
+        maxLength: 18
+        required: true
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: order
+              example: !include examples/order_example.raml
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Resource not found"
+                }
+    put:
+      body:
+        application/json:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Order was updated"
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Bad Request"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Order not found"
+                }                    
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Order was deleted"
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Bad Request"
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Order not found"
+                }
+    /status:
+      displayName: Status
+      put:
+        body:
+          application/json:
+            type: statusRequest
+            example: !include examples/order_status_update_request.raml
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Order status was updated"
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Bad Request"
+                  }
+          404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Order not found"
+                  }

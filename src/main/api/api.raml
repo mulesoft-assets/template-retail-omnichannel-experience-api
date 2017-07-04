@@ -1224,7 +1224,7 @@ types:
   /{salesOrderId}:
     uriParameters:
       salesOrderId:
-        type: common.resourceId
+        type: string
     type:
       collection.collectionMember:
         collectionMemberResponseType: SalesOrderResponse
@@ -1954,7 +1954,7 @@ types:
               }
   /{shoppingCartId}:
     uriParameters:
-      shoppingCartId: string
+      shoppingCartId: common.resourceId
     type:
        collection.collectionMember:
          collectionMemberPrototypeType: session.ShoppingCart

@@ -18,7 +18,7 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 
-As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping card.  
+As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping cart. 
 
 ### GET/customers/{customerId}
 This endpoint will trigger flow getCustomerFromSFDC which obtains a customer information based on customerId. 
@@ -102,7 +102,15 @@ Detailed list with examples:
 + customer-system-api.host=`customer.example.com`
 + customer-system-api.port=`443`
 + customer-system-api.baseUrl=`/api`
-####Product system API
+
 + product-system-api.host=`product.example.com`
-+ product-system-api.port=`443`
++ product-system-api.port=`80`
 + product-system-api.baseUrl=`/api`
+
++ orders-system-api.host=`order.example.com`
++ orders-system-api.port=`80`
++ orders-system-api.baseUrl=`/api`
+
++ order-fulfillment-api.host=`order-fulfillment.example.com`
++ order-fulfillment-api.port=`80`
++ order-fulfillment-api.baseUrl=`/api`

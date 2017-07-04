@@ -9,6 +9,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+
     
     
     <flow name="getCustomerFromSFDC">
@@ -111,110 +112,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <flow name="getProductsByCategory">
         <choice doc:name="Choice">
             <when expression="#[flowVars.categoryId == '12345']">
-                <set-payload value="{
-    &quot;_links&quot;:{
-        &quot;self&quot;:{
-            &quot;href&quot;:&quot;/categories/12345/products?offset=0&amp;limit=5&quot;
-        }
-    },
-    &quot;page&quot;:{
-        &quot;messages&quot;:[
-
-        ],
-        &quot;totalItems&quot;:4,
-        &quot;limit&quot;:0,
-        &quot;offset&quot;:10
-    },
-    &quot;products&quot;:[
-        {
-            &quot;identifier&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
-            &quot;brand&quot;:&quot;Anypoint&quot;,
-            &quot;model&quot;:&quot;Smart Slim Micro Stripe Shirt&quot;,
-            &quot;rating&quot;:5,
-            &quot;description&quot;:&quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,
-            &quot;pictures&quot;:[
-                &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
-                &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
-            ],
-            &quot;price&quot;:{
-                &quot;amount&quot;:{
-                    &quot;currency&quot;:&quot;USD&quot;,
-                    &quot;currencyValue&quot;:34.95,
-                    &quot;name&quot;:&quot;Amount&quot;
-                },
-                &quot;salesUnit&quot;:{
-                    &quot;code&quot;:&quot;EA&quot;,
-                    &quot;name&quot;:&quot;Each&quot;
-                }
-            }
-        },
-        {
-            &quot;identifier&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
-            &quot;brand&quot;:&quot;Anypoint&quot;,
-            &quot;model&quot;:&quot;Men's Chino Jogger Pants&quot;,
-            &quot;rating&quot;:5,
-            &quot;description&quot;:&quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,
-            &quot;pictures&quot;:[
-                &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,
-                &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,
-                &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;
-            ],
-            &quot;price&quot;:{
-                &quot;amount&quot;:{
-                    &quot;currency&quot;:&quot;USD&quot;,
-                    &quot;currencyValue&quot;:47.95,
-                    &quot;name&quot;:&quot;Amount&quot;
-                },
-                &quot;salesUnit&quot;:{
-                    &quot;code&quot;:&quot;EA&quot;,
-                    &quot;name&quot;:&quot;Each&quot;
-                }
-            }
-        },
-        {
-            &quot;identifier&quot;:&quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,
-            &quot;brand&quot;:&quot;Anypoint&quot;,
-            &quot;model&quot;:&quot;Men's Regular Fit V-Neck Knit Sweater&quot;,
-            &quot;rating&quot;:5,
-            &quot;description&quot;:&quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,
-            &quot;pictures&quot;:[
-                &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;
-            ],
-            &quot;price&quot;:{
-                &quot;amount&quot;:{
-                    &quot;currency&quot;:&quot;USD&quot;,
-                    &quot;currencyValue&quot;:22.95,
-                    &quot;name&quot;:&quot;Amount&quot;
-                },
-                &quot;salesUnit&quot;:{
-                    &quot;code&quot;:&quot;EA&quot;,
-                    &quot;name&quot;:&quot;Each&quot;
-                }
-            }
-        },
-        {
-            &quot;identifier&quot;:&quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,
-            &quot;brand&quot;:&quot;Anypoint&quot;,
-            &quot;model&quot;:&quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,
-            &quot;rating&quot;:5,
-            &quot;description&quot;:&quot;Machine Wash, Tumble Dry. True to Size.&quot;,
-            &quot;pictures&quot;:[
-                &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;
-            ],
-            &quot;price&quot;:{
-                &quot;amount&quot;:{
-                    &quot;currency&quot;:&quot;USD&quot;,
-                    &quot;currencyValue&quot;:12.95,
-                    &quot;name&quot;:&quot;Amount&quot;
-                },
-                &quot;salesUnit&quot;:{
-                    &quot;code&quot;:&quot;EA&quot;,
-                    &quot;name&quot;:&quot;Each&quot;
-                }
-            }
-        }
-    ]
-}" mimeType="application/json" doc:name="Set Payload"/>
+                <set-payload value="{     &quot;_links&quot;:{         &quot;self&quot;:{             &quot;href&quot;:&quot;/categories/12345/products?offset=0&amp;limit=5&quot;         }     },     &quot;page&quot;:{         &quot;messages&quot;:[          ],         &quot;totalItems&quot;:4,         &quot;limit&quot;:0,         &quot;offset&quot;:10     },     &quot;products&quot;:[         {             &quot;identifier&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Smart Slim Micro Stripe Shirt&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,             &quot;pictures&quot;:[                 &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,                 &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:34.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Men's Chino Jogger Pants&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,                 &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,                 &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:47.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Men's Regular Fit V-Neck Knit Sweater&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:22.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;Machine Wash, Tumble Dry. True to Size.&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:12.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         }     ] }" mimeType="application/json" doc:name="Set Payload"/>
             </when>
             <otherwise>
                 <set-property propertyName="http.status" value="#[404]" doc:name="Property"/>
@@ -226,94 +124,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <flow name="getShoppingCart">
         <choice doc:name="Choice">
             <when expression="#[flowVars.shoppingCartId == 'f520a6b8-4a21-4138-9d03-2612856b838b']">
-                <set-payload value="{
-    &quot;customerId&quot;:&quot;11e7-93ae-92361f002671&quot;,
-    &quot;items&quot;:[
-        {
-            &quot;item&quot;:{
-                &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
-                &quot;identifier&quot;:&quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,
-                &quot;identifiers&quot;:{
-                    &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;
-                },
-                &quot;pictures&quot;:[
-                    &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
-                    &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
-                ],
-                &quot;configuration&quot;:[
-                    {
-                        &quot;characteristic&quot;:{
-                            &quot;code&quot;:&quot;size&quot;,
-                            &quot;description&quot;:&quot;Size&quot;,
-                            &quot;name&quot;:&quot;Size of item&quot;
-                        },
-                        &quot;characteristicValue&quot;:{
-                            &quot;code&quot;:&quot;M&quot;,
-                            &quot;name&quot;:&quot;Medium&quot;
-                        }
-                    },
-                    {
-                        &quot;characteristic&quot;:{
-                            &quot;code&quot;:&quot;color&quot;,
-                            &quot;description&quot;:&quot;Color&quot;,
-                            &quot;name&quot;:&quot;Color&quot;
-                        },
-                        &quot;characteristicValue&quot;:{
-                            &quot;code&quot;:&quot;blue&quot;,
-                            &quot;name&quot;:&quot;Blue&quot;
-                        }
-                    }
-                ]
-            },
-            &quot;quantity&quot;:{
-                &quot;amount&quot;:1,
-                &quot;quantityType&quot;:&quot;DISCRETE&quot;,
-                &quot;unit&quot;:&quot;EA&quot;
-            }
-        },
-        {
-            &quot;item&quot;:{
-                &quot;productId&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,
-                &quot;identifier&quot;:&quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,
-                &quot;identifiers&quot;:{
-                    &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;
-                },
-                &quot;pictures&quot;:[
-                    &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;
-                ],
-                &quot;configuration&quot;:[
-                    {
-                        &quot;characteristic&quot;:{
-                            &quot;code&quot;:&quot;size&quot;,
-                            &quot;description&quot;:&quot;Size&quot;,
-                            &quot;name&quot;:&quot;Size of item&quot;
-                        },
-                        &quot;characteristicValue&quot;:{
-                            &quot;code&quot;:&quot;L&quot;,
-                            &quot;name&quot;:&quot;Large&quot;
-                        }
-                    },
-                    {
-                        &quot;characteristic&quot;:{
-                            &quot;code&quot;:&quot;color&quot;,
-                            &quot;description&quot;:&quot;Color&quot;,
-                            &quot;name&quot;:&quot;Color&quot;
-                        },
-                        &quot;characteristicValue&quot;:{
-                            &quot;code&quot;:&quot;tan&quot;,
-                            &quot;name&quot;:&quot;Tan&quot;
-                        }
-                    }
-                ]
-            },
-            &quot;quantity&quot;:{
-                &quot;amount&quot;:1,
-                &quot;quantityType&quot;:&quot;DISCRETE&quot;,
-                &quot;unit&quot;:&quot;EA&quot;
-            }
-        }
-    ]
-}" mimeType="application/json" doc:name="Set Payload"/>
+                <set-payload value="{     &quot;customerId&quot;:&quot;11e7-93ae-92361f002671&quot;,     &quot;items&quot;:[         {             &quot;item&quot;:{                 &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,                 &quot;identifier&quot;:&quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,                 &quot;identifiers&quot;:{                     &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;                 },                 &quot;pictures&quot;:[                     &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,                     &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;                 ],                 &quot;configuration&quot;:[                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;size&quot;,                             &quot;description&quot;:&quot;Size&quot;,                             &quot;name&quot;:&quot;Size of item&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;M&quot;,                             &quot;name&quot;:&quot;Medium&quot;                         }                     },                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;color&quot;,                             &quot;description&quot;:&quot;Color&quot;,                             &quot;name&quot;:&quot;Color&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;blue&quot;,                             &quot;name&quot;:&quot;Blue&quot;                         }                     }                 ]             },             &quot;quantity&quot;:{                 &quot;amount&quot;:1,                 &quot;quantityType&quot;:&quot;DISCRETE&quot;,                 &quot;unit&quot;:&quot;EA&quot;             }         },         {             &quot;item&quot;:{                 &quot;productId&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,                 &quot;identifier&quot;:&quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,                 &quot;identifiers&quot;:{                     &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;                 },                 &quot;pictures&quot;:[                     &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;                 ],                 &quot;configuration&quot;:[                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;size&quot;,                             &quot;description&quot;:&quot;Size&quot;,                             &quot;name&quot;:&quot;Size of item&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;L&quot;,                             &quot;name&quot;:&quot;Large&quot;                         }                     },                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;color&quot;,                             &quot;description&quot;:&quot;Color&quot;,                             &quot;name&quot;:&quot;Color&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;tan&quot;,                             &quot;name&quot;:&quot;Tan&quot;                         }                     }                 ]             },             &quot;quantity&quot;:{                 &quot;amount&quot;:1,                 &quot;quantityType&quot;:&quot;DISCRETE&quot;,                 &quot;unit&quot;:&quot;EA&quot;             }         }     ] }" mimeType="application/json" doc:name="Set Payload"/>
             </when>
             <otherwise>
                 <set-property propertyName="http.status" value="#[404]" doc:name="Property"/>
@@ -369,78 +180,10 @@ payload]]></dw:set-payload>
             <when expression="#[flowVars.productId == 'eb8c8ca7-3c42-4489-a820-3aa138430b75']">
                 <choice doc:name="Choice">
                     <when expression="#[flowVars.productVariantId == '88668866-2c6d-4fa6-9e17-4b2c42e0f051']">
-                        <set-payload value="{
-    &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
-    &quot;identifier&quot;:&quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,
-    &quot;identifiers&quot;:{
-        &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;
-    },
-    &quot;pictures&quot;:[
-        &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
-        &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
-    ],
-    &quot;configuration&quot;:[
-        {
-            &quot;characteristic&quot;:{
-                &quot;code&quot;:&quot;size&quot;,
-                &quot;description&quot;:&quot;Size&quot;,
-                &quot;name&quot;:&quot;Size of item&quot;
-            },
-            &quot;characteristicValue&quot;:{
-                &quot;code&quot;:&quot;M&quot;,
-                &quot;name&quot;:&quot;Medium&quot;
-            }
-        },
-        {
-            &quot;characteristic&quot;:{
-                &quot;code&quot;:&quot;color&quot;,
-                &quot;description&quot;:&quot;Color&quot;,
-                &quot;name&quot;:&quot;Color&quot;
-            },
-            &quot;characteristicValue&quot;:{
-                &quot;code&quot;:&quot;blue&quot;,
-                &quot;name&quot;:&quot;Blue&quot;
-            }
-        }
-    ]
-}" doc:name="Set Payload" mimeType="application/json"/>
+                        <set-payload value="{     &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,     &quot;identifier&quot;:&quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,     &quot;identifiers&quot;:{         &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;     },     &quot;pictures&quot;:[         &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,         &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;     ],     &quot;configuration&quot;:[         {             &quot;characteristic&quot;:{                 &quot;code&quot;:&quot;size&quot;,                 &quot;description&quot;:&quot;Size&quot;,                 &quot;name&quot;:&quot;Size of item&quot;             },             &quot;characteristicValue&quot;:{                 &quot;code&quot;:&quot;M&quot;,                 &quot;name&quot;:&quot;Medium&quot;             }         },         {             &quot;characteristic&quot;:{                 &quot;code&quot;:&quot;color&quot;,                 &quot;description&quot;:&quot;Color&quot;,                 &quot;name&quot;:&quot;Color&quot;             },             &quot;characteristicValue&quot;:{                 &quot;code&quot;:&quot;blue&quot;,                 &quot;name&quot;:&quot;Blue&quot;             }         }     ] }" doc:name="Set Payload" mimeType="application/json"/>
                     </when>
                     <when expression="#[flowVars.productVariantId == '4fbabbaa-7537-47bd-906b-989b0fbf520c']">
-                        <set-payload value="{
-    &quot;identifier&quot;:&quot;4fbabbaa-7537-47bd-906b-989b0fbf520c&quot;,
-    &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,
-    &quot;identifiers&quot;:{
-        &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;
-    },
-    &quot;pictures&quot;:[
-        &quot;https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg&quot;,
-        &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;
-    ],
-    &quot;configuration&quot;:[
-        {
-            &quot;characteristic&quot;:{
-                &quot;code&quot;:&quot;size&quot;,
-                &quot;description&quot;:&quot;Size&quot;,
-                &quot;name&quot;:&quot;Size of item&quot;
-            },
-            &quot;characteristicValue&quot;:{
-                &quot;code&quot;:&quot;L&quot;,
-                &quot;name&quot;:&quot;Large&quot;
-            }
-        },
-        {
-            &quot;characteristic&quot;:{
-                &quot;code&quot;:&quot;color&quot;,
-                &quot;description&quot;:&quot;Color&quot;,
-                &quot;name&quot;:&quot;Color&quot;
-            },
-            &quot;characteristicValue&quot;:{
-                &quot;code&quot;:&quot;blue&quot;,
-                &quot;name&quot;:&quot;Blue&quot;
-            }
-        }
-    ]
-}" mimeType="application/json" doc:name="Set Payload"/>
+                        <set-payload value="{     &quot;identifier&quot;:&quot;4fbabbaa-7537-47bd-906b-989b0fbf520c&quot;,     &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,     &quot;identifiers&quot;:{         &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;     },     &quot;pictures&quot;:[         &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,         &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;     ],     &quot;configuration&quot;:[         {             &quot;characteristic&quot;:{                 &quot;code&quot;:&quot;size&quot;,                 &quot;description&quot;:&quot;Size&quot;,                 &quot;name&quot;:&quot;Size of item&quot;             },             &quot;characteristicValue&quot;:{                 &quot;code&quot;:&quot;L&quot;,                 &quot;name&quot;:&quot;Large&quot;             }         },         {             &quot;characteristic&quot;:{                 &quot;code&quot;:&quot;color&quot;,                 &quot;description&quot;:&quot;Color&quot;,                 &quot;name&quot;:&quot;Color&quot;             },             &quot;characteristicValue&quot;:{                 &quot;code&quot;:&quot;blue&quot;,                 &quot;name&quot;:&quot;Blue&quot;             }         }     ] }" mimeType="application/json" doc:name="Set Payload"/>
                     </when>
                     <otherwise>
                         <set-property propertyName="http.status" value="#[404]" doc:name="Property"/>
@@ -807,5 +550,49 @@ payload]]></dw:set-payload>
         </choice>
 
         
+    </flow>
+    <flow name="createOrder">
+        <dw:transform-message doc:name="prepare request">
+            <dw:input-payload/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	customerId: payload.customerId,
+	orderItems: payload.orderItems map ((orderItem) -> {
+		itemId: orderItem.item.identifier,
+		quantity: orderItem.quantity.amount,
+		price: orderItem.itemUnitPrice.amount.currencyValue as :string,
+		name: ""
+	}),
+	price: payload.orderItems reduce (
+		($$.quantity.amount * $$.itemUnitPrice.amount.currencyValue) + 
+		($.quantity.amount * $.itemUnitPrice.amount.currencyValue)
+	) as :string
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+
+        <http:request config-ref="retail-order-fulfillment-api" path="/orders" method="POST" doc:name="POST /orders">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="getOrdersByCustomer">
+
+        <http:request config-ref="retail-orders-system-api" path="/orders/customer/{customerId}" method="GET" doc:name="GET/customers/{customerId}/orders">
+            <http:request-builder>
+                <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Transform Message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+
     </flow>
 </mule>
