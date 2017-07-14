@@ -13,9 +13,9 @@ types:
     type: item.CartItem
     
   ShoppingCart:
-    type: object
+    type: common.Identified
     properties:
-      customerId: common.resourceId
+      customerId?: common.resourceId
       items:
         type: ShoppingCartItem[]
         

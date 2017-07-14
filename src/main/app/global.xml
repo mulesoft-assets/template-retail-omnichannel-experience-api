@@ -35,4 +35,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <http:raml-api-configuration location="retail-order-fulfillment-api/order-fulfillment-api.raml"/>
     </http:request-config>
     
+    <http:request-config name="retail-shopping-cart-process-api" host="${shopping-cart-proces-api.host}" port="${shopping-cart-proces-api.port}" basePath="${shopping-cart-proces-api.basePath}" doc:name="HTTP Request Configuration">
+    	<http:raml-api-configuration location="retail-shopping-cart-process-api/process-api.raml"/>
+    </http:request-config>
 </mule>
