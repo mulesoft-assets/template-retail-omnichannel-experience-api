@@ -1,4 +1,4 @@
-# Template Omnichannel Experience API
+# Template Retail Omnichannel Experience API
 
 + [License Agreement](#licenseagreement)
 + [Use Case](#usecase)
