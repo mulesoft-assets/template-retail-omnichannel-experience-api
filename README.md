@@ -1,4 +1,4 @@
-# Template Retail Omnichannel Experience API
+# Template Omnichannel Experience API
 
 + [License Agreement](#licenseagreement)
 + [Use Case](#usecase)
@@ -51,7 +51,7 @@ This Experience API is meant to be deployed to CloudHub and managed using the AP
    
 
 # Run it! <a name="runit"/>
-Simple steps to get Banking AnypointBank Experience API running.
+Simple steps to get Retail Omnichannel Experience API running.
 See below.
 
 ## Running on premise <a name="runonopremise"/>
