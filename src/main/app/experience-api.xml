@@ -41,7 +41,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <set-payload value="{&#xA;   &quot;_links&quot;: {&#xA;      &quot;orderItems&quot;: {&#xA;         &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems&quot;&#xA;  },&#xA;    &quot;self&quot;: {&#xA;      &quot;href&quot;: &quot;https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671&quot;&#xA;    }&#xA;  },&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: []&#xA;  },&#xA;  &quot;customerId&quot;: &quot;deb89058-77fb-4e97-8c83-6506c38cacf8&quot;,&#xA;  &quot;fulfillment&quot;: {&#xA;    &quot;carrier&quot;: &quot;POSTAL&quot;,&#xA;    &quot;deliveryAddress&quot;: {&#xA;        &quot;type&quot;: &quot;SHIPPING&quot;,&#xA;        &quot;address&quot;: &quot;Main street 122&quot;,&#xA;        &quot;city&quot;: &quot;San Francisco&quot;,&#xA;        &quot;state&quot;: &quot;California&quot;,&#xA;        &quot;postalCode&quot;: &quot;90210&quot;,&#xA;        &quot;recipient&quot;: &quot;Jason Bourne&quot;,&#xA;        &quot;country&quot;: &quot;US&quot;,&#xA;        &quot;secondaryAddress&quot;: null,&#xA;        &quot;mailStopCode&quot;: null,&#xA;        &quot;attention&quot;: null&#xA;    },&#xA;    &quot;receipt&quot;: &quot;PICKUP&quot;&#xA;  }&#xA;}" doc:name="Set Payload"/>
     </flow>
     <flow name="put:/shoppingCarts/{shoppingCartId}:application/json:api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+        <flow-ref name="putShoppingCart" doc:name="putShoppingCart"/>
+
     </flow>
     <flow name="delete:/customers/{customerId}/contactMethods/{contactMethodId}:api-config">
         <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
@@ -59,7 +60,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <set-payload value="{&#xA;  &quot;_meta&quot;: {&#xA;    &quot;messages&quot;: []&#xA;  }&#xA;}" doc:name="Set Payload"/>
     </flow>
     <flow name="delete:/shoppingCarts/{shoppingCartId}:api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+        <flow-ref name="deleteShoppingCart" doc:name="deleteShoppingCart"/>
+
     </flow>
     <flow name="get:/products/{productId}/variants/{productVariantId}/availability:api-config">
         <set-payload value="{&#xA;_links: {&#xA;productVariant: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;title: Blue&#xA;},&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051/availability&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;offset: 0,&#xA;limit: 10,&#xA;totalItems: 2&#xA;},&#xA;availableToPromise: Array[{&#xA;available: {&#xA;amount: 10,&#xA;quantityType: DISCRETE,&#xA;unit: EA&#xA;},&#xA;date: 2016-02-23&#xA;},{&#xA;available: {&#xA;amount: 5,&#xA;quantityType: CONTINUOUS,&#xA;unit: EA&#xA;},&#xA;date: 2016-02-10&#xA;}]&#xA;}" doc:name="Set Payload"/>
@@ -239,7 +241,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         
     </flow>
     <flow name="get:/customers/{customerId}/shoppingCarts:api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+        <flow-ref name="getShoppingCartsForCustomer" doc:name="getShoppingCartsForCustomer"/>
+
     </flow>
     <flow name="get:/shoppingCarts:api-config">
         <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/shoppingCarts/734a04dc-2f30-11e7-93ae-92361f002671&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 1,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;shoppingCarts: Array[{&#xA;identifier: 734a04dc-2f30-11e7-93ae-92361f002671,&#xA;customerId: 11e7-93ae-92361f002671,&#xA;items: Array[{&#xA;item: {&#xA;productId: eb8c8ca7-3c42-4489-a820-3aa138430b75,&#xA;identifier: 88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;identifiers: {&#xA;SKU: UGG-BB-PUR-06&#xA;},&#xA;configuration: Array[{&#xA;characteristic: {&#xA;code: size,&#xA;description: Size,&#xA;name: Size of item&#xA;},&#xA;characteristicValue: {&#xA;code: M,&#xA;name: Medium&#xA;}&#xA;},{&#xA;characteristic: {&#xA;code: color,&#xA;description: Color,&#xA;name: Color&#xA;},&#xA;characteristicValue: {&#xA;code: blue,&#xA;name: Blue&#xA;}&#xA;}]&#xA;},&#xA;quantity: {&#xA;amount: 2,&#xA;quantityType: DISCRETE,&#xA;unit: EA&#xA;}&#xA;}]&#xA;}]&#xA;}" doc:name="Set Payload"/>
@@ -312,8 +315,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload" mimeType="application/json"/>
     </flow>
     <flow name="post:/shoppingCarts:application/json:api-config">
+        <flow-ref name="postShoppingCart" doc:name="postShoppingCart"/>
 
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload" mimeType="application/json"/>
     </flow>
     <apikit:mapping-exception-strategy name="api-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">

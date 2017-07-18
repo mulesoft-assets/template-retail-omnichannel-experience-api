@@ -18,7 +18,7 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 
-As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping cart. 
+As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping carts and orders. 
 
 ### GET/customers/{customerId}
 This endpoint will trigger flow getCustomerFromSFDC which obtains a customer information based on customerId. 
@@ -27,20 +27,40 @@ This endpoint will trigger flow getCustomerFromSFDC which obtains a customer inf
 This endpoint will trigger flow putCustomerFromSFDC which updates a customer information based on customerId. 
 
 ### GET/products
-This endpoint will trigger flow getProducts which obtaining mocked information about products from Product System API. 
+This endpoint will trigger flow getProducts which obtains mocked information about products from Product System API. 
 
 ### GET/products/{productId}
-This endpoint will trigger flow getProducts which obtaining mocked information about product from Product System API based on productId. 
+This endpoint will trigger flow getProducts which obtains mocked information about product from Product System API based on productId. 
 
 ### GET/products/{productId}/variants
-This endpoint will trigger flow getVariantsByProduct which obtaining mocked information about variants of product from Product System API based on productId.
+This endpoint will trigger flow getVariantsByProduct which obtains mocked information about variants of product from Product System API based on productId.
+
+### GET/products/{productId}/variants/{variantId}
+This endpoint will trigger flow getVariantByProduct which obtains mocked information about variant of product based on productId and variantId.
 
 ### GET/categories/{categoryId}/products
-This endpoint will trigger flow getProductsByCategory which obtaining mocked information about products from same category based on categoryId.
+This endpoint will trigger flow getProductsByCategory which obtains mocked information about products from same category based on categoryId.
 
 ### GET/shoppingCarts/{shoppingCartId}
-This endpoint will trigger flow get which obtaining mocked information about products in shopping card based on shoppingCartId.
+This endpoint will trigger flow getShoppingCart which obtains information about products in shopping cart based on shoppingCartId.
 
+### PUT/shoppingCarts/{shoppingCartId}
+This endpoint will trigger flow putShoppingCart which updates information about products in shopping cart based on shoppingCartId.
+
+### POST/shoppingCarts/
+This endpoint will trigger flow get which saved new shopping cart to the object store.
+
+### DELETE/shoppingCarts/{shoppingCartId}
+This endpoint will trigger flow deleteShoppingCart which remove shopping cart from object store based on shoppingCartId.
+
+### GET/customers/{customerId}/shoppingCarts/
+This endpoint will trigger flow getShoppingCartsForCustomer which obtains list of shopping cart for customer based on the customerId. If customer does not exist, response is empty field.  
+
+### POST/orders/
+This endpoint will trigger flow createOrder which creates new order by customer.
+
+### GET/customers/{customerId}/orders/
+This endpoint will trigger flow getOrdersByCustomer which obtains list of orders for customer based on the customerId.
 
 # Considerations <a name="considerations"/>
 
@@ -51,7 +71,7 @@ This Experience API is meant to be deployed to CloudHub and managed using the AP
    
 
 # Run it! <a name="runit"/>
-Simple steps to get Banking AnypointBank Experience API running.
+Simple steps to get Retail Omnichannel Experience API running.
 See below.
 
 ## Running on premise <a name="runonopremise"/>
@@ -98,19 +118,29 @@ Mule Studio provides you with really easy way to deploy your Template directly t
 In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables.
 Detailed list with examples:
 ### Application properties
++ http.port=`8888`
+
 ####Customer system API
 + customer-system-api.host=`customer.example.com`
 + customer-system-api.port=`443`
 + customer-system-api.baseUrl=`/api`
 
+####Product system API
 + product-system-api.host=`product.example.com`
 + product-system-api.port=`80`
 + product-system-api.baseUrl=`/api`
 
+####Orders system API
 + orders-system-api.host=`order.example.com`
 + orders-system-api.port=`80`
 + orders-system-api.baseUrl=`/api`
 
+####Order fulfillment proces API
 + order-fulfillment-api.host=`order-fulfillment.example.com`
 + order-fulfillment-api.port=`80`
 + order-fulfillment-api.baseUrl=`/api`
+
+####Shopping Cart proces API
++ shopping-cart-proces-api.host=`shopping-cart.example.com`
++ shopping-cart-proces-api.port=`80`
++ shopping-cart-proces-api.baseUrl=`/api`
