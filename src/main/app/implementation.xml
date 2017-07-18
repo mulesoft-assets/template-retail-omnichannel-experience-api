@@ -10,8 +10,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
 
-    
-    
     <flow name="getCustomerFromSFDC">
         <http:request config-ref="retail-customer-system-api" path="/customers/{customerId}" method="GET" doc:name="GET/customers/{customerId}">
             <http:request-builder>
@@ -66,7 +64,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         </dw:transform-message>
     </flow>
     <flow name="putCustomerSFDC">
-        <logger message="#[payload]" level="INFO" doc:name="input"/>
+
         <dw:transform-message doc:name="Input transform for PUT operation">
         <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
@@ -121,21 +119,102 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         </choice>
 
     </flow>
+    <flow name="postShoppingCart">
+
+        <dw:transform-message doc:name="Input transform for PUT operation">
+        <dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+[{
+	customerId: payload.customerId,
+	items: payload.items map {
+		productId: $.item.productId,
+		variantId: $.item.identifier, 
+		quantity: $.quantity.amount	 		
+	}
+}]]]></dw:set-payload>
+        </dw:transform-message>
+
+
+        <http:request config-ref="retail-shopping-cart-process-api" path="/shoppingCarts" method="POST" doc:name="POST/shoppingCarts">
+
+        </http:request>
+        <logger message="Shopping Cart was created" level="INFO" doc:name="Success operation "/>
+    </flow>
     <flow name="getShoppingCart">
-        <choice doc:name="Choice">
-            <when expression="#[flowVars.shoppingCartId == 'f520a6b8-4a21-4138-9d03-2612856b838b']">
-                <set-payload value="{     &quot;customerId&quot;:&quot;11e7-93ae-92361f002671&quot;,     &quot;items&quot;:[         {             &quot;item&quot;:{                 &quot;productId&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,                 &quot;identifier&quot;:&quot;88668866-2c6d-4fa6-9e17-4b2c42e0f051&quot;,                 &quot;identifiers&quot;:{                     &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;                 },                 &quot;pictures&quot;:[                     &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,                     &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;                 ],                 &quot;configuration&quot;:[                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;size&quot;,                             &quot;description&quot;:&quot;Size&quot;,                             &quot;name&quot;:&quot;Size of item&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;M&quot;,                             &quot;name&quot;:&quot;Medium&quot;                         }                     },                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;color&quot;,                             &quot;description&quot;:&quot;Color&quot;,                             &quot;name&quot;:&quot;Color&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;blue&quot;,                             &quot;name&quot;:&quot;Blue&quot;                         }                     }                 ]             },             &quot;quantity&quot;:{                 &quot;amount&quot;:1,                 &quot;quantityType&quot;:&quot;DISCRETE&quot;,                 &quot;unit&quot;:&quot;EA&quot;             }         },         {             &quot;item&quot;:{                 &quot;productId&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,                 &quot;identifier&quot;:&quot;355d4130-1e3a-4795-aada-c960c89f6d9f&quot;,                 &quot;identifiers&quot;:{                     &quot;SKU&quot;:&quot;UGG-BB-PUR-06&quot;                 },                 &quot;pictures&quot;:[                     &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;                 ],                 &quot;configuration&quot;:[                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;size&quot;,                             &quot;description&quot;:&quot;Size&quot;,                             &quot;name&quot;:&quot;Size of item&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;L&quot;,                             &quot;name&quot;:&quot;Large&quot;                         }                     },                     {                         &quot;characteristic&quot;:{                             &quot;code&quot;:&quot;color&quot;,                             &quot;description&quot;:&quot;Color&quot;,                             &quot;name&quot;:&quot;Color&quot;                         },                         &quot;characteristicValue&quot;:{                             &quot;code&quot;:&quot;tan&quot;,                             &quot;name&quot;:&quot;Tan&quot;                         }                     }                 ]             },             &quot;quantity&quot;:{                 &quot;amount&quot;:1,                 &quot;quantityType&quot;:&quot;DISCRETE&quot;,                 &quot;unit&quot;:&quot;EA&quot;             }         }     ] }" mimeType="application/json" doc:name="Set Payload"/>
-            </when>
-            <otherwise>
-                <set-property propertyName="http.status" value="#[404]" doc:name="Property"/>
-                <set-payload value="Shopping Card not found" doc:name="Set Payload"/>
-            </otherwise>
-        </choice>
+        <http:request config-ref="retail-shopping-cart-process-api" path="/shoppingCarts/{shoppingCartId}" method="GET" doc:name="GET/shoppingCarts/{shoppingCartId}">
+            <http:request-builder>
+                <http:uri-param paramName="shoppingCartId" value="#[flowVars.shoppingCartId]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+
+    </flow>
+    <flow name="putShoppingCart">
+
+        <dw:transform-message doc:name="Input transform for PUT operation">
+        <dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+items: payload.items map {
+		productId: $.item.productId,
+		variantId: $.item.identifier, 
+		quantity: $.quantity.amount	 		
+	}]]></dw:set-payload>
+        </dw:transform-message>
+
+
+        <http:request config-ref="retail-shopping-cart-process-api" path="/shoppingCarts/{shoppingCartId}" method="PUT" doc:name="PUT/shoppingCarts/{shoppingCartId}">
+            <http:request-builder>
+                <http:uri-param paramName="shoppingCartId" value="#[flowVars.shoppingCartId]"/>
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Shopping Cart was updated" level="INFO" doc:name="Success operation "/>
+    </flow>
+    <flow name="deleteShoppingCart">
+        <http:request config-ref="retail-shopping-cart-process-api" path="/shoppingCarts/{shoppingCartId}" method="DELETE" doc:name="DELETE/shoppingCarts/{shoppingCartId}">
+            <http:request-builder>
+                <http:uri-param paramName="shoppingCartId" value="#[flowVars.shoppingCartId]"/>
+
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Response message">
+         	<dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Shopping Cart was deleted" level="INFO" doc:name="Success operation "/>
+    </flow>
+    <flow name="getShoppingCartsForCustomer">
+        <http:request config-ref="retail-shopping-cart-process-api" path="/customers/{customerId}/shoppingCarts" method="GET" doc:name="GET/customers/{customerId}/shoppingCarts">
+            <http:request-builder>
+                <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload.shoppingCarts
+]]></dw:set-payload>
+        </dw:transform-message>
     </flow>
     <flow name="getProducts">
         <http:request config-ref="retail-product-system-api" path="/products" method="GET" doc:name="GET/products">
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -151,7 +230,7 @@ payload
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -166,7 +245,7 @@ payload
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -553,7 +632,7 @@ payload]]></dw:set-payload>
     </flow>
     <flow name="createOrder">
         <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
-        <set-variable variableName="order" value="#[payload]" doc:name="save to var order"/>
+        <set-variable variableName="order" value="#[payload]" doc:name="Save to var order"/>
         <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
         <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
             <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="Get Product by Id">
@@ -561,7 +640,7 @@ payload]]></dw:set-payload>
                     <http:uri-param paramName="productId" value="#[payload.item.productId]"/>
                 </http:request-builder>
             </http:request>
-            <dw:transform-message doc:name="Transform Message">
+            <dw:transform-message doc:name="Add product to the list">
                 <dw:set-variable variableName="products"><![CDATA[%dw 1.0
 %output application/java
 ---
@@ -571,7 +650,7 @@ flowVars.products + {
 }]]></dw:set-variable>
             </dw:transform-message>
         </foreach>
-        <dw:transform-message doc:name="prepare request">
+        <dw:transform-message doc:name="Prepare request">
             <dw:input-payload/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -606,7 +685,7 @@ using(orderRequest = flowVars.order)
                 <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json

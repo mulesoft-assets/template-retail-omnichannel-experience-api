@@ -1,7 +1,6 @@
 #%RAML 1.0
-#baseUri: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c
+baseUri: http://localhost:8081/api
 title: Retail Omnichannel Experience API
-baseUri: https://localhost:8082/api
 
 uses:
 
@@ -30,30 +29,14 @@ types:
       
   ContactMethodResponse:
     type: contact.ContactMethod
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   ChannelCollectionResponse:
     type: hyper.CollectionResponse
     properties:
-      channels: hyper.Link[]
+      channels: channel.Channel[]
       
   ChannelResponse:
     type: channel.Channel
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          paymentMethods: hyper.Link
-#          fulfillmentMethods: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   FulfillmentMethodCollectionResponse:
     type: hyper.CollectionResponse
@@ -63,95 +46,39 @@ types:
   StoreCollectionResponse:
     type: hyper.CollectionResponse
     properties:
-      stores: hyper.Link[]
+      stores: channel.StoreChannel[]
  
   StoreResponse:
     type: channel.StoreChannel
- #   properties:
- #     _links:
- #       type: hyper.Links
- #       properties:
- #         self: hyper.Link
- #         paymentMethods: hyper.Link
- #         fulfillmentMethods: hyper.Link
- #         nearbyStores: hyper.Link
- #     _meta:
- #       type: hyper.ResponseMetadata
 
 
   CategoryCollectionResponse:
     type: hyper.CollectionResponse
     properties:
-      categories: hyper.Link[]
+      categories: taxonomy.Category[]
       
   CategoryResponse:
     type: taxonomy.Category
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          parentCategory?: hyper.Link
-#          subCategories?: hyper.Link
-#          products: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   SalesOrderCollectionResponse:
     type: hyper.CollectionResponse
     properties:
-      paymentMethods: hyper.Link[]
+      orders: order.SalesOrder[]
       
   SalesOrderResponse:
     type: order.SalesOrderHeader
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          orderItems: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
   
   SalesOrderPaymentMethodResponse:
     type: payment.PaymentMethod
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          salesOrder: hyper.Link
     
   SalesOrderFulfillmentResponse:
     type: fulfillment.Fulfillment
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          salesOrder: hyper.Link
         
   SalesOrderItemCollectionResponse:
     type: order.SalesOrderItems
-    properties:
-      _links:
-        type: hyper.Links
-        properties:
-          salesOrder?: hyper.Link
-          self?: hyper.Link
-         
 
   ProductResponse:
     type: product.Product
-    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          features: hyper.Link
-#          variants: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   ProductCollectionResponse:
     type: hyper.CollectionResponse
@@ -161,17 +88,11 @@ types:
   FeatureCollectionResponse:
     type: hyper.CollectionResponse
     properties:
-      features: hyper.Link[]
+      features: product.ProductFeature[]
 
   FeatureResponse:
     type: product.ProductFeature
     properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   ProductVariantCollectionResponse:
     type: hyper.CollectionResponse
@@ -180,25 +101,10 @@ types:
 
   ProductVariantResponse:
     type: product.ProductVariant
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          product: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
         
   ProductVariantAvailabilityResponse:
     type: inventory.Availability
     properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#          productVariant: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   ShoppingCartCollectionResponse:
     type: hyper.CollectionResponse
@@ -207,13 +113,6 @@ types:
       
   ShoppingCartResponse:
     type: session.ShoppingCart
-#    properties:
-#      _links:
-#        type: hyper.Links
-#        properties:
-#          self: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
   InventoryCollectionResponse:
     type: hyper.CollectionResponse
@@ -223,12 +122,6 @@ types:
   InventoryResponse:
     type: inventory.Inventory
     properties:
-#      _links:
-#        type: hyper.Links
-#        properties: 
-#          self: hyper.Link
-#      _meta:
-#        type: hyper.ResponseMetadata
 
 /customers:
   type:
@@ -239,40 +132,42 @@ types:
   post:
     body:
       application/json:
-        example: 
+        example: |
           {
-              "firstName": "Jason",
-              "lastName": "Bourne",
-              "paymentMethods" : [
-                {
-                  "paymentMethodType":{  
-                    "medium":"CARD",
-                    "issuer":"BANK",
-                    "name":"VISA"
-                  }
-                }
-              ],
-              "deliveryAddresses": [
-                {
-                  "type": "BILLING",
-                  "address":"Main street 122",
-                  "city":"San Francisco",
-                  "state":"California",
-                  "postalCode":"90210",
-                  "recipient":"Jason Bourne",
-                  "country":"US",
-                  "secondaryAddress": null,
-                  "mailStopCode": null,
-                  "attention": null
-                }
-              ]
-          }
+                "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                "firstName": "Jason",
+                "lastName": "Bourne",
+                "paymentMethods": [
+                    {
+                      "paymentMethodType":{  
+                        "medium":"CARD",
+                        "issuer":"BANK",
+                        "name":"VISA"
+                      }
+                    }
+                ],
+                "deliveryAddresses": [
+                    {
+                      "type": "BILLING",
+                      "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
+                      "address":"Main street 122",
+                      "city":"San Francisco",
+                      "state":"California",
+                      "postalCode":"90210",
+                      "recipient":"Jason Bourne",
+                      "country":"US",
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
+                    }
+                ]
+              }
 
     responses:
       201:
         body: 
           application/json:    
-            example: 
+            example: |
               {
                 "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                 "firstName": "Jason",
@@ -313,11 +208,11 @@ types:
       200:
         body: 
           application/json:
-            example: 
+            example: |
               {
                 "_links": {
-                  "self": {
-                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers"
+                    "self": {
+                      "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers"
                   }
                 },
                 "_meta": {
@@ -333,7 +228,6 @@ types:
                     "lastName": "Bourne",
                     "paymentMethods": [
                         {
-                          "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
                           "paymentMethodType":{  
                             "medium":"CARD",
                             "issuer":"BANK",
@@ -344,7 +238,6 @@ types:
                     "deliveryAddresses": [
                         {
                           "type": "BILLING",
-                          "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
                           "address":"Main street 122",
                           "city":"San Francisco",
                           "state":"California",
@@ -359,6 +252,7 @@ types:
                   }
                 ]
               }
+              
   /{customerId}:
     uriParameters:
       customerId:
@@ -372,47 +266,47 @@ types:
         200:
           body: 
             application/json:
-              example: 
-                  {
-                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
-                    "firstName":"Jason",
-                    "lastName":"Bourne",
-                    "paymentMethods":[  
-                      {  
-                        "paymentMethodType":{  
-                          "medium":"CARD",
-                          "issuer":"BANK",
-                          "name":"VISA"
-                        }
+              example: |
+                {  
+                  "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "firstName":"Jason",
+                  "lastName":"Bourne",
+                  "paymentMethods":[  
+                    {  
+                      "paymentMethodType":{  
+                        "medium":"CARD",
+                        "issuer":"BANK",
+                        "name":"VISA"
                       }
-                    ],
-                    "deliveryAddresses":[  
-                      {
-                        "type": "BILLING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      }, 
-                      {
-                        "type": "SHIPPING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      }
-                    ]
-                  }
+                    }
+                  ],
+                  "deliveryAddresses":[  
+                    {  
+                      "address":"Main street 122",
+                      "type": "BILLING",
+                      "city":"San Francisco",
+                      "state":"California",
+                      "postalCode":"90210",
+                      "recipient":"Jason Bourne",
+                      "country":"US",
+                      "secondaryAddress":null,
+                      "mailStopCode":null,
+                      "attention":null
+                    },
+                    {  
+                      "address":"Main street 122",
+                      "type": "SHIPPING",
+                      "city":"San Francisco",
+                      "state":"California",
+                      "postalCode":"90210",
+                      "recipient":"Jason Bourne",
+                      "country":"US",
+                      "secondaryAddress":null,
+                      "mailStopCode":null,
+                      "attention":null
+                    }
+                  ]
+                }
     put:
       body: 
             application/json:
@@ -502,7 +396,7 @@ types:
                         "attention": null
                       }
                     ]
-                  }                
+                  }                           
               
               
     /deliveryAddresses:
@@ -517,7 +411,7 @@ types:
           200:
             body: 
               application/json:
-                example:  
+                example: | 
                   {
                     "_links": {
                       "self": {
@@ -540,9 +434,9 @@ types:
                         "postalCode":"90210",
                         "recipient":"Jason Bourne",
                         "country":"US",
-                        "secondaryAddress":"",
-                        "mailStopCode":"",
-                        "attention":""
+                        "secondaryAddress":null,
+                        "mailStopCode":null,
+                        "attention":null
                       }
                     ]
                   }
@@ -562,16 +456,8 @@ types:
             200:
               body: 
                 application/json:
-                  example: 
+                  example: |
                     {
-                      "_links": {
-                        "self": {
-                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/custoemrs/deb89058-77fb-4e97-8c83-6506c38cacf8/deliveryAddresses/a295a217-d0b7-4e55-ace8-2ef09dba96ba"
-                        }
-                      },
-                      "_meta": {
-                        "messages": []
-                      },
                       "type": "BILLING",
                       "address": "Main street 122",
                       "city": "San Francisco",
@@ -579,9 +465,9 @@ types:
                       "postalCode": "90210",
                       "recipient": "Jason Bourne",
                       "country": "US",
-                      "secondaryAddress": "",
-                      "mailStopCode": "",
-                      "attention": ""
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
                     }
     /contactMethods:
       type:
@@ -701,29 +587,65 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
                     "_links": {
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/orders"
-                      }
+                        "self": {
+                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/orders"
+                        }
                     },
                     "_meta": {
                       "messages": [],
-                      "totalItems": 3,
+                      "totalItems": 1,
                       "offset": 0,
                       "limit": 10                
                     },
-                    "paymentMethods": [],
                     "orders": [
                       {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
-                      },
-                      {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d6cfcfd8-a782-4a69-a683-c83a44d1447f"
-                      },
-                      {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/d78541c7-3897-4498-a8b7-52d29601b118"
+                        "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                        "fulfillment": {
+                          "receipt": "SHIPMENT",
+                          "carrier": "POSTAL",
+                          "deliveryAddress": {
+                            "type": "SHIPPING",
+                            "address": "Main street 122",
+                            "city": "San Francisco",
+                            "state": "California",
+                            "postalCode": "90210",
+                            "recipient": "Jason Bourne",
+                            "country": "US",
+                            "secondaryAddress": null,
+                            "mailStopCode": null,
+                            "attention": null
+                      }
+                        },
+                        "orderItems": [
+                          {
+                            "quantity": {
+                              "quantityType": "DISCRETE",
+                              "unit": "EA",
+                              "amount": 1
+                            },
+                            "item": {
+                              "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                              "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                              "identifiers": {
+                                "SKU": "UGG-BB-PUR-06"
+                              }
+                            },
+                            "itemUnitPrice": {
+                              "amount": {
+                                "currency": "USD",
+                                "currencyValue": 34.9,
+                                "name": "Amount"
+                              },
+                              "salesUnit": {
+                                "code": "EA",
+                                "name": "Each"
+                              }
+                            }
+                          }
+                        ]
                       }
                     ]
                   }
@@ -734,7 +656,61 @@ types:
           collectionResponseType: ShoppingCartCollectionResponse
       get:
         is: *queryableCollection
-        
+        responses:
+          200:
+            body: 
+                application/json:
+                  example: |
+                      {
+                          "_links": {
+                              "self": {
+                                "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/customers/deb89058-77fb-4e97-8c83-6506c38cacf8/shoppingCarts"
+                              }
+                          },
+                          "_meta": {
+                            "messages": [],
+                            "totalItems": 1,
+                            "offset": 0,
+                            "limit": 10                
+                          },
+                         "shoppingCarts": [
+                                  {
+                                    "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
+                                    "customerId": "11e7-93ae-92361f002671",
+                                    "items": [
+                                      {
+                                        "item": {
+                                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                                        },
+                                        "quantity": {
+                                          "amount": 2,
+                                          "quantityType": "DISCRETE",
+                                          "unit": "EA"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "identifier": "734a04dc-2f30-11e7-93ae-92361f002675",
+                                    "customerId": "11e7-93ae-92361f002671",
+                                    "items": [
+                                      {
+                                        "item": {
+                                          "productId": "eb8c8ca7-3c42-5489-a820-3aa138430b70",
+                                          "identifier": "8866846-2c6d-4fa7-9e17-4b2c42e0f051"
+                                        },
+                                        "quantity": {
+                                          "amount": 1,
+                                          "quantityType": "DISCRETE",
+                                          "unit": "EA"
+                                        }
+                                      }
+                                    ]
+                                  }
+                          ]
+                       }
+
 /channels:
   type:
     collection.readOnlyCollection:
@@ -754,13 +730,7 @@ types:
               {
                 "_links": {
                   "self": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8"
-                  },
-                  "paymentMethods": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods"
-                  },
-                  "fulfillmentMethods": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods"
+                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels"
                   }
                 },
                 "_meta": {
@@ -771,16 +741,16 @@ types:
                 },
                 "channels": [
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8",
-                    "title": "WEB"
+                    "channelType": "WEB",
+                    "url": "http://www.example.com"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/6fc39639-6489-443c-bfc0-982bc4d6711b",
-                    "title": "STORE"
+                    "channelType": "STORE",
+                    "storeNumber": "1"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/cd1d9f52-89c0-4db4-a8fc-70dbd8600f22",
-                    "title": "MOBILE"
+                    "channelType": "MOBILE",
+                    "name": "iOS"
                   }
                 ]
               }
@@ -797,22 +767,8 @@ types:
             application/json:
               example: |
                 {
-                  "_links": {
-                    "self": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8"
-                    },
-                    "paymentMethods": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/paymentMethods/1"
-                    },
-                    "fulfillmentMethods": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/fulfillmentMethods/1"
-                    }
-                  },
-                  "_meta": {
-                    "messages": []
-                  },
                   "channelType": "WEB",
-                  "url": "http://anypoint-store.surge.sh"
+                  "url": "http://www.example.com"
                 }
     /paymentMethods:
       type:
@@ -850,17 +806,8 @@ types:
                 example: |
                   {
                     "_links": {
-                      "first": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                      },
                       "self": {
                         "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                      },
-                      "next": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
-                      },
-                      "last": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
                       }
                     },
                     "_meta": {
@@ -907,45 +854,36 @@ types:
                 example: |
                   {
                     "_links": {
-                      "first": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                      },
                       "self": {
                         "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                      },
-                      "next": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
-                      },
-                      "last": {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
                       }
                     },
                     "_meta": {
                       "messages": [],
-                      "totalItems": 8,
+                      "totalItems": 5,
                       "offset": 0,
                       "limit": 5                
                     },
                     "categories": [
                       {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8",
-                        "title": "Sweaters"
+                        "name": "Sweaters",
+                        "description": "Sweaters"
                       },
                       {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1",
-                        "title": "Jeans"
+                        "name": "Jeans",
+                        "description": "Jeans"
                       },
                       {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9",
-                        "title": "Hats"
+                        "name": "Hats",
+                        "description": "Hats"
                       },
                       {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
-                        "title": "Shoes"
+                        "name": "Shoes",
+                        "description": "Shoes"
                       },
                       {
-                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/b625ea67-e23f-46d2-be6a-653de1f620a8",
-                        "title": "Most popular items"
+                        "name": "Most popular items",
+                        "description": "Most popular items"
                       }
                     ]
                   }
@@ -963,45 +901,36 @@ types:
             example: |
               {
                 "_links": {
-                  "first": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                  },
                   "self": {
                     "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
-                  },
-                  "next": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
-                  },
-                  "last": {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=10&limit=5"
                   }
                 },
                 "_meta": {
                   "messages": [],
-                  "totalItems": 8,
+                  "totalItems": 5,
                   "offset": 0,
                   "limit": 5                
                 },
                 "categories": [
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/7e5d32ee-accb-4f57-a6e4-bbfc7cd083a8",
-                    "title": "Sweaters"
+                    "name": "Sweaters",
+                    "description": "Sweaters"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/058eb3db-dea5-4f16-8a83-ded242db88b1",
-                    "title": "Jeans"
+                    "name": "Jeans",
+                    "description": "Jeans"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/c8439b60-b0cc-40be-91be-e1741f5abfd9",
-                    "title": "Hats"
+                    "name": "Hats",
+                    "description": "Hats"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
-                    "title": "Shoes"
+                    "name": "Shoes",
+                    "description": "Shoes"
                   },
                   {
-                    "href": "http://mocksvc.mulesoft.com/mocks/e1595d14-f0ed-4098-8eb9-b920cbdbd191/categories/b625ea67-e23f-46d2-be6a-653de1f620a8",
-                    "title": "Most popular items"
+                    "name": "Most popular items",
+                    "description": "Most popular items"
                   }
                 ]
               }
@@ -1018,24 +947,6 @@ types:
             application/json:
               example: |
                 {
-                  "_links": {
-                    "self": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/ac741508-0aea-44f5-8db1-b85dd91c74b0"
-                    },
-                    "products": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/deb89058-77fb-4e97-8c83-6506c38cacf8/products"
-                    },                    
-                    "parentCategory": {
-                      "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/categories/e22b8879-8e3c-4431-912d-9e9c09c3d0ca",
-                      "title": "Shoes"
-                    }
-                  },
-                  "_meta": {
-                    "messages": [],
-                    "totalItems": 8,
-                    "offset": 0,
-                    "limit": 5                
-                  },
                   "name": "Sneakers",
                   "description": "Sneakers"
                 }
@@ -1175,38 +1086,15 @@ types:
                   }
                 },
                 "_meta": {
-                  "messages": [
-
-                  ]
-                },
-                "paymentMethods": [
-                  {
-                   "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod/c20a0db9-84d8-4ae5-9338-252fc41dc6c3"
-                  }
-                ]
-              }
-  post:
-    responses: 
-      201:
-        body: 
-          application/json:
-            example: 
-              {
-                 "_links": {
-                  "orderItems": {
-                     "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
-                  },
-                  "self": {
-                    "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders"
-                  }
-                },
-                "_meta": {
                   "messages": []
                 },
-                "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                "fulfillment": {
-                  "carrier": "POSTAL",
-                  "deliveryAddress": {
+                "orders": [
+                  {
+                    "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                    "fulfillment": {
+                      "receipt": "SHIPMENT",
+                      "carrier": "POSTAL",
+                      "deliveryAddress": {
                         "type": "SHIPPING",
                         "address": "Main street 122",
                         "city": "San Francisco",
@@ -1217,6 +1105,199 @@ types:
                         "secondaryAddress": null,
                         "mailStopCode": null,
                         "attention": null
+                      }
+                    },
+                    "orderItems": [
+                      {
+                        "quantity": {
+                          "quantityType": "DISCRETE",
+                          "unit": "EA",
+                          "amount": 1
+                        },
+                        "item": {
+                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "identifiers": {
+                            "SKU": "UGG-BB-PUR-06"
+                          }
+                        },
+                        "itemUnitPrice": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.9,
+                            "name": "Amount"
+                          },
+                          "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+  post:
+    body: 
+      application/json:
+        example: |
+            {
+              "customerId": "facebook_1234567890123456",
+              "fulfillment": {
+                "receipt": "SHIPMENT",
+                "carrier": "POSTAL",
+                "deliveryAddress": {
+                  "type": "SHIPPING"
+                }
+              },
+              "orderItems": [
+                {
+                  "quantity": {
+                    "quantityType": "DISCRETE",
+                    "unit": "EA",
+                    "amount": 1
+                  },
+                  "item": {
+                    "configuration": [
+                      {
+                        "characteristic": {
+                          "code": "size",
+                          "description": "Size",
+                          "name": "Size of item"
+                        },
+                        "characteristicValue": {
+                          "code": "M",
+                          "name": "Medium"
+                        }
+                      },
+                      {
+                        "characteristic": {
+                          "code": "color",
+                          "description": "Color",
+                          "name": "Color"
+                        },
+                        "characteristicValue": {
+                          "code": "blue",
+                          "name": "Blue"
+                        }
+                      }
+                    ],
+                    "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                    "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                    "identifiers": {
+                      "SKU": "UGG-BB-PUR-06"
+                    },
+                    "pictures": [
+                      "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                      "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                    ],
+                    "color": "Blue",
+                    "size": "Medium"
+                  },
+                  "itemUnitPrice": {
+                    "amount": {
+                      "currency": "USD",
+                      "currencyValue": 34.9,
+                      "name": "Amount"
+                    },
+                    "salesUnit": {
+                      "code": "EA",
+                      "name": "Each"
+                    }
+                  },
+                  "itemExtendedPrice": {
+                    "currency": "USD",
+                    "currencyValue": 34.9,
+                    "name": "Amount"
+                  }
+                },
+                {
+                  "quantity": {
+                    "quantityType": "DISCRETE",
+                    "unit": "EA",
+                    "amount": 1
+                  },
+                  "item": {
+                    "configuration": [
+                      {
+                        "characteristic": {
+                          "code": "size",
+                          "description": "Size",
+                          "name": "Size of item"
+                        },
+                        "characteristicValue": {
+                          "code": "L",
+                          "name": "Large"
+                        }
+                      },
+                      {
+                        "characteristic": {
+                          "code": "color",
+                          "description": "Color",
+                          "name": "Color"
+                        },
+                        "characteristicValue": {
+                          "code": "tan",
+                          "name": "Tan"
+                        }
+                      }
+                    ],
+                    "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                    "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                    "identifiers": {
+                      "SKU": "UGG-BB-PUR-06"
+                    },
+                    "pictures": [
+                      "https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg"
+                    ],
+                    "color": "Tan",
+                    "size": "Large"
+                  },
+                  "itemUnitPrice": {
+                    "amount": {
+                      "currency": "USD",
+                      "currencyValue": 47.95,
+                      "name": "Amount"
+                    },
+                    "salesUnit": {
+                      "code": "EA",
+                      "name": "Each"
+                    }
+                  },
+                  "itemExtendedPrice": {
+                    "currency": "USD",
+                    "currencyValue": 47.95,
+                    "name": "Amount"
+                  }
+                }
+              ]
+            }
+    responses: 
+      201:
+        body: 
+          application/json:
+            example: |
+              {
+                "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                "orderItems" : [
+                    {
+                      "identifier" : "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                      "productId" : "eb8c8ca7-3c42-4489-a820-3aa138430b75"
+                    }
+                ],
+                "fulfillment": {
+                  "carrier": "POSTAL",
+                  "deliveryAddress": {
+                    "type": "SHIPPING",
+                    "address": "Main street 122",
+                    "city": "San Francisco",
+                    "state": "California",
+                    "postalCode": "90210",
+                    "recipient": "Jason Bourne",
+                    "country": "US",
+                    "secondaryAddress": null,
+                    "mailStopCode": null,
+                    "attention": null
                   },
                   "receipt": "PICKUP"
                 }
@@ -1234,24 +1315,12 @@ types:
         200:
           body: 
             application/json:
-              example: 
+              example: |
                 {
-                   "_links": {
-                      "orderItems": {
-                         "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
-                  },
-                    "self": {
-                      "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
-                    }
-                  },
-                
-                  "_meta": {
-                    "messages": [
-
-                    ]
-                  },
+                  "identifier" : "a41534afb0bada55",
                   "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                   "fulfillment": {
+                    "receipt": "SHIPMENT",
                     "carrier": "POSTAL",
                     "deliveryAddress": {
                         "type": "SHIPPING",
@@ -1264,9 +1333,35 @@ types:
                         "secondaryAddress": null,
                         "mailStopCode": null,
                         "attention": null
-                    },
-                    "receipt": "PICKUP"
-                  }
+                      }
+                  },
+                  "orderItems": [
+                    {
+                      "quantity": {
+                        "quantityType": "DISCRETE",
+                        "unit": "EA",
+                        "amount": 1
+                      },
+                      "item": {
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        }
+                      },
+                      "itemUnitPrice": {
+                        "amount": {
+                          "currency": "USD",
+                          "currencyValue": 34.9,
+                          "name": "Amount"
+                        },
+                        "salesUnit": {
+                          "code": "EA",
+                          "name": "Each"
+                        }
+                      }
+                    }
+                  ]
                 }
     put:
       responses: 
@@ -1275,19 +1370,10 @@ types:
             application/json:
               example: |
                 {
-                   "_links": {
-                      "orderItems": {
-                         "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
-                  },
-                    "self": {
-                      "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671"
-                    }
-                  },
-                  "_meta": {
-                    "messages": []
-                  },
+                  "identifier" : "a41534afb0bada55",
                   "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                   "fulfillment": {
+                    "receipt": "SHIPMENT",
                     "carrier": "POSTAL",
                     "deliveryAddress": {
                         "type": "SHIPPING",
@@ -1300,9 +1386,35 @@ types:
                         "secondaryAddress": null,
                         "mailStopCode": null,
                         "attention": null
-                    },
-                    "receipt": "PICKUP"
-                  }
+                      }
+                  },
+                  "orderItems": [
+                    {
+                      "quantity": {
+                        "quantityType": "DISCRETE",
+                        "unit": "EA",
+                        "amount": 1
+                      },
+                      "item": {
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        }
+                      },
+                      "itemUnitPrice": {
+                        "amount": {
+                          "currency": "USD",
+                          "currencyValue": 34.9,
+                          "name": "Amount"
+                        },
+                        "salesUnit": {
+                          "code": "EA",
+                          "name": "Each"
+                        }
+                      }
+                    }
+                  ]
                 }
     delete:
       responses: 
@@ -1327,14 +1439,6 @@ types:
               application/json:
                 example: |
                   {
-                     "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                    },
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod"
-                      }
-                    },
                     "paymentMethodType": {
                         "medium": "CARD",
                         "issuer": "BANK",
@@ -1348,14 +1452,6 @@ types:
               application/json:
                 example: |
                   {
-                    "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                    },
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/paymentMethod"
-                      }
-                    },
                     "paymentMethodType": {
                         "medium": "CARD",
                         "issuer": "BANK",
@@ -1372,16 +1468,8 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
-                    "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                    },
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment"
-                      }
-                    },
                     "carrier": "POSTAL",
                     "deliveryAddress": {
                         "type": "SHIPPING",
@@ -1402,19 +1490,11 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
-                    "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                    },
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/fulfillment"
-                      }
-                    },
                     "carrier": "POSTAL",
                     "deliveryAddress": {
-                         "type": "SHIPPING",
+                        "type": "SHIPPING",
                         "address": "Main street 122",
                         "city": "San Francisco",
                         "state": "California",
@@ -1437,15 +1517,12 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
                     "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                      },
-                        "self": {
-                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
-                        }
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                      }
                     },
                     "orderItems": [
                       {
@@ -1509,15 +1586,12 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
                     "_links": {
-                        "salesOrder": {
-                           "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/salesOrder"
-                        },
-                        "self": {
-                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
-                        }
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/orders/3bafde00-2eab-11e7-93ae-92361f002671/orderItems"
+                      }
                     },
                     "orderItems": [
                       {
@@ -1671,69 +1745,15 @@ types:
           collectionResponseType: FeatureCollectionResponse
       get:
         is: &queryableCollection [ collection.pageable, collection.sortable ]
-        responses: 
-          200:
-            body: 
-              application/json:
-                example: |
-                  {
-                    "_links": {
-                      "self": {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features"
-                      }
-                    },
-                    "_meta": {
-                      "messages": [],
-                      "offset": 0,
-                      "limit": 10,
-                      "totalItems": 2
-                    },
-                    "features": [
-                      {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5",
-                        "title": "features 1"
-                      },
-                      {
-                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/ba96bc50-2acc-4863-9a5c-7204582e64d1",
-                        "title": "features 2"
-                      }
-                    ]
-                  }
+        
       /{featureId}:
         uriParameters:
           featureId: common.resourceId
         type:
            collection.readOnlyCollectionMember:
              collectionMemberResponseType: FeatureResponse
-        get:
-          responses: 
-            200:
-              body: 
-                application/json:
-                  example: |  
-                    {
-                      "_links": {
-                       "self": {
-                          "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/features/b2374f7b-06c2-4293-af83-6c77e6a22ba5"
-                        }
-                      },
-                      "_meta": {
-                        "messages": [],
-                        "offset": 0,
-                        "limit": 10,
-                        "totalItems": 1
-                      },
-                      "characteristic": {
-                        "code": "color",
-                        "name": "Color",
-                        "description": "Color"
-                      },
-                      "characteristicValues": [{
-                        "code": "blue",
-                        "name": "Blue" 
-                      }] 
-                      
-                    }
+             
+             
     /variants:
       type:
         collection.readOnlyCollection:
@@ -1744,7 +1764,7 @@ types:
           200:
             body: 
               application/json:
-                example: 
+                example: |
                   {
                     "_links": {
                       "self": {
@@ -1802,7 +1822,7 @@ types:
             200:
               body: 
                 application/json:
-                  example: 
+                  example: |
                     {
                       "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                       "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
@@ -1843,23 +1863,8 @@ types:
               200:
                 body: 
                   application/json:
-                    example: 
+                    example: |
                       {
-                        "_links": {
-                          "productVariant": {
-                            "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                            "title": "Blue"
-                          },
-                          "self": {
-                            "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/products/eb8c8ca7-3c42-4489-a820-3aa138430b75/variants/88668866-2c6d-4fa6-9e17-4b2c42e0f051/availability"
-                          }
-                        },
-                        "_meta": {
-                          "messages": [],
-                          "offset": 0,
-                          "limit": 10,
-                          "totalItems": 2
-                        },
                         "availableToPromise": [
                           {
                             "available": {
@@ -1892,7 +1897,7 @@ types:
       200:
         body:
           application/json:
-            example: 
+            example: |
               {
                 "_links": {
                   "self": {
@@ -1952,9 +1957,75 @@ types:
                   }
                 ]
               }
+  post:
+      body:
+        application/json:
+          example: |
+              { 
+              "customerId": "provider_0123456789",
+              "items": 
+                  [
+                    {
+                      "item": {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                      },
+                      "quantity": {
+                        "amount": 2,
+                        "quantityType": "DISCRETE",
+                        "unit": "EA"
+                      }
+                    },
+                    {
+                      "item": {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                      },
+                      "quantity": {
+                        "amount": 2,
+                        "quantityType": "DISCRETE",
+                        "unit": "EA"
+                      }
+                    }
+                  ]
+              }
+      responses:
+        201:
+          body:
+            application/json:
+              example: 
+                { 
+                  "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                  "customerId": "provider_0123456789",
+                  "items": 
+                    [
+                        {
+                          "item": {
+                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                          },
+                          "quantity": {
+                            "amount": 2,
+                            "quantityType": "DISCRETE",
+                            "unit": "EA"
+                          }
+                        },
+                        {
+                          "item": {
+                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                            "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
+                          },
+                          "quantity": {
+                            "amount": 1,
+                            "quantityType": "DISCRETE",
+                            "unit": "EA"
+                          }
+                        }
+                   ]
+                }
   /{shoppingCartId}:
     uriParameters:
-      shoppingCartId: common.resourceId
+      shoppingCartId: string
     type:
        collection.collectionMember:
          collectionMemberPrototypeType: session.ShoppingCart
@@ -1964,7 +2035,7 @@ types:
         200:
           body:
             application/json:
-              example: 
+              example: |
                 {
                   "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
                   "customerId": "11e7-93ae-92361f002671",
@@ -2009,4 +2080,78 @@ types:
                     }
                   ]
                 }
-        
+    put:
+      body:
+        application/json:
+          example: |
+            { 
+              "items": 
+                [
+                    {
+                      "item": {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                      },
+                      "quantity": {
+                        "amount": 2,
+                        "quantityType": "DISCRETE",
+                        "unit": "EA"
+                      }
+                    },
+                    {
+                      "item": {
+                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                        "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
+                      },
+                      "quantity": {
+                        "amount": 2,
+                        "quantityType": "DISCRETE",
+                        "unit": "EA"
+                      }
+                    }
+               ]
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                { 
+                  "items": 
+                    [
+                        {
+                          "item": {
+                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                          },
+                          "quantity": {
+                            "amount": 2,
+                            "quantityType": "DISCRETE",
+                            "unit": "EA"
+                          }
+                        },
+                        {
+                          "item": {
+                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                            "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
+                          },
+                          "quantity": {
+                            "amount": 2,
+                            "quantityType": "DISCRETE",
+                            "unit": "EA"
+                          }
+                        }
+                   ]
+                }
+    delete:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_meta": {
+                    "messages": []
+                  }
+                }
+     
