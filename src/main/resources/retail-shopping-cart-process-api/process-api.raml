@@ -1,0 +1,217 @@
+#%RAML 1.0
+title: Retail Shopping Cart Process API
+version: v1.0
+baseUri: https://localhost:8082/api
+
+types:
+  
+  item: 
+    type: object
+    properties: 
+      productId: string
+      variantId: string
+      quantity: number
+       
+  shoppingCart: 
+    type: object
+    properties:
+      shoppingCardId?: string
+      customerId?: string
+      items: item[]
+          
+      
+/shoppingCarts:
+  post:
+    description: Create shopping Cart
+    body:
+      application/json:
+        type: shoppingCart[]
+        example: |
+           [                  
+                  {
+                    "customerId": "provider_0123456789",
+                    "items": [
+                      {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "quantity": 2
+                      },
+                      {
+                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                        "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                        "quantity": 1
+                      }
+                    ]
+                  }
+           ]
+              
+    responses:
+      201:
+        body: 
+          application/json: 
+            example: 
+              {
+                "message": "Shopping cart was created"
+              }
+              
+  /{shoppingCartId}:          
+    get:
+      description: Return shopping cart 
+      responses:
+        200:
+          body: 
+            application/json: 
+              example: 
+                {
+                  "identifier": "278f1310-67bc-11e7-88f0-d88b20524153",
+                  "customerId": "provider_0123456789",
+                  "items": [
+                    {
+                      "item": {
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "configuration": [
+                          {
+                            "characteristic": {
+                              "code": "size",
+                              "description": "Size",
+                              "name": "Size of item"
+                            },
+                            "characteristicValue": {
+                              "code": "M",
+                              "name": "Medium"
+                            }
+                          },
+                          {
+                            "characteristic": {
+                              "code": "color",
+                              "description": "Color",
+                              "name": "Color"
+                            },
+                            "characteristicValue": {
+                              "code": "blue",
+                              "name": "Blue"
+                            }
+                          }
+                        ],
+                        "quantity": {
+                          "amount": 5,
+                          "quantityType": "DISCRETE",
+                          "unit": "EA"
+                        }
+                      }
+                    },
+                    {
+                      "item": {
+                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                        "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "configuration": [
+                          {
+                            "characteristic": {
+                              "code": "size",
+                              "description": "Size",
+                              "name": "Size of item"
+                            },
+                            "characteristicValue": {
+                              "code": "L",
+                              "name": "Large"
+                            }
+                          },
+                          {
+                            "characteristic": {
+                              "code": "color",
+                              "description": "Color",
+                              "name": "Color"
+                            },
+                            "characteristicValue": {
+                              "code": "tan",
+                              "name": "Tan"
+                            }
+                          }
+                        ],
+                        "quantity": {
+                          "amount": 3,
+                          "quantityType": "DISCRETE",
+                          "unit": "EA"
+                        }
+                      }
+                    }
+                  ]
+                }
+
+    put:
+      description: Update shopping cart  
+      body:
+        application/json:
+          type: shoppingCart
+          example: 
+                {
+                  "items": [
+                    {
+                      "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                      "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                      "quantity": 2
+                    },
+                    {
+                      "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                      "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                      "quantity": 1
+                    }
+                  ]
+                }
+      responses:
+        200:
+          body: 
+            application/json: 
+              example: 
+                {
+                  "message": "Shopping cart was updated"
+                }
+            
+    delete:
+      description: Remove shopping cart
+      responses:
+        200:
+          body:
+            application/json: 
+              example: 
+                {
+                  "message": "Shopping Cart was deleted"
+                }
+
+/customers:
+  /{customerId}: 
+    /shoppingCarts: 
+      get: 
+        description: Return Shopping Cards of customer
+        responses:
+            200:
+              body:
+                application/json: 
+                  example: |
+                    [
+                      {
+                        "shoppingCardId": "734a04dc-2f30-11e7-93ae-92361f002671",
+                        "customerId": "provider_0123456789",
+                        "items": [
+                          {
+                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                            "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                            "quantity": 2
+                          },
+                          {
+                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                            "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                            "quantity": 1
+                          }
+                        ]
+                       }
+                      ]
+                    
+              

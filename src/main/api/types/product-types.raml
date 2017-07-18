@@ -88,7 +88,7 @@ types:
     type: common.Identified
     properties:
       productId: common.resourceId
-      identifiers:
+      identifiers?:
         type: IdentifierMap
         properties:
           SKU?: Identifier
@@ -102,5 +102,5 @@ types:
           JAN?: Identifier
           EAN-13?: Identifier
           EAN-8?: Identifier
-      configuration:
-        type: ProductVariantConfiguration[]?
+      configuration?:
+        type: ProductVariantConfiguration[]
