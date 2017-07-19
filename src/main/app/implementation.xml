@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             </http:request-builder>
         </http:request>
         <dw:transform-message doc:name="Response Message">
-        <dw:input-payload mimeType="application/json"/>
+        <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
@@ -64,7 +64,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         </dw:transform-message>
     </flow>
     <flow name="putCustomerSFDC">
-        <logger message="#[payload]" level="INFO" doc:name="input"/>
+
         <dw:transform-message doc:name="Input transform for PUT operation">
         <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
@@ -120,7 +120,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 
     </flow>
     <flow name="postShoppingCart">
-        <logger message="#[payload]" level="INFO" doc:name="input"/>
+
         <dw:transform-message doc:name="Input transform for PUT operation">
         <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
@@ -148,7 +148,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                 <http:uri-param paramName="shoppingCartId" value="#[flowVars.shoppingCartId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -159,7 +159,6 @@ payload]]></dw:set-payload>
     </flow>
     <flow name="putShoppingCart">
 
-         <logger message="#[payload]" level="INFO" doc:name="input"/>
         <dw:transform-message doc:name="Input transform for PUT operation">
         <dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
@@ -188,7 +187,7 @@ items: payload.items map {
 
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
          	<dw:input-payload mimeType="application/json" />
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -203,7 +202,7 @@ payload]]></dw:set-payload>
                 <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -215,7 +214,7 @@ payload.shoppingCarts
     <flow name="getProducts">
         <http:request config-ref="retail-product-system-api" path="/products" method="GET" doc:name="GET/products">
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -231,7 +230,7 @@ payload
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -246,7 +245,7 @@ payload
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -633,7 +632,7 @@ payload]]></dw:set-payload>
     </flow>
     <flow name="createOrder">
         <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
-        <set-variable variableName="order" value="#[payload]" doc:name="save to var order"/>
+        <set-variable variableName="order" value="#[payload]" doc:name="Save to var order"/>
         <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
         <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
             <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="Get Product by Id">
@@ -641,7 +640,7 @@ payload]]></dw:set-payload>
                     <http:uri-param paramName="productId" value="#[payload.item.productId]"/>
                 </http:request-builder>
             </http:request>
-            <dw:transform-message doc:name="Transform Message">
+            <dw:transform-message doc:name="Add product to the list">
                 <dw:set-variable variableName="products"><![CDATA[%dw 1.0
 %output application/java
 ---
@@ -651,33 +650,30 @@ flowVars.products + {
 }]]></dw:set-variable>
             </dw:transform-message>
         </foreach>
-        <dw:transform-message doc:name="prepare request">
-            <dw:input-payload/>
+        <dw:transform-message doc:name="Prepare request">
+            <dw:input-payload mimeType="application/java"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 using(orderRequest = flowVars.order)
 {
 	customerId: orderRequest.customerId,
+	price: "540.40",
 	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
 		quantity: orderItem.quantity.amount,
 		price: orderItem.itemUnitPrice.amount.currencyValue as :string,
 		name: (flowVars.products filter ($.productId == orderItem.item.productId))[0].name
-	}),
-	price: orderRequest.orderItems reduce (
-		($$.quantity.amount * $$.itemUnitPrice.amount.currencyValue) + 
-		($.quantity.amount * $.itemUnitPrice.amount.currencyValue)
-	) as :string
+	})
 }]]></dw:set-payload>
         </dw:transform-message>
-
-
-        <http:request config-ref="retail-order-fulfillment-api" path="/orders" method="POST" doc:name="POST /orders">
+        <logger level="INFO" doc:name="Logger" message="#[payload]"/>
+        <http:request config-ref="retail-order-fulfillment-api" path="/orders" method="POST" doc:name="HTTP">
             <http:request-builder>
                 <http:header headerName="Content-Type" value="application/json"/>
             </http:request-builder>
         </http:request>
+
     </flow>
     <flow name="getOrdersByCustomer">
 
@@ -686,7 +682,7 @@ using(orderRequest = flowVars.order)
                 <http:uri-param paramName="customerId" value="#[flowVars.customerId]"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
