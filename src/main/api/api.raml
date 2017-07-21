@@ -1,7 +1,6 @@
 #%RAML 1.0
-##baseUri: http://localhost:8081/api
-baseUri: https://mocksvc.mulesoft.com/mocks/b18ebfc4-48e9-4fae-ad0d-658555665ddf/api
-title: Experience Omni
+baseUri: http://localhost:8081/api
+title: Retail Omnichannel Experience API
 
 uses:
 
@@ -1994,7 +1993,7 @@ types:
         201:
           body:
             application/json:
-              example: 
+              example: |
                 { 
                   "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
                   "customerId": "provider_0123456789",
@@ -2013,11 +2012,11 @@ types:
                         },
                         {
                           "item": {
-                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                            "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
                           },
                           "quantity": {
-                            "amount": 2,
+                            "amount": 1,
                             "quantityType": "DISCRETE",
                             "unit": "EA"
                           }
@@ -2116,7 +2115,7 @@ types:
         200:
           body:
             application/json:
-              example: 
+              example: |
                 { 
                   "items": 
                     [
