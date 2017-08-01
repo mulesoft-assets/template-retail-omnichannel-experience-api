@@ -1,12 +1,207 @@
 #%RAML 1.0
-baseUri: http://localhost:8081/api
+baseUri: http://localhost:8081
 title: dev-retail-product-system-api
 version: v1
+  
+types:
+  product:
+    properties:
+      identifier?: string
+      brand: string
+      model: string
+      rating: number
+      description?: string
+      pictures: string[]
+      price: price
+  
+  price:
+    properties:
+      amount: amount
+      salesUnit: salesUnit
+      
+  amount:
+    properties:
+      currency: string
+      currencyValue: number
+      name : string
+  
+  salesUnit:
+    properties:
+      code: string
+      name: string
+      
+  category:
+    properties:
+      identifier: string
+      name: string
+      description: string    
+      
+  variant: 
+    properties:
+      identifier: string
+      productId: string
+      identifiers: identifiers
+      pictures: string[]
+      configuration : configuration[]
+  
+  Identifier:
+    type: string
+    pattern: ^[0-9A-Za-z-]+
+    minLength: 3
+    maxLength: 36
 
-uses:
-  common: types/common-types.raml
-
-/products:
+  IdentifierMap:
+    type: object
+    properties:
+      /[0-9A-Z-]+/:
+        type: Identifier
+  
+  identifiers:
+        type: IdentifierMap
+        properties:
+          SKU?: Identifier
+          PLU?: Identifier
+          GTIN-12?: Identifier
+          GTIN-13?: Identifier
+          GTIN-8?: Identifier
+          UPC?: Identifier
+          UCC-12?: Identifier
+          EAN?: Identifier
+          JAN?: Identifier
+          EAN-13?: Identifier
+          EAN-8?: Identifier    
+      
+  configuration:
+    properties:
+      characteristic: characteristic
+      characteristicValue: characteristicValue
+      
+  characteristic:
+    properties:
+      code: string
+      description: string
+      name: string
+    
+  characteristicValue:
+    properties:
+      code: string
+      name: string
+    
+  products: 
+    properties:
+      products: product[]
+      
+  categories:    
+    properties:
+      categories: category[]
+      
+  variants: 
+    properties:
+      variants: variant[]
+      
+/categories:
+      get:
+        queryParameters:
+            name?: string
+        responses:
+          200:
+            body:
+              application/json:
+                type: categories
+                example: |
+                  {
+                    "categories": [
+                      {
+                          
+                          "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
+                          "name": "Sweaters",
+                          "description": "Sweaters"
+                      },
+                      {
+                          
+                          "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
+                          "name": "Hats",
+                          "description": "Hats"
+                      },
+                      {     
+                          "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                          "name": "Shirts",
+                          "description": "Shirts"
+                      }
+                    ]
+                  }
+                  
+      /{categoryId}:
+        uriParameters: 
+          categoryId: string
+        get:
+            responses: 
+               200:
+                  body:
+                    application/json:
+                      type: category
+                      example: |
+                        {
+                          "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                          "name": "Shirts",
+                          "description": "Shirts"
+                        }
+        /products:
+              get:
+                  responses:
+                      200:
+                          body:
+                            application/json:
+                              type: products
+                              example: |
+                                {  
+                                   "products":[  
+                                      {  
+                                         "brand":"Anypoint",
+                                         "identifier":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                                         "model":"Smart Slim Micro Stripe Shirt",
+                                         "rating":5,
+                                         "description":"Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                                         "pictures":[  
+                                            "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                                            "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                                         ],
+                                         "price":{  
+                                            "amount":{  
+                                               "currency":"USD",
+                                               "currencyValue":34.90,
+                                               "name":"Amount"
+                                            },
+                                            "salesUnit":{  
+                                               "code":"EA",
+                                               "name":"Each"
+                                            }
+                                         }
+                                      },
+                                      {  
+                                         "brand":"Anypoint",
+                                         "identifier":"e1c515f9-102d-4830-b353-18fe48065732",
+                                         "model":"Uniforms Modern Fit Short Sleeve Polo Shirt",
+                                         "rating":5,
+                                         "description":"Machine Wash, Tumble Dry. True to Size.",
+                                         "pictures":[  
+                                            "https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg"
+                                         ],
+                                         "price":{  
+                                            "amount":{  
+                                               "currency":"USD",
+                                               "currencyValue":12.95,
+                                               "name":"Amount"
+                                            },
+                                            "salesUnit":{  
+                                               "code":"EA",
+                                               "name":"Each"
+                                            }
+                                         }
+                                      }
+                                   ]
+                                }
+/products:  
       get:
         queryParameters:
             name?: string
@@ -16,6 +211,7 @@ uses:
           200:
             body:
               application/json:
+                type: products
                 example: |
                   {
                     "products": [
@@ -42,29 +238,7 @@ uses:
                             "code": "EA",
                             "name": "Each"
                           }
-                        },
-                        "variants": [{
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
-                            },
-                            "characteristicValue": {
-                              "code": "M",
-                              "name": "Medium"
-                            }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "blue",
-                              "name": "Blue"
-                            }
-                          }]
+                        }
                       }
                     ]
                   }
@@ -76,6 +250,7 @@ uses:
               200:
                 body:
                   application/json:
+                    type: product
                     example: |
                       {
                         "brand": "Anypoint",
@@ -100,29 +275,7 @@ uses:
                             "code": "EA",
                             "name": "Each"
                           }
-                        },
-                        "variants": [{
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
-                            },
-                            "characteristicValue": {
-                              "code": "M",
-                              "name": "Medium"
-                            }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "blue",
-                              "name": "Blue"
-                            }
-                          }]
+                        }
                       }
           /variants:
             get:
@@ -130,29 +283,90 @@ uses:
                 200:
                   body:
                     application/json:
+                      type: variants
                       example: |
-                        {
-                          "variants": [{
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
-                            },
-                            "characteristicValue": {
-                              "code": "M",
-                              "name": "Medium"
+                        {  
+                         "variants":[  
+                            {  
+                               "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                               "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                               "identifiers":{  
+                                  "SKU":"UGG-BB-PUR-06"
+                               },
+                               "pictures":[  
+                                  "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                                  "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                               ],
+                               "configuration":[  
+                                  {  
+                                     "characteristic":{  
+                                        "code":"size",
+                                        "description":"Size",
+                                        "name":"Size of item"
+                                     },
+                                     "characteristicValue":{  
+                                        "code":"M",
+                                        "name":"Medium"
+                                     }
+                                  },
+                                  {  
+                                     "characteristic":{  
+                                        "code":"color",
+                                        "description":"Color",
+                                        "name":"Color"
+                                     },
+                                     "characteristicValue":{  
+                                        "code":"blue",
+                                        "name":"Blue"
+                                     }
+                                  }
+                               ]
                             }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "blue",
-                              "name": "Blue"
-                            }
-                          }]
+                          ]
                         }
-        
+                        
+            /{variantId}:
+              uriParameters:
+                  variantId: string
+              get:
+                responses:
+                  200:
+                    body:
+                      application/json:
+                        type: variant
+                        example: |
+                          {  
+                             "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                             "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                             "identifiers":{  
+                                "SKU":"UGG-BB-PUR-06"
+                             },
+                             "pictures":[  
+                                "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                                "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                             ],
+                             "configuration":[  
+                                {  
+                                   "characteristic":{  
+                                      "code":"size",
+                                      "description":"Size",
+                                      "name":"Size of item"
+                                   },
+                                   "characteristicValue":{  
+                                      "code":"M",
+                                      "name":"Medium"
+                                   }
+                                },
+                                {  
+                                   "characteristic":{  
+                                      "code":"color",
+                                      "description":"Color",
+                                      "name":"Color"
+                                   },
+                                   "characteristicValue":{  
+                                      "code":"blue",
+                                      "name":"Blue"
+                                   }
+                                }
+                             ]
+                          }

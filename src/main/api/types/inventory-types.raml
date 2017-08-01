@@ -11,45 +11,81 @@ uses:
   quantity: quantity-types.raml
 
 types:
-  
-  AvailabileQuantity:
+        
+  StoreInfo:
     type: object
     properties: 
-      date:
-        type: date-only
-      available:
-        type: quantity.Quantity
+      storeId?: string
+      name: string
+      description?: string
+      notes?: string
+      openingHours?: string
+      contact: ContactInfo
+      address: Address
+      geo: Geo
+              
+  ContactInfo:
+    type: object
+    properties: 
+      email: string
+      phone: string
+      
+  Address:
+    type: object
+    properties: 
+      streetLine1: string
+      streetLine2: string
+      city: string
+      zipCode: string
+      state: string
+      country: string
+      
+  Geo:
+    type: object
+    properties: 
+      latitude: 
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+      
+  StoreAvailabilityData:
+    type: object
+    properties: 
+      storeInfo: StoreInfo
+      quantityInStock: integer
+      quantityReserved?: integer
         
+  Inventory: 
+    type: object
+    properties:
+      locationId: string 
+      name?: string  
+      availableCount?:
+        type: number
+        minimum: 0
+      reservedCount?: 
+        type: number
+        minimum: 0
+       
   Availability:
     type: object
-    properties: 
-      availableToPromise:
-        type: array
-        items: AvailabileQuantity
+    properties:
+      productId: string
+      variantId: string
+      warehousesAvailability: Inventory[]
+      storesAvailability:  StoreAvailabilityData[]
         
-  Inventory:
+        
+  Reservation: 
     type: object
-    description: |
-      a simple expression of item inventory
-    properties: 
-      itemId:
-        description: |
-          the id of the item for this inventory record
-        type: common.resourceId
-      warehouseId:
-        description: |
-          the id of the warehouse where the item for this
-          inventory record is stored
-        type: common.resourceId
-      inventoryDate:
-        description: |
-          the timestamp of the last update of the quantityOnHand
-          of an item in a warehouse
-        type: datetime
-      quantityOnHand:
-        description: |
-          the number of items that can be found in its storage location
-          in the warehouse
-        type: integer
-        minimum: 0
-        
+    properties:
+      productId: string
+      variantId: string
+      customerId: string
+      quantity: integer
+      locationId: string
+      deliveryMethod: 
+        type: string
+        enum: [SHIPMENT, PICKUP]

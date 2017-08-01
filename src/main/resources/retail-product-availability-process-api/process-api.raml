@@ -1,0 +1,199 @@
+#%RAML 1.0
+title: Product Availability Process API
+version: dev
+baseUri: http://localhost:8082
+
+types: 
+
+  StoreInfo:
+    type: object
+    properties: 
+      storeId?: string
+      name: string
+      description?: string
+      notes?: string
+      openingHours?: string
+      contact: ContactInfo
+      address: Address
+      geo: Geo
+              
+  ContactInfo:
+    type: object
+    properties: 
+      email: string
+      phone: string
+      
+  Address:
+    type: object
+    properties: 
+      streetLine1: string
+      streetLine2: string
+      city: string
+      zipCode: string
+      state: string
+      country: string
+      
+  Geo:
+    type: object
+    properties: 
+      latitude: 
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+      
+  StoreAvailabilityData:
+    type: object
+    properties: 
+      storeInfo: StoreInfo
+      quantityInStock: integer
+      quantityReserved?: integer
+        
+  Inventory: 
+    type: object
+    properties:
+      locationId: string 
+      name?: string  
+      availableCount?:
+        type: number
+        minimum: 0
+      reservedCount?: 
+        type: number
+        minimum: 0
+       
+  Availability:
+    type: object
+    properties:
+      productId: string
+      variantId: string
+      warehousesAvailability: Inventory[]
+      storesAvailability:  StoreAvailabilityData[]
+        
+        
+  Reservation: 
+    type: object
+    properties:
+      productId: string
+      variantId: string
+      customerId: string
+      quantity: integer
+      locationId: string
+      deliveryMethod: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+  
+/availability:       
+  get:
+    queryParameters: 
+      productId:
+          required: true
+          description: |
+            Identifier of base product (irrespective of color or size)
+          type: string
+          
+      variantId:
+          description: |
+            Identifier of concrete variant of a product (specific color and size)
+          required: true
+          type: string
+      quantityRequested:
+          description: | 
+            Quantity requested. If quantity in particular store is less than requested, the store will not show up in the results.
+          type: number
+          required: false
+          default: 0         
+      sku:
+          description: |
+            Stock keeping unit - barcode.
+          required: false
+          type: string     
+      latitude: 
+          description: |
+            Latitude of a point to search stores from. Must be used with latitude and radius parameters.
+          type: number
+          required: false
+      longitude: 
+          description: |
+            Longitude of a point to search stores from. Must be used with latitude and radius parameters.
+          type: number
+          required: false
+      radius: 
+          description: |
+            Distance in kilometers. Must be used in combination with latitude and longitude parameters.
+          type: integer
+          required: false
+          default: 50 
+      metric: 
+          description: |
+            Flag indicating if the response distances to stores should be returned using the metric system. By default, responses return distances in miles.      
+          type: boolean
+          required: false
+          default: false
+    responses:
+      200: 
+        body: 
+          application/json:
+            type: Availability
+            example: |
+              {
+                "productId": "122332665555",
+                "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                "warehousesAvailability": [
+                  {
+                    "locationId": "1",
+                    "name": "Central Warehouse",
+                    "availableCount": 100    
+                  }
+                ], 
+                "storesAvailability": [
+                    {
+                      "quantityInStock": 334, 
+                      "storeInfo" : {
+                          "storeId": "12345",
+                          "name": "Store 1",
+                          "description": "",
+                          "notes": "",
+                          "contact" : {
+                            "email" : "store1@anypointstore.example.com",
+                            "phone" : "+1-202-555-0111"
+                          },
+                          "address" : {
+                            "streetLine1" : "317 Roosevelt Street",
+                            "streetLine2" : "",
+                            "city" : "San Francisco",
+                            "zipCode" : "94108",
+                            "state" : "California",
+                            "country" : "USA"
+                          },
+                          "geo" : {
+                            "latitude" : 33.448377,
+                            "longitude" : -112.074037
+                          }
+                      }
+                   }  
+                ] 
+              }
+                    
+/reservation: 
+  post:
+    body:
+      application/json:
+        type: Reservation 
+        example: {
+          "productId": "122332665555",  
+          "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+          "customerId": "12324566545", 
+          "deliveryMethod": "SHIPMENT",
+          "locationId": "123",
+          "quantity": 2
+        
+        }
+    responses:
+      201: 
+        body:
+          application/json:
+            example: 
+              {
+              "message": "Product was reserved"   
+              }

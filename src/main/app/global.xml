@@ -19,12 +19,13 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
    
     <context:property-placeholder location="common.properties, mule.${mule.env}.properties" />
 	 
-	 <http:request-config name="retail-customer-system-api" protocol="HTTPS" host="${customer-system-api.host}" port="${customer-system-api.port}" basePath="${customer-system-api.basePath}" doc:name="HTTP Request Configuration">
-        <http:raml-api-configuration location="retail-customer-system-api/system-api.raml"/>
-    </http:request-config>
+	 <http:request-config name="retail-customer-system-api" protocol="HTTPS" host="${customer-system-api.host}" port="${customer-system-api.port}" basePath="${customer-system-api.basePath}" doc:name="HTTP Request Configuration">    
+	 	<http:raml-api-configuration location="retail-customer-system-api/system-api.raml"/>
+     </http:request-config>
     
     <http:request-config name="retail-product-system-api" host="${product-system-api.host}" port="${product-system-api.port}" basePath="${product-system-api.basePath}" doc:name="HTTP Request Configuration">
         <http:raml-api-configuration location="retail-product-system-api/system-api.raml"/>
+
     </http:request-config>
     
     <http:request-config name="retail-orders-system-api" doc:name="HTTP Request Configuration" basePath="${orders-system-api.basePath}" host="${orders-system-api.host}" port="${orders-system-api.port}">
@@ -38,4 +39,9 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
     <http:request-config name="retail-shopping-cart-process-api" host="${shopping-cart-proces-api.host}" port="${shopping-cart-proces-api.port}" basePath="${shopping-cart-proces-api.basePath}" doc:name="HTTP Request Configuration">
     	<http:raml-api-configuration location="retail-shopping-cart-process-api/process-api.raml"/>
     </http:request-config>
+        
+     <http:request-config name="retail-availability-process-api" host="${product-availability-process-api.host}" port="${product-availability-process-api.port}" basePath="${product-availability-process-api.basePath}" doc:name="HTTP Request Configuration">
+        <http:raml-api-configuration location="retail-product-availability-process-api/process-api.raml"/>
+
+     </http:request-config>
 </mule>
