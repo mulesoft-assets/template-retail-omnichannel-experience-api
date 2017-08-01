@@ -866,22 +866,27 @@ types:
                     },
                     "categories": [
                       {
+                        "identifier": "1",
                         "name": "Sweaters",
                         "description": "Sweaters"
                       },
                       {
+                        "identifier": "2",
                         "name": "Jeans",
                         "description": "Jeans"
                       },
                       {
+                        "identifier": "3",
                         "name": "Hats",
                         "description": "Hats"
                       },
                       {
+                        "identifier": "4",
                         "name": "Shoes",
                         "description": "Shoes"
                       },
                       {
+                        "identifier": "5",
                         "name": "Most popular items",
                         "description": "Most popular items"
                       }
@@ -912,27 +917,32 @@ types:
                   "limit": 5                
                 },
                 "categories": [
-                  {
-                    "name": "Sweaters",
-                    "description": "Sweaters"
-                  },
-                  {
-                    "name": "Jeans",
-                    "description": "Jeans"
-                  },
-                  {
-                    "name": "Hats",
-                    "description": "Hats"
-                  },
-                  {
-                    "name": "Shoes",
-                    "description": "Shoes"
-                  },
-                  {
-                    "name": "Most popular items",
-                    "description": "Most popular items"
-                  }
-                ]
+                      {
+                        "identifier": "1",
+                        "name": "Sweaters",
+                        "description": "Sweaters"
+                      },
+                      {
+                        "identifier": "2",
+                        "name": "Jeans",
+                        "description": "Jeans"
+                      },
+                      {
+                        "identifier": "3",
+                        "name": "Hats",
+                        "description": "Hats"
+                      },
+                      {
+                        "identifier": "4",
+                        "name": "Shoes",
+                        "description": "Shoes"
+                      },
+                      {
+                        "identifier": "5",
+                        "name": "Most popular items",
+                        "description": "Most popular items"
+                      }
+                    ]
               }
   /{categoryId}:
     uriParameters:
@@ -947,6 +957,7 @@ types:
             application/json:
               example: |
                 {
+                  "identifier": "1",
                   "name": "Sneakers",
                   "description": "Sneakers"
                 }
@@ -1859,30 +1870,84 @@ types:
              collection.readOnlyCollectionMember:
                collectionMemberResponseType: ProductVariantAvailabilityResponse
           get:
-            responses: 
-              200:
+            queryParameters: 
+              quantityRequested:
+                description: | 
+                  Quantity requested. If quantity in particular store is less than requested, the store will not show up in the results.
+                type: number
+                required: false
+                default: 0         
+              sku:
+                  description: |
+                    Stock keeping unit - barcode.
+                  required: false
+                  type: string     
+              latitude: 
+                  description: |
+                    Latitude of a point to search stores from. Must be used with latitude and radius parameters.
+                  type: number
+                  required: false
+                  example: 33.448377
+              longitude: 
+                  description: |
+                    Longitude of a point to search stores from. Must be used with latitude and radius parameters.
+                  type: number
+                  required: false
+                  example: -112.074037
+              radius: 
+                  description: |
+                    Distance in kilometers. Must be used in combination with latitude and longitude parameters.
+                  type: integer
+                  required: false
+                  default: 50 
+              metric: 
+                  description: |
+                    Flag indicating if the response distances to stores should be returned using the metric system. By default, responses return distances in miles.      
+                  type: boolean
+                  required: false
+                  default: false
+            responses:
+              200: 
                 body: 
                   application/json:
                     example: |
                       {
-                        "availableToPromise": [
+                        "productId": "122332665555",
+                        "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "warehousesAvailability": [
                           {
-                            "available": {
-                              "amount": 10,
-                              "quantityType": "DISCRETE",
-                              "unit": "EA"
-                            },
-                            "date": "2016-02-23"
-                          },
-                          {
-                            "available": {
-                              "amount": 5,
-                              "quantityType": "CONTINUOUS",
-                              "unit": "EA"
-                            },
-                            "date": "2016-02-10"
+                            "locationId": "1",
+                            "name": "Central Warehouse",
+                            "availableCount": 100    
                           }
-                        ]
+                        ], 
+                        "storesAvailability": [
+                            {
+                              "quantityInStock": 334, 
+                              "storeInfo" : {
+                                  "storeId": "12345",
+                                  "name": "Store 1",
+                                  "description": "",
+                                  "notes": "",
+                                  "contact" : {
+                                    "email" : "store1@anypointstore.example.com",
+                                    "phone" : "+1-202-555-0111"
+                                  },
+                                  "address" : {
+                                    "streetLine1" : "317 Roosevelt Street",
+                                    "streetLine2" : "",
+                                    "city" : "San Francisco",
+                                    "zipCode" : "94108",
+                                    "state" : "California",
+                                    "country" : "USA"
+                                  },
+                                  "geo" : {
+                                    "latitude" : 33.448377,
+                                    "longitude" : -112.074037
+                                  }
+                              }
+                           }  
+                        ] 
                       }
 
 /shoppingCarts:

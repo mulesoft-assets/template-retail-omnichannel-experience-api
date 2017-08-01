@@ -107,17 +107,44 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 
 
     </flow>
+    <flow name="getCategories">
+        <http:request config-ref="retail-product-system-api" path="/categories" method="GET" doc:name="GET/categories"/>
+        <dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="getCategory">
+        <http:request config-ref="retail-product-system-api" path="/categories/{categoryId}" method="GET" doc:name="GET/categories/{categoryId}">
+            <http:request-builder>
+                <http:uri-param paramName="categoryId" value="#[flowVars.category]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
     <flow name="getProductsByCategory">
-        <choice doc:name="Choice">
-            <when expression="#[flowVars.categoryId == '12345']">
-                <set-payload value="{     &quot;_links&quot;:{         &quot;self&quot;:{             &quot;href&quot;:&quot;/categories/12345/products?offset=0&amp;limit=5&quot;         }     },     &quot;page&quot;:{         &quot;messages&quot;:[          ],         &quot;totalItems&quot;:4,         &quot;limit&quot;:0,         &quot;offset&quot;:10     },     &quot;products&quot;:[         {             &quot;identifier&quot;:&quot;eb8c8ca7-3c42-4489-a820-3aa138430b75&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Smart Slim Micro Stripe Shirt&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\&quot; tall&quot;,             &quot;pictures&quot;:[                 &quot;https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&amp;hei=494&quot;,                 &quot;https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&amp;hei=494&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:34.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;cd67cd8a-8901-48c5-890b-0a21f4a0f8ad&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Men's Chino Jogger Pants&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;100% Cotton. No stretch. Lightweight fabric. Regular fit jogger pants, slightly tapered legs with elasticized cuffs. Sits at the waist. Elastic closure. Comfortable elastic waist with drawstring. No zip. 2 front slant pockets, 1 back patch pocket. Pre-washed, will not shrink. Very comfortable and stylish for year round wear. Cold hand/machine wash.&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/61hUUA%2BaEQL._UX342_.jpg&quot;,                 &quot;https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg&quot;,                 &quot;https://images-na.ssl-images-amazon.com/images/I/718HJuJXwSL._UX342_.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:47.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;7c9be8ad-0791-4362-b195-a53dcca4e1d7&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Men's Regular Fit V-Neck Knit Sweater&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;80% Cotton/20% Nylon. No lining. Pullover style. V-neck. Knit cotton blend fabric. Long sleeves&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/41gnBw3oxQL.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:22.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         },         {             &quot;identifier&quot;:&quot;e1c515f9-102d-4830-b353-18fe48065732&quot;,             &quot;brand&quot;:&quot;Anypoint&quot;,             &quot;model&quot;:&quot;Uniforms Modern Fit Short Sleeve Polo Shirt&quot;,             &quot;rating&quot;:5,             &quot;description&quot;:&quot;Machine Wash, Tumble Dry. True to Size.&quot;,             &quot;pictures&quot;:[                 &quot;https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg&quot;             ],             &quot;price&quot;:{                 &quot;amount&quot;:{                     &quot;currency&quot;:&quot;USD&quot;,                     &quot;currencyValue&quot;:12.95,                     &quot;name&quot;:&quot;Amount&quot;                 },                 &quot;salesUnit&quot;:{                     &quot;code&quot;:&quot;EA&quot;,                     &quot;name&quot;:&quot;Each&quot;                 }             }         }     ] }" mimeType="application/json" doc:name="Set Payload"/>
-            </when>
-            <otherwise>
-                <set-property propertyName="http.status" value="#[404]" doc:name="Property"/>
-                <set-payload value="Category not found " doc:name="Set Payload"/>
-            </otherwise>
-        </choice>
+    	<http:request config-ref="retail-product-system-api" path="/categories/{categoryId}/products" method="GET" doc:name="GET/categories/{categoryId}/products">
+            <http:request-builder>
+                <http:uri-param paramName="categoryId" value="#[flowVars.category]"/>
 
+            </http:request-builder>
+        </http:request>
+		<dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
     </flow>
     <flow name="postShoppingCart">
 
@@ -278,16 +305,13 @@ payload[0]    ]]></dw:set-payload>
         <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
         <set-variable variableName="order" value="#[payload]" doc:name="Save to var order"/>
         <dw:transform-message doc:name="Calculate total price">
+            <dw:input-variable variableName="order"/>
             <dw:set-variable variableName="TotalPrice"><![CDATA[%dw 1.0
 %output application/java
 ---
-using(orderRequest = flowVars.order)
-{
-	price: orderRequest.orderItems reduce (
-    	($$.quantity.amount * $$.itemUnitPrice.amount.currencyValue) + 
-    	($.quantity.amount * $.itemUnitPrice.amount.currencyValue)
-    ) as :string
-}]]></dw:set-variable>
+using (orderRequest = flowVars.order.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * item.quantity.amount))) {
+        price: orderRequest as :string
+ } ]]></dw:set-variable>
         </dw:transform-message>
         <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
         <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
@@ -346,5 +370,27 @@ using(orderRequest = flowVars.order)
 payload]]></dw:set-payload>
         </dw:transform-message>
 
+    </flow>
+    <flow name="getAvailability">
+        <http:request config-ref="retail-availability-process-api" path="/availability" method="GET" doc:name="GET/products/{productId}/variants/{variantId}/availability">
+            <http:request-builder>
+                <http:query-param paramName="productId" value="#[flowVars.productId]"/>
+                <http:query-param paramName="variantId" value="#[flowVars.productVariantId]"/>
+                <http:query-param paramName="quantityRequested" value="#[message.inboundProperties.'http.query.params'.quantityRequested]"/>
+                <http:query-param paramName="metric" value="#[message.inboundProperties.'http.query.params'.metric]"/>
+                <http:query-param paramName="radius" value="#[message.inboundProperties.'http.query.params'.radius]"/>
+                <http:query-param paramName="sku" value="#[message.inboundProperties.'http.query.params'.sku]"/>
+                <http:query-param paramName="latitude" value="#[message.inboundProperties.'http.query.params'.latitude]"/>
+                <http:query-param paramName="longitude" value="#[message.inboundProperties.'http.query.params'.longitude]"/>
+
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Response message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
     </flow>
 </mule>

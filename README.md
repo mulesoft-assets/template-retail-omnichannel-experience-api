@@ -38,6 +38,9 @@ This endpoint will trigger flow getVariantsByProduct which obtains mocked inform
 ### GET/products/{productId}/variants/{variantId}
 This endpoint will trigger flow getVariantByProduct which obtains mocked information about variant of product based on productId and variantId.
 
+### GET/products/{productId}/variants/{variantId}/availability
+This endpoint will trigger flow getAvailability which obtains mocked information about availability of variant based on productId and variantId.
+
 ### GET/categories/{categoryId}/products
 This endpoint will trigger flow getProductsByCategory which obtains mocked information about products from same category based on categoryId.
 
