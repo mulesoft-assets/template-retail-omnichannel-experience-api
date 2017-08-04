@@ -19,10 +19,16 @@ types:
       name: string
       description?: string
       notes?: string
-      openingHours?: string
+      openingHours:
+        type: string
+        example: "Mo,Tu,We,Th,Fr 08:00-18:00"
       contact: ContactInfo
       address: Address
       geo: Geo
+      distance?: number
+      distanceUnit?: 
+        type: string
+        enum: [mi, km]
               
   ContactInfo:
     type: object
@@ -56,11 +62,11 @@ types:
       storeInfo: StoreInfo
       quantityInStock: integer
       quantityReserved?: integer
-        
-  Inventory: 
+  
+  WarehouseInventory:
     type: object
     properties:
-      locationId: string 
+      warehouseId: string
       name?: string  
       availableCount?:
         type: number
@@ -68,24 +74,13 @@ types:
       reservedCount?: 
         type: number
         minimum: 0
-       
+      lastUpdated?: datetime
+  
   Availability:
     type: object
     properties:
       productId: string
       variantId: string
-      warehousesAvailability: Inventory[]
+      warehousesAvailability: WarehouseInventory[]
       storesAvailability:  StoreAvailabilityData[]
-        
-        
-  Reservation: 
-    type: object
-    properties:
-      productId: string
-      variantId: string
-      customerId: string
-      quantity: integer
-      locationId: string
-      deliveryMethod: 
-        type: string
-        enum: [SHIPMENT, PICKUP]
+                

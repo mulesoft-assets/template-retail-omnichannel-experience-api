@@ -3,6 +3,10 @@ title: Product Availability Process API
 version: dev
 baseUri: http://localhost:8082
 
+traits: 
+  geoSearch: !include traits/geoSearch.raml
+  productSearch: !include traits/productSearch.raml
+
 types: 
 
   StoreInfo:
@@ -12,10 +16,16 @@ types:
       name: string
       description?: string
       notes?: string
-      openingHours?: string
+      openingHours:
+        type: string
+        example: "Mo,Tu,We,Th,Fr 08:00-18:00"
       contact: ContactInfo
       address: Address
       geo: Geo
+      distance?: number
+      distanceUnit?: 
+        type: string
+        enum: [mi, km]
               
   ContactInfo:
     type: object
@@ -49,11 +59,11 @@ types:
       storeInfo: StoreInfo
       quantityInStock: integer
       quantityReserved?: integer
-        
-  Inventory: 
+  
+  WarehouseInventory:
     type: object
     properties:
-      locationId: string 
+      warehouseId: string
       name?: string  
       availableCount?:
         type: number
@@ -61,13 +71,14 @@ types:
       reservedCount?: 
         type: number
         minimum: 0
-       
+      lastUpdated?: datetime
+  
   Availability:
     type: object
     properties:
       productId: string
       variantId: string
-      warehousesAvailability: Inventory[]
+      warehousesAvailability: WarehouseInventory[]
       storesAvailability:  StoreAvailabilityData[]
         
         
@@ -85,51 +96,7 @@ types:
   
 /availability:       
   get:
-    queryParameters: 
-      productId:
-          required: true
-          description: |
-            Identifier of base product (irrespective of color or size)
-          type: string
-          
-      variantId:
-          description: |
-            Identifier of concrete variant of a product (specific color and size)
-          required: true
-          type: string
-      quantityRequested:
-          description: | 
-            Quantity requested. If quantity in particular store is less than requested, the store will not show up in the results.
-          type: number
-          required: false
-          default: 0         
-      sku:
-          description: |
-            Stock keeping unit - barcode.
-          required: false
-          type: string     
-      latitude: 
-          description: |
-            Latitude of a point to search stores from. Must be used with latitude and radius parameters.
-          type: number
-          required: false
-      longitude: 
-          description: |
-            Longitude of a point to search stores from. Must be used with latitude and radius parameters.
-          type: number
-          required: false
-      radius: 
-          description: |
-            Distance in kilometers. Must be used in combination with latitude and longitude parameters.
-          type: integer
-          required: false
-          default: 50 
-      metric: 
-          description: |
-            Flag indicating if the response distances to stores should be returned using the metric system. By default, responses return distances in miles.      
-          type: boolean
-          required: false
-          default: false
+    is: [ geoSearch, productSearch ]
     responses:
       200: 
         body: 
@@ -141,37 +108,68 @@ types:
                 "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
                 "warehousesAvailability": [
                   {
-                    "locationId": "1",
+                    "warehouseId": "1",
                     "name": "Central Warehouse",
                     "availableCount": 100    
                   }
                 ], 
                 "storesAvailability": [
                     {
-                      "quantityInStock": 334, 
-                      "storeInfo" : {
-                          "storeId": "12345",
-                          "name": "Store 1",
-                          "description": "",
-                          "notes": "",
-                          "contact" : {
-                            "email" : "store1@anypointstore.example.com",
-                            "phone" : "+1-202-555-0111"
-                          },
-                          "address" : {
-                            "streetLine1" : "317 Roosevelt Street",
-                            "streetLine2" : "",
-                            "city" : "San Francisco",
-                            "zipCode" : "94108",
-                            "state" : "California",
-                            "country" : "USA"
-                          },
-                          "geo" : {
-                            "latitude" : 33.448377,
-                            "longitude" : -112.074037
-                          }
-                      }
-                   }  
+                    "quantityInStock" : 55,
+                    "storeInfo": {
+                      "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                      "name": "Anypoint Store 1",
+                      "description": "Department store chain providing brand-name c",
+                      "notes": "",
+                      "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                      "address": {
+                        "streetLine1": "170 O'Farrell St",
+                        "streetLine2": "",
+                        "city": "San Francisco",
+                        "zipCode": "94102",
+                        "state": "California",
+                        "country": "USA"
+                      },
+                      "contact": {
+                        "email": "store1@anypointstore.example.com",
+                        "phone": "+1-202-555-0111"
+                      },
+                      "geo": {
+                        "latitude": 37.78703308105469,
+                        "longitude": -122.4060287475586
+                      },
+                      "distance": 0.12951756569805717,
+                      "distanceUnit": "km"
+                    }
+                  },
+                  {
+                    "quantityInStock": 66,
+                    "storeInfo" : {
+                      "storeId": "47dc46d1-9a2a-4ca1-8063-22aab7ddcd45",
+                      "name": "Anypoint Store 2",
+                      "description": "Department store chain providing brand-name c",
+                      "notes": "",
+                      "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                      "address": {
+                        "streetLine1": "1 Stonestown Mall",
+                        "streetLine2": "",
+                        "city": "San Francisco",
+                        "zipCode": "94132",
+                        "state": "California",
+                        "country": "USA"
+                      },
+                      "contact": {
+                        "email": "store2@anypointstore.example.com",
+                        "phone": "+1-202-555-0124"
+                      },
+                      "geo": {
+                        "latitude": 37.72914505004883,
+                        "longitude": -122.4768295288086
+                      },
+                      "distance": 9.077742316846548,
+                      "distanceUnit": "km"
+                    }
+                  }
                 ] 
               }
                     

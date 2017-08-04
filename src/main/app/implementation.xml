@@ -120,7 +120,7 @@ payload]]></dw:set-payload>
     <flow name="getCategory">
         <http:request config-ref="retail-product-system-api" path="/categories/{categoryId}" method="GET" doc:name="GET/categories/{categoryId}">
             <http:request-builder>
-                <http:uri-param paramName="categoryId" value="#[flowVars.category]"/>
+                <http:uri-param paramName="categoryId" value="#[flowVars.categoryId]"/>
             </http:request-builder>
         </http:request>
         <dw:transform-message doc:name="Response message">
@@ -134,7 +134,7 @@ payload]]></dw:set-payload>
     <flow name="getProductsByCategory">
     	<http:request config-ref="retail-product-system-api" path="/categories/{categoryId}/products" method="GET" doc:name="GET/categories/{categoryId}/products">
             <http:request-builder>
-                <http:uri-param paramName="categoryId" value="#[flowVars.category]"/>
+                <http:uri-param paramName="categoryId" value="#[flowVars.categoryId]"/>
 
             </http:request-builder>
         </http:request>
@@ -145,6 +145,7 @@ payload]]></dw:set-payload>
 ---
 payload]]></dw:set-payload>
         </dw:transform-message>
+        <logger level="INFO" doc:name="Logger"/>
     </flow>
     <flow name="postShoppingCart">
 
@@ -282,35 +283,48 @@ payload]]></dw:set-payload>
 
     </flow>
     <flow name="getVariantByProduct">
-		 <http:request config-ref="retail-product-system-api" path="/products/{productId}/variants" method="GET" doc:name="GET/products/{productId}/variants">
+		 <http:request config-ref="retail-product-system-api" path="/products/{productId}/variants/{variantId}" method="GET" doc:name="GET/products/{productId}/variants/{variantId}">
                         <http:request-builder>
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
+                <http:uri-param paramName="variantId" value="#[flowVars.productVariantId]"/>
+
 						 </http:request-builder>
                     </http:request>
-                    <dw:transform-message doc:name="filter variant from variants">
-                    	<dw:input-payload mimeType="application/json"/>
-                        <dw:set-payload><![CDATA[%dw 1.0
-%output application/json
----
-payload.variants filter $.identifier == flowVars.productVariantId ]]></dw:set-payload>
-                    </dw:transform-message>
+
         <dw:transform-message doc:name="Transform Message">
+        	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload[0]    ]]></dw:set-payload>
+payload    ]]></dw:set-payload>
         </dw:transform-message>
     </flow>
     <flow name="createOrder">
-        <json:json-to-object-transformer returnClass="java.util.Map" doc:name="JSON to Object"/>
-        <set-variable variableName="order" value="#[payload]" doc:name="Save to var order"/>
+        <dw:transform-message doc:name="Set var order, hardcodeProperties">
+        	<dw:input-payload mimeType="application/json" />
+            <dw:set-variable variableName="hardcodeProperties"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	tax: 4.27, 
+	shipping: 5.00
+}]]></dw:set-variable>
+            <dw:set-variable variableName="order"><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-variable>
+        </dw:transform-message>
+
         <dw:transform-message doc:name="Calculate total price">
             <dw:input-variable variableName="order"/>
             <dw:set-variable variableName="TotalPrice"><![CDATA[%dw 1.0
 %output application/java
 ---
-using (orderRequest = flowVars.order.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * item.quantity.amount))) {
-        price: orderRequest as :string
+using (subtotal = flowVars.order.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * 100 * item.quantity.amount))) {
+        subtotal: ((round subtotal)/100)  as :string,
+        tax: flowVars.hardcodeProperties.tax as :string, 
+        shipping: flowVars.hardcodeProperties.shipping as :string,
+        total: ((round (subtotal + flowVars.hardcodeProperties.tax*100 + flowVars.hardcodeProperties.shipping*100))/100)  as :string 
  } ]]></dw:set-variable>
         </dw:transform-message>
         <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
@@ -338,9 +352,10 @@ flowVars.products + {
 using(orderRequest = flowVars.order)
 {
 	customerId: orderRequest.customerId,
-	price: flowVars.TotalPrice.price,
+	price: flowVars.TotalPrice.total,
 	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
+		productId: orderItem.item.productId,
 		quantity: orderItem.quantity.amount,
 		price: orderItem.itemUnitPrice.amount.currencyValue as :string,
 		name: (flowVars.products filter ($.productId == orderItem.item.productId))[0].name
@@ -376,10 +391,9 @@ payload]]></dw:set-payload>
             <http:request-builder>
                 <http:query-param paramName="productId" value="#[flowVars.productId]"/>
                 <http:query-param paramName="variantId" value="#[flowVars.productVariantId]"/>
-                <http:query-param paramName="quantityRequested" value="#[message.inboundProperties.'http.query.params'.quantityRequested]"/>
+                <http:query-param paramName="quantity" value="#[message.inboundProperties.'http.query.params'.quantity]"/>
                 <http:query-param paramName="metric" value="#[message.inboundProperties.'http.query.params'.metric]"/>
                 <http:query-param paramName="radius" value="#[message.inboundProperties.'http.query.params'.radius]"/>
-                <http:query-param paramName="sku" value="#[message.inboundProperties.'http.query.params'.sku]"/>
                 <http:query-param paramName="latitude" value="#[message.inboundProperties.'http.query.params'.latitude]"/>
                 <http:query-param paramName="longitude" value="#[message.inboundProperties.'http.query.params'.longitude]"/>
 
