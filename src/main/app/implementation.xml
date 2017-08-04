@@ -120,16 +120,25 @@ payload]]></dw:set-payload>
     <flow name="getCategory">
         <http:request config-ref="retail-product-system-api" path="/categories/{categoryId}" method="GET" doc:name="GET/categories/{categoryId}">
             <http:request-builder>
-                <http:uri-param paramName="categoryId" value="#[flowVars.category]"/>
+                <http:uri-param paramName="categoryId" value="#[flowVars.categoryId]"/>
             </http:request-builder>
+            <http:success-status-code-validator values="200,404"/>
         </http:request>
-        <dw:transform-message doc:name="Response message">
-        	<dw:input-payload mimeType="application/json" />
-            <dw:set-payload><![CDATA[%dw 1.0
+        <choice doc:name="Found?">
+            <when expression="#[message.inboundProperties.'http.status' == 200]">
+                <dw:transform-message doc:name="Response message">
+                    <dw:input-payload mimeType="application/json"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload]]></dw:set-payload>
-        </dw:transform-message>
+payload
+]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
     </flow>
     <flow name="getProductsByCategory">
     	<http:request config-ref="retail-product-system-api" path="/categories/{categoryId}/products" method="GET" doc:name="GET/categories/{categoryId}/products">
@@ -173,15 +182,25 @@ payload]]></dw:set-payload>
         <http:request config-ref="retail-shopping-cart-process-api" path="/shoppingCarts/{shoppingCartId}" method="GET" doc:name="GET/shoppingCarts/{shoppingCartId}">
             <http:request-builder>
                 <http:uri-param paramName="shoppingCartId" value="#[flowVars.shoppingCartId]"/>
+
             </http:request-builder>
+            <http:success-status-code-validator values="200,404"/>
         </http:request>
-        <dw:transform-message doc:name="Response message">
-        	<dw:input-payload mimeType="application/json"/>
-            <dw:set-payload><![CDATA[%dw 1.0
+         <choice doc:name="Found?">
+            <when expression="#[message.inboundProperties.'http.status' == 200]">
+                <dw:transform-message doc:name="Response message">
+                    <dw:input-payload mimeType="application/json"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload]]></dw:set-payload>
-        </dw:transform-message>
+payload
+]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
 
     </flow>
     <flow name="putShoppingCart">
@@ -255,16 +274,26 @@ payload
         <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="GET/products/{productId}">
             <http:request-builder>
                 <http:uri-param paramName="productId" value="#[flowVars.productId]"/>
+
             </http:request-builder>
+            <http:success-status-code-validator values="200,404"/>
         </http:request>
-        <dw:transform-message doc:name="Response message">
-        	<dw:input-payload mimeType="application/json"/>
-            <dw:set-payload><![CDATA[%dw 1.0
+        <choice doc:name="Found?">
+            <when expression="#[message.inboundProperties.'http.status' == 200]">
+                <dw:transform-message doc:name="Response message">
+                    <dw:input-payload mimeType="application/json"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 payload
 ]]></dw:set-payload>
-        </dw:transform-message>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
+
     </flow>
     <flow name="getVariantsByProduct">
         <http:request config-ref="retail-product-system-api" path="/products/{productId}/variants" method="GET" doc:name="GET/products/{productId}/variants">
@@ -371,6 +400,20 @@ payload]]></dw:set-payload>
         </dw:transform-message>
 
     </flow>
+    <sub-flow name="notFoundResponse"> 
+    	<dw:transform-message doc:name="404 Not Found">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	message: "Resource not found"
+}]]></dw:set-payload>
+                    <dw:set-property propertyName="http.status"><![CDATA[%dw 1.0
+%output application/java
+---
+404]]></dw:set-property>
+                </dw:transform-message>
+    </sub-flow>
     <flow name="getAvailability">
         <http:request config-ref="retail-availability-process-api" path="/availability" method="GET" doc:name="GET/products/{productId}/variants/{variantId}/availability">
             <http:request-builder>
