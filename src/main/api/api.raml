@@ -823,6 +823,10 @@ types:
                       {
                         "brand": "Anypoint",
                         "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
                         "model": "Smart Slim Micro Stripe Shirt",
                         "rating": 5,
                         "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
@@ -913,32 +917,39 @@ types:
                 },
                 "categories": [
                       {
-                        "identifier": "1",
-                        "name": "Sweaters",
-                        "description": "Sweaters"
+                          "identifier": "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                          "name": "Most popular items",
+                          "description": "Most popular items",
+                          "abstract": true
                       },
                       {
-                        "identifier": "2",
-                        "name": "Jeans",
-                        "description": "Jeans"
+                          "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
+                          "name": "Sweaters",
+                          "description": "Sweaters"
                       },
                       {
-                        "identifier": "3",
-                        "name": "Hats",
-                        "description": "Hats"
+                          "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
+                          "name": "Jeans",
+                          "description": "Jeans"
                       },
-                      {
-                        "identifier": "4",
-                        "name": "Shoes",
-                        "description": "Shoes"
+                      {     
+                          "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                          "name": "Shirts",
+                          "description": "Shirts"
                       },
-                      {
-                        "identifier": "5",
-                        "name": "Most popular items",
-                        "description": "Most popular items"
+                      {   "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",  
+                          "identifier": "67912d0b-1dfa-4a62-a552-f0d01d5b0c79",
+                          "name": "Hats",
+                          "description": "Hats"
+                      },
+                      {   
+                          "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",  
+                          "identifier": "c9032941-b3a5-4e8e-8134-baee3a751eb9",
+                          "name": "Shoes",
+                          "description": "Shoes"
                       }
                     ]
-              }
+                  }
   /{categoryId}:
     uriParameters:
       categoryId: string
@@ -952,6 +963,7 @@ types:
             application/json:
               example: |
                 {
+                    "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
                     "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
                     "name": "Shirts",
                     "description": "Shirts"
@@ -984,10 +996,11 @@ types:
                       "offset": 0,
                       "limit": 5              
                     },
-                     "products": [  
+                    "products":[  
                         {  
                            "brand":"Anypoint",
                            "identifier":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                           "categoryId": ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                            "model":"Smart Slim Micro Stripe Shirt",
                            "rating":5,
                            "description":"Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
@@ -1010,6 +1023,7 @@ types:
                         {  
                            "brand":"Anypoint",
                            "identifier":"e1c515f9-102d-4830-b353-18fe48065732",
+                           "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                            "model":"Uniforms Modern Fit Short Sleeve Polo Shirt",
                            "rating":5,
                            "description":"Machine Wash, Tumble Dry. True to Size.",
@@ -1030,8 +1044,6 @@ types:
                         }
                      ]
                   }
-
-
 /stores:
   type:
     collection.readOnlyCollection:
@@ -1705,32 +1717,34 @@ types:
                   "limit": 5                
                 },
                 "products": [
-                  {
-                    "brand": "Anypoint",
-                    "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                    "model": "Smart Slim Micro Stripe Shirt",
-                    "rating": 5,
-                    "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
-                    "pictures": [
-                      "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
-                      "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                    ],
-                    "price": {
-                      "amount": {
-                        "currency": "USD",
-                        "currencyValue": 34.90,
-                        "name": "Amount"
-                      },
-                       "salesUnit": {
-                        "code": "EA",
-                        "name": "Each"
+                      {
+                        "brand": "Anypoint",
+                        "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "model": "Smart Slim Micro Stripe Shirt",
+                        "rating": 5,
+                        "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                        "pictures": [
+                          "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                        ],
+                        "price": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 34.90,
+                            "name": "Amount"
+                          },
+                           "salesUnit": {
+                            "code": "EA",
+                            "name": "Each"
+                          }
+                        }
                       }
-                    }
+                    ]
                   }
-                ]
-              }
-              
-              
   /{productId}:
     uriParameters:
       productId: string
@@ -1746,6 +1760,10 @@ types:
                 {
                   "brand": "Anypoint",
                   "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                  "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                  "identifiers": {
+                    "SKU": "UGG-BB-PUR-06"
+                  },
                   "model": "Smart Slim Micro Stripe Shirt",
                   "rating": 5,
                   "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
@@ -1804,37 +1822,41 @@ types:
                       "limit": 10,
                       "totalItems": 1
                     },
-                    "variants": [
-                      {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                        "identifiers": {
-                          "SKU": "UGG-BB-PUR-06"
-                        },
-                        "configuration": [
-                          {
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
+                    "variants":[  
+                      {  
+                         "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                         "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                         "identifiers":{  
+                            "SKU":"UGG-BB-PUR-06"
+                         },
+                         "pictures":[  
+                            "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                            "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                         ],
+                         "configuration":[  
+                            {  
+                               "characteristic":{  
+                                  "code":"size",
+                                  "description":"Size",
+                                  "name":"Size of item"
+                               },
+                               "characteristicValue":{  
+                                  "code":"M",
+                                  "name":"Medium"
+                               }
                             },
-                            "characteristicValue": {
-                              "code": "M",
-                              "name": "Medium"
+                            {  
+                               "characteristic":{  
+                                  "code":"color",
+                                  "description":"Color",
+                                  "name":"Color"
+                               },
+                               "characteristicValue":{  
+                                  "code":"blue",
+                                  "name":"Blue"
+                               }
                             }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "blue",
-                              "name": "Blue"
-                            }
-                          }
-                        ]
+                         ]
                       }
                     ]
                   }
@@ -1850,36 +1872,40 @@ types:
               body: 
                 application/json:
                   example: |
-                    {
-                      "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                      "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                      "identifiers": {
-                        "SKU": "UGG-BB-PUR-06"
-                      },
-                      "configuration": [
-                        {
-                          "characteristic": {
-                            "code": "size",
-                            "description": "Size",
-                            "name": "Size of item"
+                    {  
+                       "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                       "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                       "identifiers":{  
+                          "SKU":"UGG-BB-PUR-06"
+                       },
+                       "pictures":[  
+                          "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                       ],
+                       "configuration":[  
+                          {  
+                             "characteristic":{  
+                                "code":"size",
+                                "description":"Size",
+                                "name":"Size of item"
+                             },
+                             "characteristicValue":{  
+                                "code":"M",
+                                "name":"Medium"
+                             }
                           },
-                          "characteristicValue": {
-                            "code": "M",
-                            "name": "Medium"
+                          {  
+                             "characteristic":{  
+                                "code":"color",
+                                "description":"Color",
+                                "name":"Color"
+                             },
+                             "characteristicValue":{  
+                                "code":"blue",
+                                "name":"Blue"
+                             }
                           }
-                        },
-                        {
-                          "characteristic": {
-                            "code": "color",
-                            "description": "Color",
-                            "name": "Color"
-                          },
-                          "characteristicValue": {
-                            "code": "blue",
-                            "name": "Blue"
-                          }
-                        }
-                      ]
+                       ]
                     }
         /availability:
           type:

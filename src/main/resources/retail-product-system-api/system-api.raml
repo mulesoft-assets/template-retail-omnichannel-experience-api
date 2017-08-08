@@ -1,5 +1,5 @@
 #%RAML 1.0
-baseUri: http://localhost:8082
+baseUri: https://mocksvc.mulesoft.com/mocks/777b6989-fd79-4575-a92f-1f8a2cd638e5
 title: dev-retail-product-system-api
 version: v1
 
@@ -7,6 +7,7 @@ types:
   product:
     properties:
       identifier?: string
+      categoryId?: string[]
       brand: string
       model: string
       rating: number
@@ -33,6 +34,8 @@ types:
   category:
     properties:
       identifier: string
+      abstract?: boolean
+      parentId?: string
       name: string
       description: string    
       
@@ -112,21 +115,35 @@ types:
                   {
                     "categories": [
                       {
-                          
+                          "identifier": "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                          "name": "Most popular items",
+                          "description": "Most popular items",
+                          "abstract": true
+                      },
+                      {
                           "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
                           "name": "Sweaters",
                           "description": "Sweaters"
                       },
                       {
-                          
                           "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
-                          "name": "Hats",
-                          "description": "Hats"
+                          "name": "Jeans",
+                          "description": "Jeans"
                       },
                       {     
                           "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
                           "name": "Shirts",
                           "description": "Shirts"
+                      },
+                      {     
+                          "identifier": "67912d0b-1dfa-4a62-a552-f0d01d5b0c79",
+                          "name": "Hats",
+                          "description": "Hats"
+                      },
+                      {     
+                          "identifier": "c9032941-b3a5-4e8e-8134-baee3a751eb9",
+                          "name": "Shoes",
+                          "description": "Shoes"
                       }
                     ]
                   }
@@ -159,6 +176,7 @@ types:
                                       {  
                                          "brand":"Anypoint",
                                          "identifier":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                                         "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                                          "model":"Smart Slim Micro Stripe Shirt",
                                          "rating":5,
                                          "description":"Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
@@ -181,6 +199,7 @@ types:
                                       {  
                                          "brand":"Anypoint",
                                          "identifier":"e1c515f9-102d-4830-b353-18fe48065732",
+                                         "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                                          "model":"Uniforms Modern Fit Short Sleeve Polo Shirt",
                                          "rating":5,
                                          "description":"Machine Wash, Tumble Dry. True to Size.",
@@ -218,6 +237,7 @@ types:
                       {
                         "brand": "Anypoint",
                         "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                         "identifiers": {
                           "SKU": "UGG-BB-PUR-06"
                         },
@@ -255,6 +275,7 @@ types:
                       {
                         "brand": "Anypoint",
                         "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
                         "identifiers": {
                           "SKU": "UGG-BB-PUR-06"
                         },
