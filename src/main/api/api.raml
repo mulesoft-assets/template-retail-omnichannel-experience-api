@@ -2,6 +2,9 @@
 baseUri: http://localhost:8081/api
 title: Retail Omnichannel Experience API
 
+traits: 
+  geoSearch: !include traits/geoSearch.raml
+
 uses:
 
   common: types/common-types.raml
@@ -117,10 +120,10 @@ types:
   InventoryCollectionResponse:
     type: hyper.CollectionResponse
     properties: 
-      inventory: inventory.Inventory[]
+      inventory: inventory.WarehouseInventory[]
       
   InventoryResponse:
-    type: inventory.Inventory
+    type: inventory.WarehouseInventory
     properties:
 
 /customers:
@@ -866,29 +869,21 @@ types:
                     },
                     "categories": [
                       {
-                        "identifier": "1",
-                        "name": "Sweaters",
-                        "description": "Sweaters"
+                          
+                          "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
+                          "name": "Sweaters",
+                          "description": "Sweaters"
                       },
                       {
-                        "identifier": "2",
-                        "name": "Jeans",
-                        "description": "Jeans"
+                          
+                          "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
+                          "name": "Hats",
+                          "description": "Hats"
                       },
-                      {
-                        "identifier": "3",
-                        "name": "Hats",
-                        "description": "Hats"
-                      },
-                      {
-                        "identifier": "4",
-                        "name": "Shoes",
-                        "description": "Shoes"
-                      },
-                      {
-                        "identifier": "5",
-                        "name": "Most popular items",
-                        "description": "Most popular items"
+                      {     
+                          "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                          "name": "Shirts",
+                          "description": "Shirts"
                       }
                     ]
                   }
@@ -946,7 +941,7 @@ types:
               }
   /{categoryId}:
     uriParameters:
-      categoryId: common.resourceId
+      categoryId: string
     type:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: CategoryResponse
@@ -957,9 +952,9 @@ types:
             application/json:
               example: |
                 {
-                  "identifier": "1",
-                  "name": "Sneakers",
-                  "description": "Sneakers"
+                    "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                    "name": "Shirts",
+                    "description": "Shirts"
                 }
                 
     /products:
@@ -989,30 +984,51 @@ types:
                       "offset": 0,
                       "limit": 5              
                     },
-                    "products": [
-                      {
-                        "brand": "Anypoint",
-                        "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "model": "Smart Slim Micro Stripe Shirt",
-                        "rating": 5,
-                        "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
-                        "pictures": [
-                          "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
-                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                        ],
-                        "price": {
-                          "amount": {
-                            "currency": "USD",
-                            "currencyValue": 34.90,
-                            "name": "Amount"
-                          },
-                           "salesUnit": {
-                            "code": "EA",
-                            "name": "Each"
-                          }
+                     "products": [  
+                        {  
+                           "brand":"Anypoint",
+                           "identifier":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                           "model":"Smart Slim Micro Stripe Shirt",
+                           "rating":5,
+                           "description":"Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                           "pictures":[  
+                              "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                              "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                           ],
+                           "price":{  
+                              "amount":{  
+                                 "currency":"USD",
+                                 "currencyValue":34.90,
+                                 "name":"Amount"
+                              },
+                              "salesUnit":{  
+                                 "code":"EA",
+                                 "name":"Each"
+                              }
+                           }
+                        },
+                        {  
+                           "brand":"Anypoint",
+                           "identifier":"e1c515f9-102d-4830-b353-18fe48065732",
+                           "model":"Uniforms Modern Fit Short Sleeve Polo Shirt",
+                           "rating":5,
+                           "description":"Machine Wash, Tumble Dry. True to Size.",
+                           "pictures":[  
+                              "https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg"
+                           ],
+                           "price":{  
+                              "amount":{  
+                                 "currency":"USD",
+                                 "currencyValue":12.95,
+                                 "name":"Amount"
+                              },
+                              "salesUnit":{  
+                                 "code":"EA",
+                                 "name":"Each"
+                              }
+                           }
                         }
-                      }
-                    ]
+                     ]
                   }
 
 
@@ -1870,42 +1886,14 @@ types:
              collection.readOnlyCollectionMember:
                collectionMemberResponseType: ProductVariantAvailabilityResponse
           get:
+            is: [ geoSearch]
             queryParameters: 
-              quantityRequested:
+              quantity:
+                required: false
                 description: | 
                   Quantity requested. If quantity in particular store is less than requested, the store will not show up in the results.
                 type: number
-                required: false
-                default: 0         
-              sku:
-                  description: |
-                    Stock keeping unit - barcode.
-                  required: false
-                  type: string     
-              latitude: 
-                  description: |
-                    Latitude of a point to search stores from. Must be used with latitude and radius parameters.
-                  type: number
-                  required: false
-                  example: 33.448377
-              longitude: 
-                  description: |
-                    Longitude of a point to search stores from. Must be used with latitude and radius parameters.
-                  type: number
-                  required: false
-                  example: -112.074037
-              radius: 
-                  description: |
-                    Distance in kilometers. Must be used in combination with latitude and longitude parameters.
-                  type: integer
-                  required: false
-                  default: 50 
-              metric: 
-                  description: |
-                    Flag indicating if the response distances to stores should be returned using the metric system. By default, responses return distances in miles.      
-                  type: boolean
-                  required: false
-                  default: false
+                default: 0
             responses:
               200: 
                 body: 
@@ -1916,37 +1904,68 @@ types:
                         "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
                         "warehousesAvailability": [
                           {
-                            "locationId": "1",
+                            "warehouseId": "1",
                             "name": "Central Warehouse",
                             "availableCount": 100    
                           }
                         ], 
                         "storesAvailability": [
                             {
-                              "quantityInStock": 334, 
-                              "storeInfo" : {
-                                  "storeId": "12345",
-                                  "name": "Store 1",
-                                  "description": "",
-                                  "notes": "",
-                                  "contact" : {
-                                    "email" : "store1@anypointstore.example.com",
-                                    "phone" : "+1-202-555-0111"
-                                  },
-                                  "address" : {
-                                    "streetLine1" : "317 Roosevelt Street",
-                                    "streetLine2" : "",
-                                    "city" : "San Francisco",
-                                    "zipCode" : "94108",
-                                    "state" : "California",
-                                    "country" : "USA"
-                                  },
-                                  "geo" : {
-                                    "latitude" : 33.448377,
-                                    "longitude" : -112.074037
-                                  }
-                              }
-                           }  
+                            "quantityInStock" : 55,
+                            "storeInfo": {
+                              "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                              "name": "Anypoint Store 1",
+                              "description": "Department store chain providing brand-name c",
+                              "notes": "",
+                              "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                              "address": {
+                                "streetLine1": "170 O'Farrell St",
+                                "streetLine2": "",
+                                "city": "San Francisco",
+                                "zipCode": "94102",
+                                "state": "California",
+                                "country": "USA"
+                              },
+                              "contact": {
+                                "email": "store1@anypointstore.example.com",
+                                "phone": "+1-202-555-0111"
+                              },
+                              "geo": {
+                                "latitude": 37.78703308105469,
+                                "longitude": -122.4060287475586
+                              },
+                              "distance": 0.12951756569805717,
+                              "distanceUnit": "km"
+                            }
+                          },
+                          {
+                            "quantityInStock": 66,
+                            "storeInfo" : {
+                              "storeId": "47dc46d1-9a2a-4ca1-8063-22aab7ddcd45",
+                              "name": "Anypoint Store 2",
+                              "description": "Department store chain providing brand-name c",
+                              "notes": "",
+                              "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                              "address": {
+                                "streetLine1": "1 Stonestown Mall",
+                                "streetLine2": "",
+                                "city": "San Francisco",
+                                "zipCode": "94132",
+                                "state": "California",
+                                "country": "USA"
+                              },
+                              "contact": {
+                                "email": "store2@anypointstore.example.com",
+                                "phone": "+1-202-555-0124"
+                              },
+                              "geo": {
+                                "latitude": 37.72914505004883,
+                                "longitude": -122.4768295288086
+                              },
+                              "distance": 9.077742316846548,
+                              "distanceUnit": "km"
+                            }
+                          }
                         ] 
                       }
 
