@@ -12,11 +12,9 @@ uses:
 types:
 
   Category:
-    type: object
     properties:
-      identifier:
-        type: string
-      name:
-        type: string
-      description:
-        type: string  
+      identifier: string
+      abstract?: boolean
+      parentId?: string
+      name: string
+      description: string  
