@@ -168,7 +168,8 @@ payload]]></dw:set-payload>
 	items: payload.items map {
 		productId: $.item.productId,
 		variantId: $.item.identifier, 
-		quantity: $.quantity.amount	 		
+		quantity: $.quantity.amount,
+		location: $.location 		
 	}
 }]]]></dw:set-payload>
         </dw:transform-message>
@@ -212,7 +213,8 @@ payload
 items: payload.items map {
 		productId: $.item.productId,
 		variantId: $.item.identifier, 
-		quantity: $.quantity.amount	 		
+		quantity: $.quantity.amount,
+		location: $.location	 		
 	}]]></dw:set-payload>
         </dw:transform-message>
 
@@ -252,7 +254,7 @@ payload]]></dw:set-payload>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload.shoppingCarts
+payload
 ]]></dw:set-payload>
         </dw:transform-message>
     </flow>

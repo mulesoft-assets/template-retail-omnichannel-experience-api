@@ -682,6 +682,11 @@ types:
                                     "customerId": "11e7-93ae-92361f002671",
                                     "items": [
                                       {
+                                        "location": {
+                                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                          "deliveryMethod": "PICKUP",
+                                          "locationType": "STORE"     
+                                        },
                                         "item": {
                                           "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                                           "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
@@ -699,9 +704,14 @@ types:
                                     "customerId": "11e7-93ae-92361f002671",
                                     "items": [
                                       {
+                                        "location": {
+                                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                          "deliveryMethod": "PICKUP",
+                                          "locationType": "STORE"     
+                                        },
                                         "item": {
                                           "productId": "eb8c8ca7-3c42-5489-a820-3aa138430b70",
-                                          "identifier": "8866846-2c6d-4fa7-9e17-4b2c42e0f051"
+                                          "identifier": "8866846-2c6d-4fa7-9e17-4b2c42e0f051" 
                                         },
                                         "quantity": {
                                           "amount": 1,
@@ -1925,75 +1935,63 @@ types:
                 body: 
                   application/json:
                     example: |
-                      {
-                        "productId": "122332665555",
-                        "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                        "warehousesAvailability": [
-                          {
-                            "warehouseId": "1",
-                            "name": "Central Warehouse",
-                            "availableCount": 100    
-                          }
-                        ], 
-                        "storesAvailability": [
+                        {
+                          "productId": "122332665555",
+                          "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                          "warehousesAvailability": [
                             {
-                            "quantityInStock" : 55,
-                            "storeInfo": {
-                              "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                              "name": "Anypoint Store 1",
-                              "description": "Department store chain providing brand-name c",
-                              "notes": "",
-                              "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
-                              "address": {
-                                "streetLine1": "170 O'Farrell St",
-                                "streetLine2": "",
-                                "city": "San Francisco",
-                                "zipCode": "94102",
-                                "state": "California",
-                                "country": "USA"
-                              },
-                              "contact": {
-                                "email": "store1@anypointstore.example.com",
-                                "phone": "+1-202-555-0111"
-                              },
-                              "geo": {
-                                "latitude": 37.78703308105469,
-                                "longitude": -122.4060287475586
-                              },
-                              "distance": 0.12951756569805717,
-                              "distanceUnit": "km"
+                              "warehouseId": "1",
+                              "name": "Central Warehouse",
+                              "availableCount": 100    
                             }
-                          },
-                          {
-                            "quantityInStock": 66,
-                            "storeInfo" : {
-                              "storeId": "47dc46d1-9a2a-4ca1-8063-22aab7ddcd45",
-                              "name": "Anypoint Store 2",
-                              "description": "Department store chain providing brand-name c",
-                              "notes": "",
-                              "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
-                              "address": {
-                                "streetLine1": "1 Stonestown Mall",
-                                "streetLine2": "",
-                                "city": "San Francisco",
-                                "zipCode": "94132",
-                                "state": "California",
-                                "country": "USA"
-                              },
-                              "contact": {
-                                "email": "store2@anypointstore.example.com",
-                                "phone": "+1-202-555-0124"
-                              },
-                              "geo": {
-                                "latitude": 37.72914505004883,
-                                "longitude": -122.4768295288086
-                              },
-                              "distance": 9.077742316846548,
-                              "distanceUnit": "km"
+                          ], 
+                          "partnersAvailability": [
+                            {
+                              "quantityInStock": 20,
+                              "productPrice": 36.9,
+                              "tax": 3.69,
+                              "partnerInfo": {
+                                "partnerId": "2d9df8be-a185-4dde-9577-d6edf6cdb398",
+                                "name": "Best Amazing Store",
+                                "description": "",
+                                "email": "info@luckystore.example.com",
+                                "phone": "+1-202-555-0119",
+                                "url": "www.luckystore.example.com",
+                                "shippingPrice": 5.5
+                              }
                             }
-                          }
-                        ] 
-                      }
+                          ],   
+                          "storesAvailability": [
+                              {
+                              "quantityInStock" : 55,
+                              "storeInfo": {
+                                "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                "name": "Anypoint Store 1",
+                                "description": "Department store chain providing brand-name c",
+                                "notes": "",
+                                "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                                "address": {
+                                  "streetLine1": "170 O'Farrell St",
+                                  "streetLine2": "",
+                                  "city": "San Francisco",
+                                  "zipCode": "94102",
+                                  "state": "California",
+                                  "country": "USA"
+                                },
+                                "contact": {
+                                  "email": "store1@anypointstore.example.com",
+                                  "phone": "+1-202-555-0111"
+                                },
+                                "geo": {
+                                  "latitude": 37.78703308105469,
+                                  "longitude": -122.4060287475586
+                                },
+                                "distance": 0.12951756569805717,
+                                "distanceUnit": "km"
+                              }
+                            }
+                          ] 
+                        }
 
 /shoppingCarts:
   type:
@@ -2025,7 +2023,12 @@ types:
                     "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
                     "customerId": "11e7-93ae-92361f002671",
                     "items": [
-                      {
+                      {     
+                        "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                        }, 
                         "item": {
                           "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                           "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
@@ -2076,9 +2079,15 @@ types:
               "items": 
                   [
                     {
+                      "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                       }, 
                       "item": {
                         "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                         "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                         
                       },
                       "quantity": {
                         "amount": 2,
@@ -2087,6 +2096,11 @@ types:
                       }
                     },
                     {
+                      "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                        }, 
                       "item": {
                         "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                         "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
@@ -2110,9 +2124,17 @@ types:
                   "items": 
                     [
                         {
+                          "location": {
+                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                            "deliveryMethod": "PICKUP",
+                            "locationType": "STORE"     
+                          }, 
                           "item": {
                             "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                             "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                             "deliveryMethod": "PICKUP",
+                              "locationType": "STORE" 
                           },
                           "quantity": {
                             "amount": 2,
@@ -2121,6 +2143,11 @@ types:
                           }
                         },
                         {
+                          "location": {
+                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                            "deliveryMethod": "PICKUP",
+                            "locationType": "STORE"     
+                          }, 
                           "item": {
                             "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
                             "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
@@ -2151,6 +2178,11 @@ types:
                   "customerId": "11e7-93ae-92361f002671",
                   "items": [
                     {
+                      "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                        }, 
                       "item": {
                         "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                         "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
@@ -2198,6 +2230,11 @@ types:
               "items": 
                 [
                     {
+                      "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                        },  
                       "item": {
                         "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                         "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
@@ -2209,6 +2246,11 @@ types:
                       }
                     },
                     {
+                      "location": {
+                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                          "deliveryMethod": "PICKUP",
+                          "locationType": "STORE"     
+                        }, 
                       "item": {
                         "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
                         "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
@@ -2230,6 +2272,11 @@ types:
                   "items": 
                     [
                         {
+                          "location": {
+                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                            "deliveryMethod": "PICKUP",
+                            "locationType": "STORE"     
+                          }, 
                           "item": {
                             "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
                             "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
@@ -2241,6 +2288,11 @@ types:
                           }
                         },
                         {
+                          "location": {
+                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                            "deliveryMethod": "PICKUP",
+                            "locationType": "STORE"     
+                          }, 
                           "item": {
                             "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
                             "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"

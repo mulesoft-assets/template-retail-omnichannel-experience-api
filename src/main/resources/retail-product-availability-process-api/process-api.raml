@@ -26,9 +26,11 @@ types:
       distanceUnit?: 
         type: string
         enum: [mi, km]
-              
+  
   ContactInfo:
     type: object
+    description: | 
+      Contact information 
     properties: 
       email: string
       phone: string
@@ -73,6 +75,27 @@ types:
         minimum: 0
       lastUpdated?: datetime
   
+  
+  PartnerInfo:
+    type: object
+    properties: 
+      partnerId?: string
+      name: string
+      description?: string
+      email: string
+      phone: string
+      url: string
+      shippingPrice: number
+  
+  PartnerAvailabilityData:
+    type: object
+    properties: 
+      partnerInfo: PartnerInfo
+      quantityInStock: integer
+      productPrice: number
+      tax: number
+      quantityReserved?: integer
+  
   Availability:
     type: object
     properties:
@@ -80,7 +103,7 @@ types:
       variantId: string
       warehousesAvailability: WarehouseInventory[]
       storesAvailability:  StoreAvailabilityData[]
-        
+      partnersAvailability: PartnerAvailabilityData[]
         
   Reservation: 
     type: object
@@ -90,6 +113,9 @@ types:
       customerId: string
       quantity: integer
       locationId: string
+      locationType: 
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
       deliveryMethod: 
         type: string
         enum: [SHIPMENT, PICKUP]
@@ -102,91 +128,31 @@ types:
         body: 
           application/json:
             type: Availability
-            example: |
-              {
-                "productId": "122332665555",
-                "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                "warehousesAvailability": [
-                  {
-                    "warehouseId": "1",
-                    "name": "Central Warehouse",
-                    "availableCount": 100    
-                  }
-                ], 
-                "storesAvailability": [
-                    {
-                    "quantityInStock" : 55,
-                    "storeInfo": {
-                      "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                      "name": "Anypoint Store 1",
-                      "description": "Department store chain providing brand-name c",
-                      "notes": "",
-                      "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
-                      "address": {
-                        "streetLine1": "170 O'Farrell St",
-                        "streetLine2": "",
-                        "city": "San Francisco",
-                        "zipCode": "94102",
-                        "state": "California",
-                        "country": "USA"
-                      },
-                      "contact": {
-                        "email": "store1@anypointstore.example.com",
-                        "phone": "+1-202-555-0111"
-                      },
-                      "geo": {
-                        "latitude": 37.78703308105469,
-                        "longitude": -122.4060287475586
-                      },
-                      "distance": 0.12951756569805717,
-                      "distanceUnit": "km"
-                    }
-                  },
-                  {
-                    "quantityInStock": 66,
-                    "storeInfo" : {
-                      "storeId": "47dc46d1-9a2a-4ca1-8063-22aab7ddcd45",
-                      "name": "Anypoint Store 2",
-                      "description": "Department store chain providing brand-name c",
-                      "notes": "",
-                      "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
-                      "address": {
-                        "streetLine1": "1 Stonestown Mall",
-                        "streetLine2": "",
-                        "city": "San Francisco",
-                        "zipCode": "94132",
-                        "state": "California",
-                        "country": "USA"
-                      },
-                      "contact": {
-                        "email": "store2@anypointstore.example.com",
-                        "phone": "+1-202-555-0124"
-                      },
-                      "geo": {
-                        "latitude": 37.72914505004883,
-                        "longitude": -122.4768295288086
-                      },
-                      "distance": 9.077742316846548,
-                      "distanceUnit": "km"
-                    }
-                  }
-                ] 
-              }
+            example: !include examples/get_availability_response.raml
                     
+/locations:
+  /{locationId}: 
+    /availability:       
+        get:
+          is: [  geoSearch, productSearch ]
+          queryParameters: 
+              locationType:
+                required: true
+                type: string
+                enum: [STORE, WAREHOUSE, PARTNER]
+          responses:
+            200: 
+              body: 
+                application/json:
+                  example: !include examples/get_availability_for_location.raml
+
+
 /reservation: 
   post:
     body:
       application/json:
         type: Reservation 
-        example: {
-          "productId": "122332665555",  
-          "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-          "customerId": "12324566545", 
-          "deliveryMethod": "SHIPMENT",
-          "locationId": "123",
-          "quantity": 2
-        
-        }
+        example: !include examples/post_reservation_request.raml
     responses:
       201: 
         body:

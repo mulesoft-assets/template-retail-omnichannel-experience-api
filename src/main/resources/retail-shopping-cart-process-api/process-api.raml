@@ -1,24 +1,67 @@
 #%RAML 1.0
 title: Retail Shopping Cart Process API
-version: v1.0
+version: dev
 baseUri: https://localhost:8082/api
 
 types:
   
-  item: 
+  Item: 
     type: object
     properties: 
-      productId: string
-      variantId: string
-      quantity: number
-       
-  shoppingCart: 
+      productId: 
+        type: string
+        description: | 
+          Identifier of product
+      variantId: 
+        type: string
+        description: | 
+          Identifier of variant
+      location?: 
+        type: Location
+        description: 
+          Location information
+      quantity:  
+        type: integer
+        description: |
+          Number of product (variant)
+        
+  Location: 
+    type: object
+    properties:      
+      locationId?: 
+        type: string?
+        description: | 
+          Identifier of location (storeId or warehouseId or partnerId)
+      locationType?:
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
+        description: |
+          Type of location 
+      deliveryMethod?: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery   
+           
+  ShoppingCart: 
     type: object
     properties:
-      shoppingCardId?: string
-      customerId?: string
-      items?: item[]
-      created?: datetime
+      shoppingCardId?:
+        type: string
+        description: | 
+          Identifier of shopping cart
+      customerId?:
+        type: string
+        description: | 
+          Identifier of customer
+      items?: 
+        type: Item[]
+        description: | 
+          Items of shopping cart
+      created?: 
+        type: datetime
+        description: | 
+          timestamp of creating the shopping cart
           
       
 /shoppingCarts:
@@ -26,25 +69,8 @@ types:
     description: Create shopping Cart
     body:
       application/json:
-        type: shoppingCart[]
-        example: |
-           [                  
-                  {
-                    "customerId": "provider_0123456789",
-                    "items": [
-                      {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                        "quantity": 2
-                      },
-                      {
-                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                        "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
-                        "quantity": 1
-                      }
-                    ]
-                  }
-           ]
+          type: ShoppingCart[]
+          example: !include examples/shopping-carts_post_request.raml
               
     responses:
       201:
@@ -62,110 +88,17 @@ types:
         200:
           body: 
             application/json: 
-              example: 
-                {
-                  "identifier": "278f1310-67bc-11e7-88f0-d88b20524153",
-                  "customerId": "provider_0123456789",
-                  "items": [
-                    {
-                      "item": {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                        "identifiers": {
-                          "SKU": "UGG-BB-PUR-06"
-                        },
-                        "configuration": [
-                          {
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
-                            },
-                            "characteristicValue": {
-                              "code": "M",
-                              "name": "Medium"
-                            }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "blue",
-                              "name": "Blue"
-                            }
-                          }
-                        ],
-                        "quantity": {
-                          "amount": 5,
-                          "quantityType": "DISCRETE",
-                          "unit": "EA"
-                        }
-                      }
-                    },
-                    {
-                      "item": {
-                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                        "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f",
-                        "identifiers": {
-                          "SKU": "UGG-BB-PUR-06"
-                        },
-                        "configuration": [
-                          {
-                            "characteristic": {
-                              "code": "size",
-                              "description": "Size",
-                              "name": "Size of item"
-                            },
-                            "characteristicValue": {
-                              "code": "L",
-                              "name": "Large"
-                            }
-                          },
-                          {
-                            "characteristic": {
-                              "code": "color",
-                              "description": "Color",
-                              "name": "Color"
-                            },
-                            "characteristicValue": {
-                              "code": "tan",
-                              "name": "Tan"
-                            }
-                          }
-                        ],
-                        "quantity": {
-                          "amount": 3,
-                          "quantityType": "DISCRETE",
-                          "unit": "EA"
-                        }
-                      }
-                    }
-                  ]
-                }
+              example: !include examples/shopping-cart_get_response.raml
+                
 
     put:
       description: Update shopping cart  
       body:
         application/json:
-          type: shoppingCart
-          example: 
-                {
-                  "items": [
-                    {
-                      "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                      "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                      "quantity": 2
-                    },
-                    {
-                      "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                      "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
-                      "quantity": 1
-                    }
-                  ]
-                }
+          type: ShoppingCart
+          example:  !include examples/shopping-cart_put_request.raml  
+            
+                
       responses:
         200:
           body: 
@@ -194,25 +127,8 @@ types:
         responses:
             200:
               body:
-                application/json: 
-                  example: |
-                    [
-                      {
-                        "shoppingCardId": "734a04dc-2f30-11e7-93ae-92361f002671",
-                        "customerId": "provider_0123456789",
-                        "items": [
-                          {
-                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                            "quantity": 2
-                          },
-                          {
-                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                            "variantId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
-                            "quantity": 1
-                          }
-                        ]
-                       }
-                      ]
+                application/json:
+                  type: ShoppingCart[]
+                  example: !include examples/shopping-cart_customer_get_response.raml
                     
               

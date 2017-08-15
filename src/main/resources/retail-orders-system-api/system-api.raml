@@ -1,36 +1,96 @@
 #%RAML 1.0
 baseUri: http://localhost:8081/api
-title: dev-retail-order-system-api
-version: v1
+title: Retail Orders System API
+version: dev
 
 types: 
-  orderItem:
-    properties: 
-      orderItemId: string
-      productName: string
-      quantity: integer
-      
-  order:
-    properties: 
-      id? : string
-      customerId?: string
-      orderItems: orderItem[]
-      status: status
-      price: string
-  statusRequest:
-    properties:
-      status: status
-  status:
-    enum: [Draft, Completed, Processing]
-     
 
-  orders: order[]
+  OrderItem:
+    type: object
+    description: |
+          Information about ordered product (variant)
+    properties: 
+      orderItemId: 
+        type: string
+        description: |
+          Identifier of item which represents variantId
+      productId: 
+        type: string
+        description: |
+          Identifier of product
+      productName:
+        type: string
+        description: |
+          Name of product
+      locationId: 
+        type: string
+        description: |
+          Identifier of location (storeId or warehouseId or partnerId)
+      deliveryMethod: 
+        type: string 
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery
+      quantity:  
+        type: integer
+        description: |
+          Number of ordered product
   
+  OrderItems: 
+    type: object
+    description: |
+      Lists of ordered products (variant)
+    properties: 
+      pickupItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in stores
+      shipmentItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in warehouses
+      partnersItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in partners shops
+  
+  StatusRequest:
+    properties:
+      status: Status
+    
+  Status:
+    type: string
+    enum: [Draft, Completed, Processing]
+    
+  Order:
+    properties: 
+      orderId? :
+        type: string
+        description: |
+          Identifier of order
+      customerId?: 
+        type: string
+        description: |
+          Identifier of customer
+      orderItems?:
+        type: OrderItems
+        description: |
+          Lists of ordered products
+      status?:
+        type: Status
+        description: |
+          Status of order
+      price?: 
+        type: string
+        description: |
+          total price for order (with tax and shipping)
+  
+
+      
 /orders:
   /customer/{customerId}:
-    displayName: Order
+    displayName: Orders
     get:
-  #     is: [ collection ]
       description: Lists the user orders
       queryParameters:
         trackingNumber:
@@ -41,8 +101,8 @@ types:
         200:
           body:
             application/json:
-              type: orders
-              example: !include examples/order_collection_example.raml
+              type: Order[]
+              example: !include examples/order_collection_get_response.raml
         404:
           body:
             application/json:
@@ -54,7 +114,7 @@ types:
       description: Create a new Order.
       body:
         application/json:
-          type: order
+          type: Order
           example: !include examples/order_post_request.raml
       responses:
         201:
@@ -68,22 +128,15 @@ types:
                 {
                   "message": "Bad Request"
                 }
-  /{id}:
-    displayName: Order ID
-    uriParameters:
-      id:
-        type: string
-        example: "8010J000001zdVsQAI"
-        minLength: 18
-        maxLength: 18
-        required: true
+  /{orderId}:
     get:
       responses:
         200:
           body:
             application/json:
-              type: order
-              example: !include examples/order_example.raml
+              type: Order
+              example: !include examples/order_get_response.raml
+
         404:
           body:
             application/json:
@@ -94,6 +147,8 @@ types:
     put:
       body:
         application/json:
+          type: Order
+          example:  !include examples/order_put_request.raml
       responses:
         200:
           body:
@@ -144,8 +199,8 @@ types:
       put:
         body:
           application/json:
-            type: statusRequest
-            example: !include examples/order_status_update_request.raml
+            type: StatusRequest
+            example: !include examples/order_status_put_request.raml
         responses:
           200:
             body:

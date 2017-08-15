@@ -20,4 +20,24 @@ types:
         type: quantity.Quantity
       item:
         type: product.ProductVariant
+      location: 
+        type: Location
+        
+  Location:
+    type: object
+    properties:      
+      locationId: 
+        type: string?
+        description: | 
+          Identifier of location (storeId or warehouseId or partnerId)
+      locationType:
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
+        description: |
+          Type of location 
+      deliveryMethod: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery      
         
