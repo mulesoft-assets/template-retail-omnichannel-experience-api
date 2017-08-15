@@ -76,6 +76,27 @@ types:
         minimum: 0
       lastUpdated?: datetime
   
+  PartnerInfo:
+    type: object
+    properties: 
+      partnerId?: string
+      name: string
+      description?: string
+      email: string
+      phone: string
+      url: string
+      shippingPrice: number
+  
+  PartnerAvailabilityData:
+    type: object
+    properties: 
+      partnerInfo: PartnerInfo
+      quantityInStock: integer
+      productPrice: number
+      tax: number
+      quantityReserved?: integer
+  
+  
   Availability:
     type: object
     properties:
@@ -83,4 +104,5 @@ types:
       variantId: string
       warehousesAvailability: WarehouseInventory[]
       storesAvailability:  StoreAvailabilityData[]
+      partnersAvailability: PartnerAvailabilityData[]
                 
