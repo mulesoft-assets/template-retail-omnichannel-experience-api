@@ -391,6 +391,7 @@ using(orderRequest = flowVars.order)
 	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
 		productId: orderItem.item.productId,
+		location: orderItem.location,
 		quantity: orderItem.quantity.amount,
 		price: orderItem.itemUnitPrice.amount.currencyValue as :string,
 		name: (flowVars.products filter ($.productId == orderItem.item.productId))[0].name
@@ -422,18 +423,30 @@ payload]]></dw:set-payload>
 
     </flow>
     <flow name="getAvailability">
-        <http:request config-ref="retail-availability-process-api" path="/availability" method="GET" doc:name="GET/products/{productId}/variants/{variantId}/availability">
-            <http:request-builder>
-                <http:query-param paramName="productId" value="#[flowVars.productId]"/>
-                <http:query-param paramName="variantId" value="#[flowVars.productVariantId]"/>
-                <http:query-param paramName="quantity" value="#[message.inboundProperties.'http.query.params'.quantity]"/>
-                <http:query-param paramName="metric" value="#[message.inboundProperties.'http.query.params'.metric]"/>
-                <http:query-param paramName="radius" value="#[message.inboundProperties.'http.query.params'.radius]"/>
-                <http:query-param paramName="latitude" value="#[message.inboundProperties.'http.query.params'.latitude]"/>
-                <http:query-param paramName="longitude" value="#[message.inboundProperties.'http.query.params'.longitude]"/>
-
-            </http:request-builder>
-        </http:request>
+        	<choice doc:name="Base location known?">
+                    <when expression="#[message.inboundProperties.'http.query.params'.latitude != null &amp;&amp; message.inboundProperties.'http.query.params'.longitude != null]">
+                        <http:request config-ref="retail-availability-process-api" path="/availability" method="GET" doc:name="GET/products/{productId}/variants/{variantId}/availability">
+            				<http:request-builder>
+				                <http:query-param paramName="productId" value="#[flowVars.productId]"/>
+				                <http:query-param paramName="variantId" value="#[flowVars.productVariantId]"/>
+				                <http:query-param paramName="quantity" value="#[message.inboundProperties.'http.query.params'.quantity]"/>
+				                <http:query-param paramName="metric" value="#[message.inboundProperties.'http.query.params'.metric]"/>
+				                <http:query-param paramName="radius" value="#[message.inboundProperties.'http.query.params'.radius]"/>
+				                <http:query-param paramName="latitude" value="#[message.inboundProperties.'http.query.params'.latitude]"/>
+				                <http:query-param paramName="longitude" value="#[message.inboundProperties.'http.query.params'.longitude]"/>
+				            </http:request-builder>
+				        </http:request>    
+                    </when>
+                    <otherwise>
+                        <http:request config-ref="retail-availability-process-api" path="/availability" method="GET" doc:name="GET/products/{productId}/variants/{variantId}/availability">
+                            <http:request-builder>
+				                <http:query-param paramName="productId" value="#[flowVars.productId]"/>
+				                <http:query-param paramName="variantId" value="#[flowVars.productVariantId]"/>
+				                <http:query-param paramName="quantity" value="#[message.inboundProperties.'http.query.params'.quantity]"/>
+                            </http:request-builder>
+                        </http:request>
+                    </otherwise>
+                </choice>
         <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
