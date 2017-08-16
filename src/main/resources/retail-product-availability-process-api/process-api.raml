@@ -103,7 +103,7 @@ types:
       variantId: string
       warehousesAvailability: WarehouseInventory[]
       storesAvailability:  StoreAvailabilityData[]
-      partnersAvailability: PartnerAvailabilityData[]
+      partnersAvailability: PartnerAvailabilityData[] 
         
   Reservation: 
     type: object
@@ -116,9 +116,6 @@ types:
       locationType: 
         type: string
         enum: [STORE, WAREHOUSE, PARTNER]
-      deliveryMethod: 
-        type: string
-        enum: [SHIPMENT, PICKUP]
   
 /availability:       
   get:
@@ -144,10 +141,13 @@ types:
             200: 
               body: 
                 application/json:
-                  example: !include examples/get_availability_for_location.raml
+                  example: |
+                         {
+                              "quantity" : 55
+                         }
 
 
-/reservation: 
+/reservation:
   post:
     body:
       application/json:

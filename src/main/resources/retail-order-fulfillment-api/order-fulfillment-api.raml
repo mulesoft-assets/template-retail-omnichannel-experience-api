@@ -9,6 +9,8 @@ types:
   OrderItem: 
     properties:
       itemId: string
+      productId: string
+      location: Location
       quantity: integer
       price?: string
       name: string
@@ -19,7 +21,23 @@ types:
       orderItems: OrderItem[]
       price: string
       
-
+  Location: 
+    type: object
+    properties:      
+      locationId?: 
+        type: string?
+        description: | 
+          Identifier of location (storeId or warehouseId or partnerId)
+      locationType?:
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
+        description: |
+          Type of location 
+      deliveryMethod?: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery   
 /orders:
   post:
     body: 
@@ -31,12 +49,18 @@ types:
             "orderItems": [
               {
                 "itemId": "1",
-                "name": "Men's polo shirt",
+                "productId": "1",
+                "location" : {
+                  "locationId": "1",
+                  "locationType": "STORE",
+                  "deliveryMethod": "PICKUP"
+                },
+                "name": "Supersonic Electronic",
                 "quantity": 4
               }
             ],
             "status": "draft",
-            "price": "39"
+            "price": "1304"
           }
     responses:
       201: 
@@ -48,4 +72,3 @@ types:
                 "orderId": "123456789",
                 "message": null
               }
-    
