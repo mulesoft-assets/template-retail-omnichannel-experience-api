@@ -14,6 +14,24 @@ uses:
 
 types:
 
+  Location:
+    type: object
+    properties:      
+      locationId: 
+        type: string?
+        description: | 
+          Identifier of location (storeId or warehouseId or partnerId)
+      locationType:
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
+        description: |
+          Type of location 
+      deliveryMethod: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery 
+
   OrderItem:
     description: |
       an individual component of an order
@@ -21,6 +39,7 @@ types:
     properties:
       quantity:
         type: quantity.Quantity
+      location: Location
       item:
         type: product.ProductVariant
       itemUnitPrice:
