@@ -65,6 +65,18 @@ This endpoint will trigger flow createOrder which creates new order by customer.
 ### GET/customers/{customerId}/orders/
 This endpoint will trigger flow getOrdersByCustomer which obtains list of orders for customer based on the customerId.
 
+### GET/stores
+This endpoint will trigger flow getStores which obtains list of stores.
+
+### GET/stores/{storeId}
+This endpoint will trigger flow getStore which obtains store based on the storeId.
+
+### GET/partners
+This endpoint will trigger flow getPartners which obtains list of partner stores.
+
+### GET/partners/{partnerId}
+This endpoint will trigger flow getPartner which obtains partner store based on the partnerId.
+
 # Considerations <a name="considerations"/>
 
 To make this Anypoint Template run, there are certain preconditions that must be considered. **Failling to do so could lead to unexpected behavior of the template.**
@@ -147,3 +159,13 @@ Detailed list with examples:
 + shopping-cart-proces-api.host=`shopping-cart.example.com`
 + shopping-cart-proces-api.port=`80`
 + shopping-cart-proces-api.baseUrl=`/api`
+
+####Locations system API
++ locations-system-api.host=`locations.example.com`
++ locations-system-api.port=`80`
++ locations-system-api.baseUrl=`/api`
+
+####Partners system API
++ partners-system-api.host=`partners.example.com`
++ partners-system-api.port=`80`
++ partners-system-api.baseUrl=`/api`

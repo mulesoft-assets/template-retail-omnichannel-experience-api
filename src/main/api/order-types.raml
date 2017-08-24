@@ -23,7 +23,7 @@ types:
     type: object
     properties:
       customerId: common.resourceId
-      fulfillment:
+      fulfillment?:
         type: fulfillment.Fulfillment
     
   SalesOrder:
@@ -33,3 +33,81 @@ types:
       orderItems:
         type: SalesOrderItem[]
         
+        
+  OrderItem:
+    type: object
+    description: |
+          Information about ordered product (variant)
+    properties: 
+      orderItemId: 
+        type: string
+        description: |
+          Identifier of item which represents variantId
+      productId: 
+        type: string
+        description: |
+          Identifier of product
+      productName:
+        type: string
+        description: |
+          Name of product
+      locationId: 
+        type: string
+        description: |
+          Identifier of location (storeId or warehouseId or partnerId)
+      deliveryMethod: 
+        type: string 
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery
+      quantity:  
+        type: integer
+        description: |
+          Number of ordered product
+  
+  OrderItems: 
+    type: object
+    description: |
+      Lists of ordered products (variant)
+    properties: 
+      pickupItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in stores
+      shipmentItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in warehouses
+      partnersItems?: 
+        type: OrderItem[]
+        description: |
+            Order Items in partners shops
+    
+  Status:
+    type: string
+    enum: [Draft, Completed, Processing]
+    
+  Order:
+    properties: 
+      orderId? :
+        type: string
+        description: |
+          Identifier of order
+      customerId?: 
+        type: string
+        description: |
+          Identifier of customer
+      orderItems?:
+        type: OrderItems
+        description: |
+          Lists of ordered products
+      trackingNumber?: 
+        type: string 
+      status?:
+        type: Status
+        description: |
+          Status of order
+      price?: 
+        type: string
+        description: |
+          total price for order (with tax and shipping)

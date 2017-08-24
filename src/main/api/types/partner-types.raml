@@ -1,0 +1,22 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides information about partners
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+
+types:
+        
+  PartnerInfo:
+    type: object
+    properties: 
+      partnerId?: string
+      name: string
+      description?: string
+      email: string
+      phone: string
+      url: string
+      shippingPrice: number

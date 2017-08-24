@@ -1,0 +1,55 @@
+#%RAML 1.0 Library
+
+usage: |
+  provides information about stores
+
+uses:
+  common: common-types.raml
+  meta: metadata-types.raml
+  hyper: hypermedia-types.raml
+
+types:
+        
+  StoreInfo:
+    type: object
+    properties: 
+      storeId?: string
+      name: string
+      description?: string
+      notes?: string
+      openingHours:
+        type: string
+        example: "Mo,Tu,We,Th,Fr 08:00-18:00"
+      contact: ContactInfo
+      address: Address
+      geo: Geo
+      distance?: number
+      distanceUnit?: 
+        type: string
+        enum: [mi, km]
+              
+  ContactInfo:
+    type: object
+    properties: 
+      email: string
+      phone: string
+      
+  Address:
+    type: object
+    properties: 
+      streetLine1: string
+      streetLine2: string
+      city: string
+      zipCode: string
+      state: string
+      country: string
+      
+  Geo:
+    type: object
+    properties: 
+      latitude: 
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
