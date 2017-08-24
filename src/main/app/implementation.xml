@@ -414,13 +414,84 @@ using(orderRequest = flowVars.order)
             </http:request-builder>
         </http:request>
         <dw:transform-message doc:name="Response message">
-        	<dw:input-payload mimeType="application/json"/>
+            <dw:input-payload doc:sample="sample_data\json.json" mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 payload]]></dw:set-payload>
         </dw:transform-message>
 
+
+    </flow>
+    <flow name="getStores">
+        <http:request config-ref="retail-locations-system-api" path="/stores" method="GET" doc:name="GET/stores"/>
+        <dw:transform-message doc:name="Transform Message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload.results]]></dw:set-payload>
+        </dw:transform-message>
+        <logger level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="getStore">
+        <http:request config-ref="retail-locations-system-api" path="/stores/{storeId}" method="GET" doc:name="GET/stores/{storeId}">
+            <http:request-builder>
+                <http:uri-param paramName="storeId" value="#[flowVars.storeId]"/>
+
+            </http:request-builder>
+       		<http:success-status-code-validator values="200,404"/>
+         </http:request>
+         <choice doc:name="Found?">
+             <when expression="#[message.inboundProperties.'http.status' == 200]">
+                 <dw:transform-message doc:name="Response message">
+                     <dw:input-payload mimeType="application/json"/>
+                     <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload
+]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
+    </flow>
+        <flow name="getPartners">
+        <http:request config-ref="retail-partners-system-api" path="/partners" method="GET" doc:name="GET/partners"/>
+        <dw:transform-message doc:name="Transform Message">
+        	<dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload.results]]></dw:set-payload>
+        </dw:transform-message>
+        <logger level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="getPartner">
+        <http:request config-ref="retail-partners-system-api" path="/partners/{partnerId}" method="GET" doc:name="GET/partners/{partnerId}">
+            <http:request-builder>
+                <http:uri-param paramName="partnerId" value="#[flowVars.partnerId]"/>
+
+            </http:request-builder>
+       		<http:success-status-code-validator values="200,404"/>
+         </http:request>
+         <choice doc:name="Found?">
+             <when expression="#[message.inboundProperties.'http.status' == 200]">
+                 <dw:transform-message doc:name="Response message">
+                     <dw:input-payload mimeType="application/json"/>
+                     <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload
+]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
     </flow>
     <flow name="getAvailability">
         	<choice doc:name="Base location known?">

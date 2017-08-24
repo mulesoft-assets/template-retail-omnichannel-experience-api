@@ -250,7 +250,13 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <set-payload value="{&#xA;_links: {&#xA;self: {&#xA;href: https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/shoppingCarts/734a04dc-2f30-11e7-93ae-92361f002671&#xA;}&#xA;},&#xA;_meta: {&#xA;messages: Array[],&#xA;totalItems: 1,&#xA;offset: 0,&#xA;limit: 10&#xA;},&#xA;shoppingCarts: Array[{&#xA;identifier: 734a04dc-2f30-11e7-93ae-92361f002671,&#xA;customerId: 11e7-93ae-92361f002671,&#xA;items: Array[{&#xA;item: {&#xA;productId: eb8c8ca7-3c42-4489-a820-3aa138430b75,&#xA;identifier: 88668866-2c6d-4fa6-9e17-4b2c42e0f051,&#xA;identifiers: {&#xA;SKU: UGG-BB-PUR-06&#xA;},&#xA;configuration: Array[{&#xA;characteristic: {&#xA;code: size,&#xA;description: Size,&#xA;name: Size of item&#xA;},&#xA;characteristicValue: {&#xA;code: M,&#xA;name: Medium&#xA;}&#xA;},{&#xA;characteristic: {&#xA;code: color,&#xA;description: Color,&#xA;name: Color&#xA;},&#xA;characteristicValue: {&#xA;code: blue,&#xA;name: Blue&#xA;}&#xA;}]&#xA;},&#xA;quantity: {&#xA;amount: 2,&#xA;quantityType: DISCRETE,&#xA;unit: EA&#xA;}&#xA;}]&#xA;}]&#xA;}" doc:name="Set Payload"/>
     </flow>
     <flow name="get:/stores:api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+        <flow-ref name="getStores" doc:name="getStores"/>
+    </flow>
+    <flow name="get:/partners:api-config">
+        <flow-ref name="getPartners" doc:name="getPartner"/>
+    </flow>
+    <flow name="get:/partners/{partnerId}:api-config">
+        <flow-ref name="getPartner" doc:name="getPartner"/>
     </flow>
     <flow name="get:/products/{productId}/variants:api-config">
         <flow-ref name="getVariantsByProduct" doc:name="getVariantsByProduct"/>
@@ -295,7 +301,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         
     </flow>
     <flow name="get:/stores/{storeId}:api-config">
-        <set-payload value="#[NullPayload.getInstance()]" doc:name="Set Payload"/>
+        <flow-ref name="getStore" doc:name="getStore"/>
+
     </flow>
     <flow name="post:/customers/{customerId}/contactMethods:application/json:api-config">
 

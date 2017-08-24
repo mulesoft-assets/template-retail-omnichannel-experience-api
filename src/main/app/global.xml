@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+<mule xmlns:tcp="http://www.mulesoft.org/schema/mule/tcp" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns="http://www.mulesoft.org/schema/mule/core" 
@@ -11,7 +11,8 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/tcp http://www.mulesoft.org/schema/mule/tcp/current/mule-tcp.xsd">
 
     <http:listener-config name="httpListenerConfig" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
    
@@ -33,7 +34,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 
     </http:request-config>
     
-    <http:request-config name="retail-order-fulfillment-api" host="${order-fulfillment-api.host}" port="${order-fulfillment-api.port}" basePath="${order-fulfillment-api.basePath}" doc:name="HTTP Request Configuration">
+    <http:request-config name="retail-order-fulfillment-api" host="${order-fulfillment-api.host}" port="${order-fulfillment-api.port}" basePath="${order-fulfillment-api.basePath}" doc:name="HTTP Request Configuration" responseTimeout="25000">
         <http:raml-api-configuration location="retail-order-fulfillment-api/order-fulfillment-api.raml"/>
 
     </http:request-config>
@@ -47,4 +48,13 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <http:raml-api-configuration location="retail-product-availability-process-api/process-api.raml"/>
 
      </http:request-config>
+     
+    <http:request-config name="retail-locations-system-api" host="${locations-system-api.host}" port="${locations-system-api.port}" basePath="${locations-system-api.basePath}" doc:name="HTTP Request Configuration">
+        <http:raml-api-configuration location="retail-locations-system-api/retail-locations-system-api.raml"/>
+    </http:request-config>
+    
+    <http:request-config name="retail-partners-system-api" host="${partners-system-api.host}" port="${partners-system-api.port}" basePath="${partners-system-api.basePath}" doc:name="HTTP Request Configuration">
+        <http:raml-api-configuration location="retail-partners-system-api/retail-partners-system-api.raml"/>
+    </http:request-config>
+     
 </mule>
