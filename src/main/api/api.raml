@@ -632,6 +632,7 @@ types:
                                 "productName": "Smart Slim Micro Stripe Shirt",
                                 "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
                                 "deliveryMethod": "PICKUP",
+                                "price" : "50",
                                 "quantity": 1
                               },
                               {
@@ -640,6 +641,7 @@ types:
                                 "productName": "Men's Regular Fit V-Neck Knit Sweater",
                                 "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
                                 "deliveryMethod": "PICKUP",
+                                "price" : "60",
                                 "quantity": 2
                               }
                             ],
@@ -650,6 +652,7 @@ types:
                                 "productName": "Men's Chino Jogger Pants",
                                 "locationId": "7307024a-7e63-11e7-bb31-be2e44b06b34",
                                 "deliveryMethod": "SHIPMENT",
+                                "price" : "30",
                                 "quantity": 3
                               }
                             ],
@@ -660,6 +663,7 @@ types:
                                 "productName": "Uniforms Modern Fit Short Sleeve Polo Shirt",
                                 "locationId": "730704d4-7e63-11e7-bb31-be2e44b06b34",
                                 "deliveryMethod": "SHIPMENT",
+                                "price" : "20",
                                 "quantity": 1
                               }
                             ]
@@ -740,6 +744,9 @@ types:
                        }
 
 /channels:
+  description: |
+    Consists of the most common channels to cover use-cases with WEB, 
+    mobile and brick-and-mortar(store) based application delivering the Omnichannel user experience.
   type:
     collection.readOnlyCollection:
       collectionResponseType: ChannelCollectionResponse
@@ -774,7 +781,7 @@ types:
                   },
                   {
                     "channelType": "STORE",
-                    "storeNumber": "1"
+                    "storeNumber": "ae42643a-6d19-483c-82a2-54939d9da13e"
                   },
                   {
                     "channelType": "MOBILE",
@@ -799,6 +806,8 @@ types:
                   "url": "http://www.example.com"
                 }
     /paymentMethods:
+      description: |
+        Channel basically could have different payment methods according to channel type like VISA card, bank transfer, cash. 
       type:
         collection.readOnlyCollection:
           collectionResponseType: customer.PaymentMethodCollectionResponse
@@ -806,8 +815,55 @@ types:
         is: *queryableCollection
         queryParameters:
           paymentMedium: payment.PaymentMediumType
-          paymentIssuer: payment.PaymentIssuerType
-        
+          paymentIssuer: payment.PaymentIssuerType         
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 5                
+                    },
+                    "paymentMethods": [
+                         {
+                            "paymentMethodType": {
+                              "cash": {
+                                "medium": "PHYSICAL",
+                                "issuer": "GOVT",
+                                "name": "CASH"
+                              }
+                            }
+                         },
+                         {
+                            "paymentMethodType": {
+                              "check": {
+                                "medium": "PHYSICAL",
+                                "issuer": "BANK",
+                                "name": "CHECK"
+                              }
+                            }
+                         },
+                         {
+                            "paymentMethodType": {
+                              "visa": {
+                                "medium": "CARD",
+                                "issuer": "BANK",
+                                "name": "VISA"
+                              }
+                            }
+                         }
+                    ]
+                  }
+                
     /fulfillmentMethods:
       type:
         collection.readOnlyCollection:
@@ -817,6 +873,42 @@ types:
         queryParameters:
           receipt: fulfillment.ReceiptType
           carrier: fulfillment.CarrierType
+        responses:
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "http://mocksvc.mulesoft.com/mocks/b97e9f37-a930-4f88-bd72-d3f8ac7dfda2/channels/deb89058-77fb-4e97-8c83-6506c38cacf8/products?offset=0&limit=5"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 5                
+                    },
+                    "fulfillmentMethods": [
+                      { 
+                        "carrier": "POSTAL",
+                        "deliveryAddress": {
+                            "type": "SHIPPING",
+                            "address": "Main street 122",
+                            "city": "San Francisco",
+                            "state": "California",
+                            "postalCode": "90210",
+                            "recipient": "Jason Bourne",
+                            "country": "US",
+                            "secondaryAddress": null,
+                            "mailStopCode": null,
+                            "attention": null
+                        },
+                      "receipt": "PICKUP"
+                      }
+                    ]
+                  }
     /products:
       type:
         collection.readOnlyCollection:

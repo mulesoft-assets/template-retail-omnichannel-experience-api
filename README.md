@@ -21,61 +21,72 @@ Please review the terms of the license before downloading and using this templat
 As a Customer I want a service to request information about me (personal information, my billing and shipping address, my payment methods), information about provided products, shopping carts and orders. 
 
 ### GET/customers/{customerId}
-This endpoint will trigger flow getCustomerFromSFDC which obtains a customer information based on customerId. 
+This endpoint will trigger flow getCustomerFromSFDC which obtains a customer information by customerId. 
 
 ### PUT/customers/{customerId}
-This endpoint will trigger flow putCustomerFromSFDC which updates a customer information based on customerId. 
+This endpoint will trigger flow putCustomerFromSFDC which updates a customer information by customerId. 
+
+### GET/channels
+This endpoint will trigger flow getChannels which obtains mocked information about supported channels. 
+The main point is to support the most common channels to cover use-cases with WEB, mobile and brick-and-mortar(store) based application delivering the Omnichannel user experience.
+
+### GET/channels/{channelId}
+This endpoint will trigger flow getChannel which obtains mocked information about particular channel by channelId.
+
+### GET/channels/{channelId}/paymentMethods
+This endpoint will trigger flow getChannel's payment methods by channelId. 
+Channels basically could have different payment methods according to channel type like VISA card, bank transfer, cash. 
 
 ### GET/products
 This endpoint will trigger flow getProducts which obtains mocked information about products from Product System API. 
 
 ### GET/products/{productId}
-This endpoint will trigger flow getProducts which obtains mocked information about product from Product System API based on productId. 
+This endpoint will trigger flow getProducts which obtains mocked information about product from Product System API by productId. 
 
 ### GET/products/{productId}/variants
-This endpoint will trigger flow getVariantsByProduct which obtains mocked information about variants of product from Product System API based on productId.
+This endpoint will trigger flow getVariantsByProduct which obtains mocked information about variants of product from Product System API by productId.
 
 ### GET/products/{productId}/variants/{variantId}
-This endpoint will trigger flow getVariantByProduct which obtains mocked information about variant of product based on productId and variantId.
+This endpoint will trigger flow getVariantByProduct which obtains mocked information about variant of product by productId and variantId.
 
 ### GET/products/{productId}/variants/{variantId}/availability
-This endpoint will trigger flow getAvailability which obtains mocked information about availability of variant based on productId and variantId.
+This endpoint will trigger flow getAvailability which obtains mocked information about availability of variant by productId and variantId.
 
 ### GET/categories/{categoryId}/products
-This endpoint will trigger flow getProductsByCategory which obtains mocked information about products from same category based on categoryId.
+This endpoint will trigger flow getProductsByCategory which obtains mocked information about products from same category by categoryId.
 
 ### GET/shoppingCarts/{shoppingCartId}
-This endpoint will trigger flow getShoppingCart which obtains information about products in shopping cart based on shoppingCartId.
+This endpoint will trigger flow getShoppingCart which obtains information about products in shopping cart by shoppingCartId.
 
 ### PUT/shoppingCarts/{shoppingCartId}
-This endpoint will trigger flow putShoppingCart which updates information about products in shopping cart based on shoppingCartId.
+This endpoint will trigger flow putShoppingCart which updates information about products in shopping cart by shoppingCartId.
 
 ### POST/shoppingCarts/
 This endpoint will trigger flow get which saved new shopping cart to the object store.
 
 ### DELETE/shoppingCarts/{shoppingCartId}
-This endpoint will trigger flow deleteShoppingCart which removes shopping cart from object store based on shoppingCartId.
+This endpoint will trigger flow deleteShoppingCart which removes shopping cart from object store by shoppingCartId.
 
 ### GET/customers/{customerId}/shoppingCarts/
-This endpoint will trigger flow getShoppingCartsForCustomer which obtains list of shopping cart for customer based on the customerId. If customer does not exist, response is empty field.  
+This endpoint will trigger flow getShoppingCartsForCustomer which obtains list of shopping cart for customer by the customerId. If customer does not exist, response is empty field.  
 
 ### POST/orders/
 This endpoint will trigger flow createOrder which creates new order by customer.
 
 ### GET/customers/{customerId}/orders/
-This endpoint will trigger flow getOrdersByCustomer which obtains list of orders for customer based on the customerId.
+This endpoint will trigger flow getOrdersByCustomer which obtains list of orders for customer by customerId.
 
 ### GET/stores
 This endpoint will trigger flow getStores which obtains list of stores.
 
 ### GET/stores/{storeId}
-This endpoint will trigger flow getStore which obtains store based on the storeId.
+This endpoint will trigger flow getStore which obtains store by the storeId.
 
 ### GET/partners
 This endpoint will trigger flow getPartners which obtains list of partner stores.
 
 ### GET/partners/{partnerId}
-This endpoint will trigger flow getPartner which obtains partner store based on the partnerId.
+This endpoint will trigger flow getPartner which obtains partner store by the partnerId.
 
 # Considerations <a name="considerations"/>
 
@@ -133,7 +144,7 @@ Mule Studio provides you with really easy way to deploy your Template directly t
 In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables.
 Detailed list with examples:
 ### Application properties
-+ http.port=`8888`
++ http.port=`8081`
 
 ####Customer system API
 + customer-system-api.host=`customer.example.com`

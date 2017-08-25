@@ -154,7 +154,7 @@ payload
 ---
 payload]]></dw:set-payload>
         </dw:transform-message>
-        <logger level="INFO" doc:name="Logger"/>
+
     </flow>
     <flow name="postShoppingCart">
 
@@ -425,14 +425,14 @@ payload]]></dw:set-payload>
     </flow>
     <flow name="getStores">
         <http:request config-ref="retail-locations-system-api" path="/stores" method="GET" doc:name="GET/stores"/>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 payload.results]]></dw:set-payload>
         </dw:transform-message>
-        <logger level="INFO" doc:name="Logger"/>
+
     </flow>
     <flow name="getStore">
         <http:request config-ref="retail-locations-system-api" path="/stores/{storeId}" method="GET" doc:name="GET/stores/{storeId}">
@@ -460,14 +460,14 @@ payload
     </flow>
         <flow name="getPartners">
         <http:request config-ref="retail-partners-system-api" path="/partners" method="GET" doc:name="GET/partners"/>
-        <dw:transform-message doc:name="Transform Message">
+        <dw:transform-message doc:name="Response message">
         	<dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 payload.results]]></dw:set-payload>
         </dw:transform-message>
-        <logger level="INFO" doc:name="Logger"/>
+
     </flow>
     <flow name="getPartner">
         <http:request config-ref="retail-partners-system-api" path="/partners/{partnerId}" method="GET" doc:name="GET/partners/{partnerId}">
