@@ -8,6 +8,8 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     
     <flow name="api-main">
         <http:listener config-ref="httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <logger message="#[message.inboundProperties.'http.method']  #[message.inboundProperties.'http.request.uri'] #[message.inboundProperties.'http.query.params'] " level="INFO" doc:name="Logger"/>
+        <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
         <apikit:router config-ref="api-config" doc:name="APIkit Router"/>
         <exception-strategy ref="api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
     </flow>
