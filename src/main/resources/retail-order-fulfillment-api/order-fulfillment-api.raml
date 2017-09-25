@@ -1,5 +1,5 @@
 #%RAML 1.0
-title: Retail Order Fulfillment API
+title: Retail Order Fulfilment API
 version: dev
 baseUri: http://localhost:8081/api
 
@@ -12,14 +12,15 @@ types:
       productId: string
       location: Location
       quantity: integer
-      price?: string
+      price: string
       name: string
 
   Order:
     properties:
       customerId: string
       orderItems: OrderItem[]
-      price: string
+      subtotal: string
+      total: string
       
   Location: 
     type: object
@@ -38,6 +39,7 @@ types:
         enum: [SHIPMENT, PICKUP]
         description: |
           Type of delivery   
+
 /orders:
   post:
     body: 
@@ -46,6 +48,9 @@ types:
         example: |
           {
             "customerId" : "1",
+            "status": "draft",
+            "subtotal": "120.5", 
+            "total": "130.4",
             "orderItems": [
               {
                 "itemId": "1",
@@ -55,12 +60,11 @@ types:
                   "locationType": "STORE",
                   "deliveryMethod": "PICKUP"
                 },
+                "price": "40", 
                 "name": "Supersonic Electronic",
                 "quantity": 4
               }
-            ],
-            "status": "draft",
-            "price": "1304"
+            ]  
           }
     responses:
       201: 
@@ -72,3 +76,4 @@ types:
                 "orderId": "123456789",
                 "message": null
               }
+    

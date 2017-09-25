@@ -88,6 +88,12 @@ This endpoint will trigger flow getPartners which obtains list of partner stores
 ### GET/partners/{partnerId}
 This endpoint will trigger flow getPartner which obtains partner store by the partnerId.
 
+### GET/taxes
+This endpoint will trigger flow getTaxes which obtains tax value in percentage.
+
+### GET/shipping
+This endpoint will trigger flow getShipping which obtains shipping value for products from warehouse.
+
 # Considerations <a name="considerations"/>
 
 To make this Anypoint Template run, there are certain preconditions that must be considered. **Failling to do so could lead to unexpected behavior of the template.**

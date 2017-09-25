@@ -335,34 +335,65 @@ payload
         </choice>
     </flow>
     <flow name="createOrder">
-        <dw:transform-message doc:name="Set var order, hardcodeProperties">
-        	<dw:input-payload mimeType="application/json" />
-            <dw:set-variable variableName="hardcodeProperties"><![CDATA[%dw 1.0
+
+
+        <dw:transform-message doc:name="Set vars order and products and Calculate total price">
+            <dw:input-payload mimeType="application/json" />
+            <dw:set-payload><![CDATA[%dw 1.0
 %output application/java
 ---
-{
-	tax: 4.27, 
-	shipping: 5.00
-}]]></dw:set-variable>
+payload.orderItems filter ($.location.locationType != "STORE") map {
+	locationId: $.location.locationId, 
+	locationType: $.location.locationType 
+	} distinctBy $.locationId]]></dw:set-payload>
+            <dw:set-variable variableName="Price"><![CDATA[%dw 1.0
+%output application/java
+---
+using (subtotal = payload.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * 100 * item.quantity.amount))) {
+        subtotal: ((round subtotal)/100),
+        tax: (round (subtotal* '${order.tax}'/100))/100
+} ]]></dw:set-variable>
+            <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
+%output application/java
+---
+0 ]]></dw:set-variable>
+
             <dw:set-variable variableName="order"><![CDATA[%dw 1.0
 %output application/java
 ---
 payload]]></dw:set-variable>
-        </dw:transform-message>
-
-        <dw:transform-message doc:name="Calculate total price">
-            <dw:input-variable variableName="order"/>
-            <dw:set-variable variableName="TotalPrice"><![CDATA[%dw 1.0
+            <dw:set-variable variableName="products"><![CDATA[%dw 1.0
 %output application/java
 ---
-using (subtotal = flowVars.order.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * 100 * item.quantity.amount))) {
-        subtotal: ((round subtotal)/100)  as :string,
-        tax: flowVars.hardcodeProperties.tax as :string, 
-        shipping: flowVars.hardcodeProperties.shipping as :string,
-        total: ((round (subtotal + flowVars.hardcodeProperties.tax*100 + flowVars.hardcodeProperties.shipping*100))/100)  as :string 
- } ]]></dw:set-variable>
+[]]]></dw:set-variable>
         </dw:transform-message>
-        <set-variable variableName="products" value="#[[]]" doc:name="var products"/>
+        <foreach collection="#[payload]" doc:name="For Each">
+            <choice doc:name="Is locationId for Partner?">
+                <when expression="#[payload.locationType == 'PARTNER']">
+                    <http:request config-ref="retail-partners-system-api" path="/partners/{partnerId}" method="GET" doc:name="GET/partners/{partnerId}">
+                        <http:request-builder>
+                            <http:uri-param paramName="partnerId" value="#[payload.locationId]"/>
+                        </http:request-builder>
+                    </http:request>
+                    <dw:transform-message doc:name="Calculate shipping price">
+                        <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
+%output application/java
+---
+flowVars.TotalShippingPrice + payload.shippingPrice]]></dw:set-variable>
+                    </dw:transform-message>
+                </when>
+                <otherwise>
+                    <dw:transform-message doc:name="Calculate shipping price">
+                        <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
+%output application/java
+---
+flowVars.TotalShippingPrice + '${order.shipping}']]></dw:set-variable>
+                    </dw:transform-message>
+                </otherwise>
+            </choice>
+
+        </foreach>
+
         <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
             <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="Get Product by Id">
                 <http:request-builder>
@@ -387,7 +418,10 @@ flowVars.products + {
 using(orderRequest = flowVars.order)
 {
 	customerId: orderRequest.customerId,
-	price: flowVars.TotalPrice.total,
+	subtotal: flowVars.Price.subtotal as :string,
+	taxPrice: flowVars.Price.tax as :string,
+	shippingPrice: flowVars.TotalShippingPrice as :string,
+	total: ((round (flowVars.Price.subtotal + flowVars.Price.tax + flowVars.TotalShippingPrice)*100)/100) as :string,
 	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
 		productId: orderItem.item.productId,
@@ -414,7 +448,7 @@ using(orderRequest = flowVars.order)
             </http:request-builder>
         </http:request>
         <dw:transform-message doc:name="Response message">
-            <dw:input-payload doc:sample="sample_data\json.json" mimeType="application/json"/>
+            <dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
@@ -524,6 +558,26 @@ payload
 %output application/json
 ---
 payload]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="getTaxes">
+        <dw:transform-message doc:name="Response Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	tax: '${order.tax}' as :number
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="getShipping">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	shippingPrice: '${order.shipping}' as :number
+}]]></dw:set-payload>
         </dw:transform-message>
     </flow>
     <sub-flow name="notFoundResponse"> 

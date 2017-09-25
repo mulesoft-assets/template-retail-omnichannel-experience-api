@@ -139,7 +139,13 @@ types:
   InventoryResponse:
     type: inventory.WarehouseInventory
     properties:
-
+    
+  TaxResponse:
+    type: taxonomy.Taxes
+  
+  ShippingResponse:
+    type: taxonomy.Shipping
+     
 /customers:
   type:
     collection.collection:
@@ -621,6 +627,24 @@ types:
                         {
                           "orderId": "8010J0000022iETQAY",
                           "customerId": "951",
+                          "tax": 4.25,
+                          "shipping": 5.00,
+                          "shippingAddress": {
+                            "type": "SHIPPING",
+                            "address": "Main Street 40",
+                            "city": "San Francisco", 
+                            "postalCode": "94210",
+                            "state": "CA",
+                            "country": "US"   
+                          },
+                          "billingAddress": {
+                            "type": "SHIPPING",
+                            "address": "Main Street 40",
+                            "city": "San Francisco", 
+                            "postalCode": "94210",
+                            "state": "CA",
+                            "country": "US"   
+                          },
                           "price": "125.43",
                           "status": "Draft",
                           "trackingNumber": "8010J0000022iETQAY",
@@ -1573,29 +1597,37 @@ types:
           application/json:
             example: |
               {
-                "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                "orderItems" : [
-                    {
-                      "identifier" : "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                      "productId" : "eb8c8ca7-3c42-4489-a820-3aa138430b75"
-                    }
-                ],
-                "fulfillment": {
-                  "carrier": "POSTAL",
-                  "deliveryAddress": {
-                    "type": "SHIPPING",
-                    "address": "Main street 122",
-                    "city": "San Francisco",
-                    "state": "California",
-                    "postalCode": "90210",
-                    "recipient": "Jason Bourne",
-                    "country": "US",
-                    "secondaryAddress": null,
-                    "mailStopCode": null,
-                    "attention": null
+                "customerId": "22",
+                "subtotal": "82.85",
+                "taxPrice": "7.87",
+                "shippingPrice": "0",
+                "price": "90.72",
+                "orderItems": [
+                  {
+                    "itemId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                    "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                    "location": {
+                      "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                      "deliveryMethod": "PICKUP",
+                      "locationType": "STORE"
+                    },
+                    "quantity": 1,
+                    "price": "34.9",
+                    "name": "Anypoint Smart Slim Micro Stripe Shirt"
                   },
-                  "receipt": "PICKUP"
-                }
+                  {
+                    "itemId": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                    "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                    "location": {
+                      "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                      "deliveryMethod": "PICKUP",
+                      "locationType": "STORE"
+                    },
+                    "quantity": 1,
+                    "price": "47.95",
+                    "name": "Anypoint Men's Chino Jogger Pants"
+                  }
+                ]
               }
   /{salesOrderId}:
     uriParameters:
@@ -2572,4 +2604,32 @@ types:
                     "messages": []
                   }
                 }
-     
+
+
+/shipping:
+    get:
+      description: |
+        shipping value for Warehouse
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: ShippingResponse
+              example: |
+                {  
+                  "shippingPrice": 5.00
+                }              
+
+/taxes:
+    get:
+      description: |
+        tax value in percentage
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: TaxResponse
+              example: |
+                {  
+                  "tax": 4.26
+                }
