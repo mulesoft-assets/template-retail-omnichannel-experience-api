@@ -7,6 +7,7 @@ uses:
   common: types/common-types.raml
   item: types/orderItem-types.raml
   fulfillment: types/fulfillment-types.raml
+  geography: types/geography-types.raml
   
 types:
   
@@ -101,6 +102,14 @@ types:
         type: string
         description: |
           Identifier of customer
+      billingAddress: 
+        type: geography.PostalAddress
+        description: |
+          full billing address  
+      shippingAddress: 
+        type: geography.PostalAddress
+        description: |
+          full address for shipping of products    
       orderItems?:
         type: OrderItems
         description: |
@@ -111,7 +120,15 @@ types:
         type: Status
         description: |
           Status of order
-      price?: 
+      subtotal?:
+        type: string
+        description: |
+          price for order (without tax and shipping)
+      taxPrice?:
+        type: number
+      shippingPrice?:
+        type: number  
+      total?: 
         type: string
         description: |
           total price for order (with tax and shipping)

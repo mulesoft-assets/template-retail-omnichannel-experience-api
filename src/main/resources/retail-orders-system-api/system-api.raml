@@ -72,6 +72,10 @@ types:
         type: string
         description: |
           Identifier of customer
+      shippingAddress?: 
+        type: Address
+        description: |
+          full address for shipping
       orderItems?:
         type: OrderItems
         description: |
@@ -85,6 +89,35 @@ types:
         description: |
           total price for order (with tax and shipping)
   
+
+  Address:
+    type: object
+    properties:
+      type:
+        type: string
+        enum: [ BILLING, SHIPPING]
+      address?:
+        type: string?
+        description: |
+          the unit number and street name
+      city?:
+        type: string?
+        description: |
+          the municipality of the address
+      state?:
+        type: string?
+        description: |
+          the state or other national region of the address
+      postalCode?:
+        type: string?
+        description: |
+          the delivery code assigned to this address by a national
+          or governmental postal agency
+      country?:
+        type: string?
+        description: |
+          the two character ISO 3166 country code
+          [http://www.iso.org/iso/home/standards/country_codes.htm]
 
       
 /orders:
@@ -120,6 +153,7 @@ types:
         201:
           body:
             application/json:
+              type: Order
               example: !include examples/order_post_response.raml
         400:
           body:

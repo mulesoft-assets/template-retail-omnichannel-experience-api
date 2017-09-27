@@ -330,6 +330,14 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
         <flow-ref name="postShoppingCart" doc:name="postShoppingCart"/>
 
     </flow>
+    <flow name="get:/taxes:api-config">
+        <flow-ref name="getTaxes" doc:name="getTaxes"/>
+
+    </flow>
+    <flow name="get:/shipping:api-config">
+        <flow-ref name="getShipping" doc:name="getShipping"/>
+
+    </flow>
     <apikit:mapping-exception-strategy name="api-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
