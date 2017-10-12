@@ -1,0 +1,75 @@
+#%RAML 1.0
+title: Retail Order Fulfilment API
+version: dev
+baseUri: http://localhost:8081/api
+
+
+types:
+
+  OrderItem: 
+    properties:
+      itemId: string
+      productId: string
+      location: Location
+      quantity: integer
+      price: string
+      name: string
+
+  Order:
+    properties:
+      customerId: string
+      orderItems: OrderItem[]
+      
+  Location: 
+    type: object
+    properties:      
+      locationId?: 
+        type: string?
+        description: | 
+          Identifier of location (storeId or warehouseId or partnerId)
+      locationType?:
+        type: string
+        enum: [STORE, WAREHOUSE, PARTNER]
+        description: |
+          Type of location 
+      deliveryMethod?: 
+        type: string
+        enum: [SHIPMENT, PICKUP]
+        description: |
+          Type of delivery   
+
+/orders:
+  post:
+    body: 
+      application/json: 
+        type: Order
+        example: |
+          {
+            "customerId" : "1",
+            "status": "draft",
+            "orderItems": [
+              {
+                "itemId": "1",
+                "productId": "1",
+                "location" : {
+                  "locationId": "1",
+                  "locationType": "STORE",
+                  "deliveryMethod": "PICKUP"
+                },
+                "price": "40", 
+                "name": "Supersonic Electronic",
+                "quantity": 4
+              }
+            ]  
+          }
+    responses:
+      201: 
+        body: 
+          application/json: 
+            example: |
+              {
+                "status": "created",
+                "orderId": "123456789",
+                "message": null
+              }
+    

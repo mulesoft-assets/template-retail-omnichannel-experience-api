@@ -24,6 +24,14 @@ types:
         type: integer
         description: |
           Number of product (variant)
+      tax?: 
+        type: number?
+        description: |
+          total tax for product
+      shipping?:
+        type: number?
+        description: |
+          total shipping cost for product  
         
   Location: 
     type: object
@@ -88,6 +96,7 @@ types:
         200:
           body: 
             application/json: 
+              type: ShoppingCart
               example: !include examples/shopping-cart_get_response.raml
                 
 
