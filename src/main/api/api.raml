@@ -138,14 +138,7 @@ types:
       
   InventoryResponse:
     type: inventory.WarehouseInventory
-    properties:
     
-  TaxResponse:
-    type: taxonomy.Taxes
-  
-  ShippingResponse:
-    type: taxonomy.Shipping
-     
 /customers:
   type:
     collection.collection:
@@ -738,7 +731,9 @@ types:
                                           "amount": 2,
                                           "quantityType": "DISCRETE",
                                           "unit": "EA"
-                                        }
+                                        }, 
+                                        "tax": 5.00,
+                                        "shipping": 9.00 
                                       }
                                     ]
                                   },
@@ -760,7 +755,9 @@ types:
                                           "amount": 1,
                                           "quantityType": "DISCRETE",
                                           "unit": "EA"
-                                        }
+                                        },
+                                        "tax": 5.00,
+                                        "shipping": 9.00
                                       }
                                     ]
                                   }
@@ -1452,13 +1449,6 @@ types:
         example: |
             {
               "customerId": "facebook_1234567890123456",
-              "fulfillment": {
-                "receipt": "SHIPMENT",
-                "carrier": "POSTAL",
-                "deliveryAddress": {
-                  "type": "SHIPPING"
-                }
-              },
               "orderItems": [
                 {
                   "quantity": {
@@ -1598,10 +1588,6 @@ types:
             example: |
               {
                 "customerId": "22",
-                "subtotal": "82.85",
-                "taxPrice": "7.87",
-                "shippingPrice": "0",
-                "price": "90.72",
                 "orderItems": [
                   {
                     "itemId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
@@ -2352,7 +2338,9 @@ types:
                           "amount": 2,
                           "quantityType": "DISCRETE",
                           "unit": "EA"
-                        }
+                        },
+                        "tax": 5.00,
+                        "shipping": 9.00
                       }
                     ]
                   }
@@ -2381,7 +2369,7 @@ types:
                         "amount": 2,
                         "quantityType": "DISCRETE",
                         "unit": "EA"
-                      }
+                      }       
                     },
                     {
                       "location": {
@@ -2406,48 +2394,11 @@ types:
           body:
             application/json:
               example: |
-                { 
-                  "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                  "customerId": "provider_0123456789",
-                  "items": 
-                    [
-                        {
-                          "location": {
-                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                            "deliveryMethod": "PICKUP",
-                            "locationType": "STORE"     
-                          }, 
-                          "item": {
-                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                             "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                             "deliveryMethod": "PICKUP",
-                              "locationType": "STORE" 
-                          },
-                          "quantity": {
-                            "amount": 2,
-                            "quantityType": "DISCRETE",
-                            "unit": "EA"
-                          }
-                        },
-                        {
-                          "location": {
-                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                            "deliveryMethod": "PICKUP",
-                            "locationType": "STORE"     
-                          }, 
-                          "item": {
-                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                            "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
-                          },
-                          "quantity": {
-                            "amount": 1,
-                            "quantityType": "DISCRETE",
-                            "unit": "EA"
-                          }
-                        }
-                   ]
+                {
+                  "message": "Shopping Cart was created",
+                  "shoppingCartId": "4819f1c0-ae86-11e7-b73d-02713d22457c"
                 }
+                
   /{shoppingCartId}:
     uriParameters:
       shoppingCartId: string
@@ -2506,7 +2457,9 @@ types:
                         "amount": 2,
                         "quantityType": "DISCRETE",
                         "unit": "EA"
-                      }
+                      },
+                      "tax": 5.00,
+                      "shipping": 9.00
                     }
                   ]
                 }
@@ -2556,42 +2509,8 @@ types:
           body:
             application/json:
               example: |
-                { 
-                  "items": 
-                    [
-                        {
-                          "location": {
-                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                            "deliveryMethod": "PICKUP",
-                            "locationType": "STORE"     
-                          }, 
-                          "item": {
-                            "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
-                          },
-                          "quantity": {
-                            "amount": 2,
-                            "quantityType": "DISCRETE",
-                            "unit": "EA"
-                          }
-                        },
-                        {
-                          "location": {
-                            "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                            "deliveryMethod": "PICKUP",
-                            "locationType": "STORE"     
-                          }, 
-                          "item": {
-                            "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                            "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
-                          },
-                          "quantity": {
-                            "amount": 2,
-                            "quantityType": "DISCRETE",
-                            "unit": "EA"
-                          }
-                        }
-                   ]
+                {
+                  "message": "Shopping cart was updated"
                 }
     delete:
       responses: 
@@ -2603,33 +2522,4 @@ types:
                   "_meta": {
                     "messages": []
                   }
-                }
-
-
-/shipping:
-    get:
-      description: |
-        shipping value for Warehouse
-      responses: 
-        200:
-          body: 
-            application/json:
-              type: ShippingResponse
-              example: |
-                {  
-                  "shippingPrice": 5.00
-                }              
-
-/taxes:
-    get:
-      description: |
-        tax value in percentage
-      responses: 
-        200:
-          body: 
-            application/json:
-              type: TaxResponse
-              example: |
-                {  
-                  "tax": 4.26
                 }

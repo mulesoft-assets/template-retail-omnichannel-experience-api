@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -188,20 +188,71 @@ payload]]></dw:set-payload>
             <http:success-status-code-validator values="200,404"/>
         </http:request>
         <choice doc:name="Found?">
-           <when expression="#[message.inboundProperties.'http.status' == 200]">
-                 <dw:transform-message doc:name="Response message">
-                     <dw:input-payload mimeType="application/json"/>
-                     <dw:set-payload><![CDATA[%dw 1.0
+            <when expression="#[message.inboundProperties.'http.status' == 200]">
+                <dw:transform-message doc:name="set ShoppingCart">
+                    <dw:input-payload mimeType="application/json"/>
+                    <dw:set-variable variableName="shoppingCart"><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-variable>
+                    <dw:set-variable variableName="items"><![CDATA[%dw 1.0
+%output application/java
+---
+[]]]></dw:set-variable>
+                </dw:transform-message>
+
+                                <foreach collection="#[flowVars.shoppingCart.items]" doc:name="For Each">
+                    <set-variable variableName="itemDetails" value="#[payload]" doc:name="save item details"/>
+                    <http:request config-ref="retail-product-system-api" path="/products/{productId}/variants/{variantId}" method="GET" doc:name="GET/products/{productId}/variants">
+                        <http:request-builder>
+                            <http:uri-param paramName="productId" value="#[payload.productId]"/>
+                            <http:uri-param paramName="variantId" value="#[payload.variantId]"/>
+
+                        </http:request-builder>
+                    </http:request>
+
+                    <dw:transform-message doc:name="Mappping item">
+                        <dw:set-variable variableName="items"><![CDATA[%dw 1.0
+%output application/java
+---
+using (item = payload[0])
+flowVars.items + {
+	item: {
+    	productId: item.productId,
+    	identifier: item.identifier, 
+   		identifiers: item.identifiers, 
+    	configuration: item.configuration    	
+    },
+    quantity: {
+    		amount: flowVars.itemDetails.quantity, 
+    		quantityType: "DISCRETE",
+        	unit: "EA"
+    },
+    location: flowVars.itemDetails.location,
+    tax: flowVars.itemDetails.tax,
+    shipping: flowVars.itemDetails.shipping
+    
+}    ]]></dw:set-variable>
+
+                    </dw:transform-message>
+
+                </foreach>
+                <dw:transform-message doc:name="Mapping response">
+                    <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload
- ]]></dw:set-payload>
-                 </dw:transform-message>
-             </when>
-             <otherwise>
-                 <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
-             </otherwise>
-         </choice>
+{
+	identifier: flowVars.shoppingCart.shoppingCartId, 
+	customerId: flowVars.shoppingCart.customerId,
+	items: flowVars.items
+}]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <flow-ref name="notFoundResponse" doc:name="notFoundResponse"/>
+            </otherwise>
+        </choice>
+
     </flow>
     <flow name="putShoppingCart">
 
@@ -214,7 +265,7 @@ items: payload.items map {
 		productId: $.item.productId,
 		variantId: $.item.identifier, 
 		quantity: $.quantity.amount,
-		location: $.location	 		
+		location: $.location 		
 	}]]></dw:set-payload>
         </dw:transform-message>
 
@@ -325,7 +376,7 @@ payload]]></dw:set-payload>
                      <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload
+payload[0]
 ]]></dw:set-payload>
                 </dw:transform-message>
             </when>
@@ -337,26 +388,9 @@ payload
     <flow name="createOrder">
 
 
-        <dw:transform-message doc:name="Set vars order and products and Calculate total price">
+        <dw:transform-message doc:name="Set vars order and products">
             <dw:input-payload mimeType="application/json" />
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
----
-payload.orderItems filter ($.location.locationType != "STORE") map {
-	locationId: $.location.locationId, 
-	locationType: $.location.locationType 
-	} distinctBy $.locationId]]></dw:set-payload>
-            <dw:set-variable variableName="Price"><![CDATA[%dw 1.0
-%output application/java
----
-using (subtotal = payload.orderItems reduce ((item, sum1 = 0) -> sum1 + (item.itemUnitPrice.amount.currencyValue * 100 * item.quantity.amount))) {
-        subtotal: ((round subtotal)/100),
-        tax: (round (subtotal* '${order.tax}'/100))/100
-} ]]></dw:set-variable>
-            <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
-%output application/java
----
-0 ]]></dw:set-variable>
+
 
             <dw:set-variable variableName="order"><![CDATA[%dw 1.0
 %output application/java
@@ -367,32 +401,7 @@ payload]]></dw:set-variable>
 ---
 []]]></dw:set-variable>
         </dw:transform-message>
-        <foreach collection="#[payload]" doc:name="For Each">
-            <choice doc:name="Is locationId for Partner?">
-                <when expression="#[payload.locationType == 'PARTNER']">
-                    <http:request config-ref="retail-partners-system-api" path="/partners/{partnerId}" method="GET" doc:name="GET/partners/{partnerId}">
-                        <http:request-builder>
-                            <http:uri-param paramName="partnerId" value="#[payload.locationId]"/>
-                        </http:request-builder>
-                    </http:request>
-                    <dw:transform-message doc:name="Calculate shipping price">
-                        <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
-%output application/java
----
-flowVars.TotalShippingPrice + payload.shippingPrice]]></dw:set-variable>
-                    </dw:transform-message>
-                </when>
-                <otherwise>
-                    <dw:transform-message doc:name="Calculate shipping price">
-                        <dw:set-variable variableName="TotalShippingPrice"><![CDATA[%dw 1.0
-%output application/java
----
-flowVars.TotalShippingPrice + '${order.shipping}']]></dw:set-variable>
-                    </dw:transform-message>
-                </otherwise>
-            </choice>
 
-        </foreach>
 
         <foreach collection="flowVars.order.orderItems" doc:name="For Each Order Item">
             <http:request config-ref="retail-product-system-api" path="/products/{productId}" method="GET" doc:name="Get Product by Id">
@@ -418,10 +427,6 @@ flowVars.products + {
 using(orderRequest = flowVars.order)
 {
 	customerId: orderRequest.customerId,
-	subtotal: flowVars.Price.subtotal as :string,
-	taxPrice: flowVars.Price.tax as :string,
-	shippingPrice: flowVars.TotalShippingPrice as :string,
-	total: ((round (flowVars.Price.subtotal + flowVars.Price.tax + flowVars.TotalShippingPrice)*100)/100) as :string,
 	orderItems: orderRequest.orderItems map ((orderItem) -> {
 		itemId: orderItem.item.identifier,
 		productId: orderItem.item.productId,
@@ -560,26 +565,7 @@ payload
 payload]]></dw:set-payload>
         </dw:transform-message>
     </flow>
-    <flow name="getTaxes">
-        <dw:transform-message doc:name="Response Message">
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/json
----
-{
-	tax: '${order.tax}' as :number
-}]]></dw:set-payload>
-        </dw:transform-message>
-    </flow>
-    <flow name="getShipping">
-        <dw:transform-message doc:name="Transform Message">
-            <dw:set-payload><![CDATA[%dw 1.0
-%output application/json
----
-{
-	shippingPrice: '${order.shipping}' as :number
-}]]></dw:set-payload>
-        </dw:transform-message>
-    </flow>
+
     <sub-flow name="notFoundResponse"> 
      	<dw:transform-message doc:name="404 Not Found">
                      <dw:set-payload><![CDATA[%dw 1.0

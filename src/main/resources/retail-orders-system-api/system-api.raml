@@ -72,6 +72,10 @@ types:
         type: string
         description: |
           Identifier of customer
+      billingAddress?: 
+        type: Address
+        description: |
+          full billing address of customer
       shippingAddress?: 
         type: Address
         description: |
@@ -84,7 +88,19 @@ types:
         type: Status
         description: |
           Status of order
-      price?: 
+      subtotal?: 
+        type: string
+        description: |
+          price for order (without tax and shipping)
+      shippingCost?: 
+        type: string
+        description: |
+          total price of shipping
+      totalTax?: 
+        type: string
+        description: |
+          total price of shipping
+      total?: 
         type: string
         description: |
           total price for order (with tax and shipping)
@@ -93,9 +109,6 @@ types:
   Address:
     type: object
     properties:
-      type:
-        type: string
-        enum: [ BILLING, SHIPPING]
       address?:
         type: string?
         description: |

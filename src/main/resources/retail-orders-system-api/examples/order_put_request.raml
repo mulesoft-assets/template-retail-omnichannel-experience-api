@@ -1,8 +1,25 @@
 #%RAML 1.0 NamedExample
 value: |
   {  
-      "price":"125.43",
+       "subtotal":"100.21",
+       "totalTax":"15.22",
+       "shippingCost":"10.00", 
+       "total":"125.43",
       "status":"Draft",
+      "shippingAddress":{
+            "address":"Main Street 40",
+            "city":"San Francisco", 
+            "postalCode":"94210",
+            "state":"CA",
+            "country":"US"   
+      },
+      "billingAddress":{
+            "address":"Main Street 40",
+            "city":"San Francisco", 
+            "postalCode":"94210",
+            "state":"CA",
+            "country":"US"   
+      },
       "orderItems":
       {  
           "pickupItems": [  
