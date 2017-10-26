@@ -215,13 +215,12 @@ payload]]></dw:set-variable>
                         <dw:set-variable variableName="items"><![CDATA[%dw 1.0
 %output application/java
 ---
-using (item = payload[0])
 flowVars.items + {
 	item: {
-    	productId: item.productId,
-    	identifier: item.identifier, 
-   		identifiers: item.identifiers, 
-    	configuration: item.configuration    	
+    	productId: payload.productId,
+    	identifier: payload.identifier, 
+   		identifiers: payload.identifiers, 
+    	configuration: payload.configuration    	
     },
     quantity: {
     		amount: flowVars.itemDetails.quantity, 
@@ -376,7 +375,7 @@ payload]]></dw:set-payload>
                      <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
-payload[0]
+payload
 ]]></dw:set-payload>
                 </dw:transform-message>
             </when>
