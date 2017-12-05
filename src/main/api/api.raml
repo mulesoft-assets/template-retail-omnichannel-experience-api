@@ -857,29 +857,23 @@ types:
                     "paymentMethods": [
                          {
                             "paymentMethodType": {
-                              "cash": {
                                 "medium": "PHYSICAL",
                                 "issuer": "GOVT",
                                 "name": "CASH"
-                              }
                             }
                          },
                          {
                             "paymentMethodType": {
-                              "check": {
                                 "medium": "PHYSICAL",
                                 "issuer": "BANK",
                                 "name": "CHECK"
-                              }
                             }
                          },
                          {
                             "paymentMethodType": {
-                              "visa": {
                                 "medium": "CARD",
                                 "issuer": "BANK",
                                 "name": "VISA"
-                              }
                             }
                          }
                     ]
@@ -1280,6 +1274,33 @@ types:
         queryParameters:
           paymentMedium: payment.PaymentMediumType
           paymentIssuer: payment.PaymentIssuerType
+        responses: 
+          200:
+            body: 
+              application/json:
+                example: |
+                  {
+                    "_links": {
+                      "self": {
+                        "href": "https://mocksvc.mulesoft.com/mocks/226604b1-d88b-4e3b-8a5c-4c299e70db6c/stores/1c9a20dc-c585-42fd-ac1a-1216085b76d2/paymentMethods"
+                      }
+                    },
+                    "_meta": {
+                      "messages": [],
+                      "totalItems": 1,
+                      "offset": 0,
+                      "limit": 10                
+                    },
+                    "paymentMethods": [
+                      {
+                        "paymentMethodType":{  
+                          "medium":"CARD",
+                          "issuer":"BANK",
+                          "name":"VISA"
+                        }
+                      }
+                    ]
+                  }
     /fulfillmentMethods:
       type:
         collection.readOnlyCollection:
@@ -1449,13 +1470,6 @@ types:
         example: |
             {
               "customerId": "facebook_1234567890123456",
-              "fulfillment": {
-                  "receipt": "SHIPMENT",
-                  "carrier": "POSTAL",
-                  "deliveryAddress": {
-                    "type": "SHIPPING"
-                  }
-              },
               "orderItems": [
                 {
                   "quantity": {
