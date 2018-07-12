@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mules
 	    <http:listener-config name="api-httpListenerConfig" doc:name="HTTP Listener config">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
-    <apikit:config name="api-config" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="api-config" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="Router"/>
     <configuration-properties doc:name="Configuration properties" doc:id="1df5e889-716f-4c69-9688-3a3241e85a32" file="common.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="0d1c9ed3-0a5d-4e37-afa6-8d12a336b1da" file="mule.${mule.env}.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="9686e83c-4245-41d7-87d1-df29781320fe" file="mule-artifact.properties" />
@@ -34,7 +34,7 @@ http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mules
 		property_host="${product-availability-process-api.host}" 
 		property_port="${product-availability-process-api.port}" 
 		property_basePath="${product-availability-process-api.basePath}" 
-		property_protocol="${product-availability-process-api.protocol}" />
+		property_protocol="${product-availability-process-api.protocol}"/>
 	<retail-order-fulfilment-process-api:config name="Retail_Order_Fulfilment_Process_API_Config" doc:name="Retail Order Fulfilment Process API Config" doc:id="769c547f-903b-4ea2-a326-139d7cd771d7" 
 		property_host="${order-fulfilment-process-api.host}" 
 		property_port="${order-fulfilment-process-api.port}" 

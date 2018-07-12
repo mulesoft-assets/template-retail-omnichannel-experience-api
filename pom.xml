@@ -16,8 +16,8 @@
 		<app.runtime>4.1.1</app.runtime>
 		<mule.maven.plugin.version>3.1.1</mule.maven.plugin.version>
 		
-		<http.connector.version>1.2.0</http.connector.version>
-        <mule.apikit.version>1.1.1</mule.apikit.version>
+		<http.connector.version>1.2.1</http.connector.version>
+        <mule.apikit.version>1.1.2</mule.apikit.version>
         <availability.process.api.version>2.0.1</availability.process.api.version>
         <orders.system.api.version>2.0.18</orders.system.api.version>
         <customers.system.api.version>2.0.4</customers.system.api.version>

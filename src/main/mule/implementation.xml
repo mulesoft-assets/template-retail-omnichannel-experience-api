@@ -12,7 +12,6 @@ http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api http://w
 http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api/current/mule-retail-shopping-cart-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api/current/mule-retail-salesforce-customer-system-api.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-
 	<flow name="getProducts" doc:id="103cfb62-09fa-41d3-9a01-430191919e46" >
 		<retail-product-system-api:get-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config"/>
 	</flow>
@@ -41,7 +40,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<retail-product-availability-process-api:get-availabilities doc:name="Get availabilities" doc:id="00aefc31-f436-4515-bddf-902e49eb8f84" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" latitude="#[attributes.queryParams.latitude]" longitude="#[attributes.queryParams.longitude]" radius="#[attributes.queryParams.radius]" metric="#[attributes.queryParams.metric]" quantity="#[attributes.queryParams.quantity]" />
 			</when>
 			<otherwise >
-				<retail-product-availability-process-api:get-availabilities doc:name="Get availabilities" doc:id="0d8779b8-16cf-4aa2-a4be-42116fcd9089" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productvariantId]" quantity="#[attributes.queryParams.quantity]"/>
+				<retail-product-availability-process-api:get-availabilities doc:name="Get availabilities" doc:id="0d8779b8-16cf-4aa2-a4be-42116fcd9089" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" quantity="#[attributes.queryParams.quantity]"/>
 			</otherwise>
 		</choice>
 	</flow>
@@ -105,7 +104,7 @@ output application/java
 vars.items + {
 	productId: payload.identifier,
 	productName: payload.brand ++ " " ++ payload.model,
-	orderItemId: vars.itemDetails.identifier,
+	orderItemId: vars.itemDetails.item.identifier,
 	location: vars.itemDetails.location,
 	quantity: vars.itemDetails.quantity.amount,
 	price: vars.itemDetails.itemUnitPrice.amount.currencyValue as String	
@@ -113,11 +112,20 @@ vars.items + {
 				</ee:variables>
 			</ee:transform>
 		</foreach>
-		<retail-order-fulfilment-process-api:create-order doc:name="Create order" doc:id="d8ec47ed-1687-4535-b29a-15f5768d4545" config-ref="Retail_Order_Fulfilment_Process_API_Config">
-			<retail-order-fulfilment-process-api:create-order-request-data ><![CDATA[#[{
+		<ee:transform doc:name="Prepare request" doc:id="3792ab87-916f-4946-8e57-5d45e8089152" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
 	customerId: vars.order.customerId,
+	status: "Draft",
 	orderItems: vars.items
-}]]]></retail-order-fulfilment-process-api:create-order-request-data>
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="0222d886-c272-4fd4-bf4e-3bfdd3f11dee" message="#[payload]"/>
+		<retail-order-fulfilment-process-api:create-order doc:name="Create order" doc:id="d8ec47ed-1687-4535-b29a-15f5768d4545" config-ref="Retail_Order_Fulfilment_Process_API_Config">
 		</retail-order-fulfilment-process-api:create-order>
 	</flow>
 	<flow name="createShoppingCart" doc:id="674709f3-d2bb-43b0-9111-61487df527b5" >
@@ -135,7 +143,7 @@ vars.items + {
 		<logger level="INFO" doc:name="Success operation" doc:id="8f31a7a4-11f5-4203-bffd-0f3f92d7059c" message="Shopping Cart was created"/>
 	</flow>
 	<flow name="getShoppingCart" doc:id="6e3a0d64-46e0-4443-aa34-c813e9812ff0" >
-		<retail-shopping-cart-process-api:get-shopping-cart-by-shopping-cart-id doc:name="Get shopping cart by shopping cart id" doc:id="1ccdb27f-0b0f-4712-8ebc-5195233b8557" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingcartId]"/>
+		<retail-shopping-cart-process-api:get-shopping-cart-by-shopping-cart-id doc:name="Get shopping cart by shopping cart id" doc:id="1ccdb27f-0b0f-4712-8ebc-5195233b8557" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
 		<ee:transform doc:name="Set Variables" doc:id="9aff74e7-c643-4ca6-b237-34eb19633739" >
 			<ee:message >
 			</ee:message>
@@ -183,7 +191,7 @@ vars.items + {
 		<ee:transform doc:name="Mapping Response" doc:id="4616bac3-f4ed-41c0-a3db-6385228d8c24" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
+output application/json
 ---
 {
 	identifier: vars.shoppingCart.identifier, 
@@ -194,7 +202,7 @@ output application/java
 		</ee:transform>
 	</flow>
 	<flow name="updateShoppingCart" doc:id="70999b2e-5585-48b6-9e33-62d117c036db" >
-		<retail-shopping-cart-process-api:update-shopping-cart-by-shopping-cart-id doc:name="Update shopping cart by shopping cart id" doc:id="6e5a208e-0103-47d6-ba56-b9a622876a1e" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingcartId]">
+		<retail-shopping-cart-process-api:update-shopping-cart-by-shopping-cart-id doc:name="Update shopping cart by shopping cart id" doc:id="6e5a208e-0103-47d6-ba56-b9a622876a1e" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]">
 			<retail-shopping-cart-process-api:update-shopping-cart-by-shopping-cart-id-request-data ><![CDATA[#[items: payload.items map {
 		productId: $.item.productId,
 		variantId: $.item.identifier, 
@@ -202,14 +210,14 @@ output application/java
 		location: $.location 		
 	}]]]></retail-shopping-cart-process-api:update-shopping-cart-by-shopping-cart-id-request-data>
 		</retail-shopping-cart-process-api:update-shopping-cart-by-shopping-cart-id>
-		<logger level="INFO" doc:name="Success operation" doc:id="638031ab-d3e4-414d-8a88-1ee0369bd379" />
+		<logger level="INFO" doc:name="Success operation" doc:id="638031ab-d3e4-414d-8a88-1ee0369bd379" message="Shopping Cart was updated"/>
 	</flow>
 	<flow name="deleteShoppingCart" doc:id="9682e4f6-df78-4e0a-ad56-15d8ba38c7fd" >
-		<retail-shopping-cart-process-api:delete-shopping-cart-by-shopping-cart-id doc:name="Delete shopping cart by shopping cart id" doc:id="9d2d016e-c5c9-4c28-a9dc-a906ab87f723" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingcartId]"/>
+		<retail-shopping-cart-process-api:delete-shopping-cart-by-shopping-cart-id doc:name="Delete shopping cart by shopping cart id" doc:id="9d2d016e-c5c9-4c28-a9dc-a906ab87f723" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
 		<logger level="INFO" doc:name="Success operation" doc:id="6415d192-8f34-4c36-8c3b-6d0fb15d727f" message="Shopping Cart was deleted"/>
 	</flow>
 	<flow name="getShoppingCartsByCustomer" doc:id="62bc6e7f-f152-4fad-9472-ea58da2bb042" >
-		<retail-shopping-cart-process-api:get-shopping-carts-by-customer-id doc:name="Get shopping carts by customer id" doc:id="f659baf9-f862-4851-9bea-2a29ad712937" config-ref="Retail_Shopping_Cart_Process_API_Config" customer-id="#[attributes.uriParams.shoppingcartId]"/>
+		<retail-shopping-cart-process-api:get-shopping-carts-by-customer-id doc:name="Get shopping carts by customer id" doc:id="f659baf9-f862-4851-9bea-2a29ad712937" config-ref="Retail_Shopping_Cart_Process_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
 	</flow>
 	<flow name="getCustomer" doc:id="d1ebd3c3-3eb5-43c3-b289-1804d80f6f1c" >
 		<retail-salesforce-customer-system-api:get-customer-by-customer-id doc:name="Get customer by customer id" doc:id="d20b0f04-ab0d-4fb8-bb35-4743dc07067c" config-ref="Retail_Salesforce_Customer_System_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
