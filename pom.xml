@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.mule.templates</groupId>
+	<artifactId>template-retail-omnichannel-experience-api</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
+    <packaging>mule-application</packaging>
+
+	<name>template-retail-omnichannel-experience-api</name>
+
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<app.runtime>4.1.1</app.runtime>
+		<mule.maven.plugin.version>3.1.1</mule.maven.plugin.version>
+		
+		<http.connector.version>1.2.1</http.connector.version>
+        <mule.apikit.version>1.1.2</mule.apikit.version>
+        <availability.process.api.version>2.0.1</availability.process.api.version>
+        <orders.system.api.version>2.0.18</orders.system.api.version>
+        <customers.system.api.version>2.0.4</customers.system.api.version>
+        <partners.system.api.version>2.0.2</partners.system.api.version>
+        <locations.system.api.version>2.0.2</locations.system.api.version>
+        <product.system.api.version>2.0.3</product.system.api.version>
+        <fulfilment.process.api.version>2.0.2</fulfilment.process.api.version>
+        <shopping.cart.process.api.version>2.0.0</shopping.cart.process.api.version>
+		
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+				<classifier>mule-application</classifier>
+                </configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-apikit-module</artifactId>
+            <version>${mule.apikit.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail-orders2sfdc-system-api</artifactId>
+            <version>${orders.system.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail_order_fulfilment_process_api</artifactId>
+            <version>${fulfilment.process.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail-customers2sfdc-system-api</artifactId>
+            <version>${customers.system.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail_partners_system_api</artifactId>
+            <version>${partners.system.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail_shopping_cart_process_api</artifactId>
+            <version>${shopping.cart.process.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail-product2saphybris-system-api</artifactId>
+            <version>${product.system.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail_product_availability_process_api</artifactId>
+            <version>${availability.process.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>retail_locations_system_api</artifactId>
+            <version>${locations.system.api.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>${http.connector.version}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    </dependencies>
+
+	<repositories>
+          <repository>
+            <id>anypoint-exchange</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

@@ -1,0 +1,1077 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd ">
+<flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="/api/*" doc:name="Listener">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="db848fc7-10e0-4b03-9666-e67bd9b106a4">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="api-console">
+        <http:listener config-ref="api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="put:\orders\(salesOrderId)\fulfillment:application\json:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  carrier: "POSTAL",
+  deliveryAddress: {
+    identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+    "type": "SHIPPING",
+    address: "Main street 122",
+    city: "San Francisco",
+    state: "California",
+    postalCode: "90210",
+    recipient: "Jason Bourne",
+    country: "US",
+    secondaryAddress: null,
+    mailStopCode: null,
+    attention: null
+  },
+  receipt: "PICKUP"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\orders\(salesOrderId)\orderItems:application\json:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  orderItems: [
+    {
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      location: {
+        locationId: "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+        deliveryMethod: "PICKUP",
+        locationType: "STORE"
+      },
+      item: {
+        configuration: [
+          {
+            characteristic: {
+              code: "size",
+              description: "Size",
+              name: "Size of item"
+            },
+            characteristicValue: {
+              code: "M",
+              name: "Medium"
+            }
+          }, 
+          {
+            characteristic: {
+              code: "color",
+              name: "Color",
+              description: "Color"
+            },
+            characteristicValue: {
+              code: "blue",
+              name: "Blue"
+            }
+          }
+        ],
+        productId: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+        identifier: "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+        identifiers: {
+          SKU: "UGG-BB-PUR-06"
+        }
+      },
+      itemExtendedPrice: {
+        currency: "EUR",
+        currencyValue: 31.93,
+        name: "Amount"
+      },
+      itemUnitPrice: {
+        amount: {
+          currency: "USD",
+          currencyValue: 34.90,
+          name: "Amount"
+        },
+        salesUnit: {
+          code: "EA",
+          name: "Each"
+        }
+      },
+      quantity: {
+        amount: 2,
+        quantityType: "CONTINUOUS",
+        unit: "EA"
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\orders\(salesOrderId)\paymentMethod:application\json:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  paymentMethodType: {
+    medium: "CARD",
+    issuer: "BANK",
+    name: "VISA"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\customers\(customerId)\contactMethods\(contactMethodId):application\json:api-config">
+        <logger level="INFO" message="put:\customers\(customerId)\contactMethods\(contactMethodId):application\json:api-config" />
+    </flow>
+    <flow name="put:\customers\(customerId):application\json:api-config">
+		<flow-ref doc:name="updateCustomer" doc:id="dfc7b9bb-0097-4310-84e1-52b71acce980" name="updateCustomer"/>
+    </flow>
+    <flow name="put:\customers\(customerId)\deliveryAddresses\(deliveryAddressId):application\json:api-config">
+        <logger level="INFO" message="put:\customers\(customerId)\deliveryAddresses\(deliveryAddressId):application\json:api-config" />
+    </flow>
+    <flow name="put:\customers\(customerId)\paymentMethods\(paymentMethodId):application\json:api-config">
+        <logger level="INFO" message="put:\customers\(customerId)\paymentMethods\(paymentMethodId):application\json:api-config" />
+    </flow>
+    <flow name="put:\orders\(salesOrderId):application\json:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  customerId: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+  fulfillment: {
+    receipt: "SHIPMENT",
+    carrier: "POSTAL",
+    deliveryAddress: {
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      "type": "SHIPPING",
+      address: "Main street 122",
+      city: "San Francisco",
+      state: "California",
+      postalCode: "90210",
+      recipient: "Jason Bourne",
+      country: "US",
+      secondaryAddress: null,
+      mailStopCode: null,
+      attention: null
+    }
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\shoppingCarts\(shoppingCartId):application\json:api-config">
+		<flow-ref doc:name="updateShoppingCart" doc:id="075d6aa0-565a-4247-95ef-c4a294be4299" name="updateShoppingCart"/>
+    </flow>
+    <flow name="delete:\customers\(customerId)\contactMethods\(contactMethodId):api-config">
+        <logger level="INFO" message="delete:\customers\(customerId)\contactMethods\(contactMethodId):api-config" />
+    </flow>
+    <flow name="delete:\customers\(customerId):api-config">
+        <logger level="INFO" message="delete:\customers\(customerId):api-config" />
+    </flow>
+    <flow name="delete:\customers\(customerId)\deliveryAddresses\(deliveryAddressId):api-config">
+        <logger level="INFO" message="delete:\customers\(customerId)\deliveryAddresses\(deliveryAddressId):api-config" />
+    </flow>
+    <flow name="delete:\customers\(customerId)\paymentMethods\(paymentMethodId):api-config">
+        <logger level="INFO" message="delete:\customers\(customerId)\paymentMethods\(paymentMethodId):api-config" />
+    </flow>
+    <flow name="delete:\orders\(salesOrderId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="delete:\shoppingCarts\(shoppingCartId):api-config">
+		<flow-ref doc:name="deleteShoppingCart" doc:id="f018cf55-1721-4dab-bc5a-767acb1d2154" name="deleteShoppingCart"/>
+    </flow>
+    <flow name="get:\products\(productId)\variants\(productVariantId)\availability:api-config">
+		<flow-ref doc:name="getAvailability" doc:id="0a2c43be-776d-4001-bf17-9f7352b43e11" name="getAvailability"/>
+    </flow>
+    <flow name="get:\stores\(storeId)\categories:api-config">
+        <logger level="INFO" message="get:\stores\(storeId)\categories:api-config" doc:name="Logger"/>
+    </flow>
+    <flow name="get:\channels\(channelId)\categories:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  categories: [
+    {
+      identifier: "fe3d0325-be8c-45b8-aa96-2331f25542be",
+      name: "Sweaters",
+      description: "Sweaters"
+    }, 
+    {
+      identifier: "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
+      name: "Hats",
+      description: "Hats"
+    }, 
+    {
+      identifier: "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+      name: "Shirts",
+      description: "Shirts"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\categories:api-config">
+		<flow-ref doc:name="getCategories" doc:id="4b88f7a7-a576-4861-bdb2-51942a20ca10" name="getCategories"/>
+    </flow>
+    <flow name="get:\channels:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  channels: [
+    {
+      channelType: "WEB",
+      url: "http://www.example.com"
+    }, 
+    {
+      channelType: "STORE",
+      storeNumber: "ae42643a-6d19-483c-82a2-54939d9da13e"
+    }, 
+    {
+      channelType: "MOBILE",
+      name: "iOS"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\contactMethods:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  contactMethods: [
+    {
+      contactMethodType: "EMAIL",
+      emailAddress: "jason.bourne@example.com"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  customers: [
+    {
+      identifier: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+      firstName: "Jason",
+      lastName: "Bourne",
+      paymentMethods: [
+        {
+          paymentMethodType: {
+            medium: "CARD",
+            issuer: "BANK",
+            name: "VISA"
+          }
+        }
+      ],
+      deliveryAddresses: [
+        {
+          identifier: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+          "type": "BILLING",
+          address: "Main street 122",
+          city: "San Francisco",
+          state: "California",
+          postalCode: "90210",
+          recipient: "Jason Bourne",
+          country: "US",
+          secondaryAddress: "",
+          mailStopCode: "",
+          attention: ""
+        }
+      ]
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\deliveryAddresses:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  deliveryAddresses: [
+    {
+      "type": "BILLING",
+      identifier: "deb89058-77fb-4e97-8c83-6506c3855555",
+      address: "Main street 122",
+      city: "San Francisco",
+      state: "California",
+      postalCode: "90210",
+      recipient: "Jason Bourne",
+      country: "US",
+      secondaryAddress: null,
+      mailStopCode: null,
+      attention: null
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\products\(productId)\features:api-config">
+        <logger level="INFO" message="get:\products\(productId)\features:api-config" />
+    </flow>
+    <flow name="get:\orders\(salesOrderId)\fulfillment:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  carrier: "POSTAL",
+  deliveryAddress: {
+    identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+    "type": "SHIPPING",
+    address: "Main street 122",
+    city: "San Francisco",
+    state: "California",
+    postalCode: "90210",
+    recipient: "Jason Bourne",
+    country: "US",
+    secondaryAddress: null,
+    mailStopCode: null,
+    attention: null
+  },
+  receipt: "PICKUP"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\channels\(channelId)\fulfillmentMethods:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  fulfillmentMethods: [
+    {
+      carrier: "POSTAL",
+      deliveryAddress: {
+        identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+        "type": "SHIPPING",
+        address: "Main street 122",
+        city: "San Francisco",
+        state: "California",
+        postalCode: "90210",
+        recipient: "Jason Bourne",
+        country: "US",
+        secondaryAddress: null,
+        mailStopCode: null,
+        attention: null
+      },
+      receipt: "PICKUP"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\stores\(storeId)\fulfillmentMethods:api-config">
+        <logger level="INFO" message="get:\stores\(storeId)\fulfillmentMethods:api-config" />
+    </flow>
+    <flow name="get:\stores\(storeId)\nearbyStores:api-config">
+        <logger level="INFO" message="get:\stores\(storeId)\nearbyStores:api-config" />
+    </flow>
+    <flow name="get:\orders\(salesOrderId)\orderItems:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  orderItems: [
+    {
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      location: {
+        locationId: "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+        deliveryMethod: "PICKUP",
+        locationType: "STORE"
+      },
+      item: {
+        configuration: [
+          {
+            characteristic: {
+              code: "size",
+              description: "Size",
+              name: "Size of item"
+            },
+            characteristicValue: {
+              code: "M",
+              name: "Medium"
+            }
+          }, 
+          {
+            characteristic: {
+              code: "color",
+              name: "Color",
+              description: "Color"
+            },
+            characteristicValue: {
+              code: "blue",
+              name: "Blue"
+            }
+          }
+        ],
+        productId: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+        identifier: "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+        identifiers: {
+          SKU: "UGG-BB-PUR-06"
+        }
+      },
+      itemExtendedPrice: {
+        currency: "EUR",
+        currencyValue: 31.93,
+        name: "Amount"
+      },
+      itemUnitPrice: {
+        amount: {
+          currency: "USD",
+          currencyValue: 34.90,
+          name: "Amount"
+        },
+        salesUnit: {
+          code: "EA",
+          name: "Each"
+        }
+      },
+      quantity: {
+        amount: 2,
+        quantityType: "CONTINUOUS",
+        unit: "EA"
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\orders:api-config">
+		<flow-ref doc:name="getOrdersByCustomer" doc:id="53286b81-df8a-4a98-a983-c811fc913e92" name="getOrdersByCustomer"/>
+    </flow>
+    <flow name="get:\orders:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  orders: [
+    {
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      customerId: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+      orderItems: [
+        {
+          identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+          quantity: {
+            quantityType: "DISCRETE",
+            unit: "EA",
+            amount: 1
+          },
+          location: {
+            locationId: "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+            deliveryMethod: "PICKUP",
+            locationType: "STORE"
+          },
+          item: {
+            identifier: "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+            productId: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+            identifiers: {
+              SKU: "UGG-BB-PUR-06"
+            }
+          },
+          itemUnitPrice: {
+            amount: {
+              currency: "USD",
+              currencyValue: 34.9,
+              name: "Amount"
+            },
+            salesUnit: {
+              code: "EA",
+              name: "Each"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\partners:api-config">
+		<flow-ref doc:name="getPartners" doc:id="0f5efd62-3b96-4a31-91e3-97c94e71b701" name="getPartners"/>
+    </flow>
+    <flow name="get:\orders\(salesOrderId)\paymentMethod:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  paymentMethodType: {
+    medium: "CARD",
+    issuer: "BANK",
+    name: "VISA"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\stores\(storeId)\paymentMethods:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: [],
+    totalItems: 1,
+    offset: 0,
+    limit: 10
+  },
+  paymentMethods: [
+    {
+      paymentMethodType: {
+        medium: "CARD",
+        issuer: "BANK",
+        name: "VISA"
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\paymentMethods:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: [],
+    totalItems: 1,
+    offset: 0,
+    limit: 10
+  },
+  paymentMethods: [
+    {
+      identifier: "deb89058-77fb-4e97-8c83-6506c38c4444",
+      paymentMethodType: {
+        medium: "CARD",
+        issuer: "BANK",
+        name: "VISA"
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\channels\(channelId)\paymentMethods:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: [],
+    totalItems: 1,
+    offset: 0,
+    limit: 5
+  },
+  paymentMethods: [
+    {
+      paymentMethodType: {
+        medium: "PHYSICAL",
+        issuer: "GOVT",
+        name: "CASH"
+      }
+    }, 
+    {
+      paymentMethodType: {
+        medium: "PHYSICAL",
+        issuer: "BANK",
+        name: "CHECK"
+      }
+    }, 
+    {
+      paymentMethodType: {
+        medium: "CARD",
+        issuer: "BANK",
+        name: "VISA"
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\categories\(categoryId)\products:api-config">
+		<flow-ref doc:name="getProductsByCategory" doc:id="c8a2ddb1-0d44-4d47-a307-47ec17a8f028" name="getProductsByCategory"/>
+    </flow>
+    <flow name="get:\stores\(storeId)\products:api-config">
+        <logger level="INFO" message="get:\stores\(storeId)\products:api-config" doc:name="Logger"/>
+    </flow>
+    <flow name="get:\products:api-config">
+		<flow-ref doc:name="getProducts" doc:id="05a88e52-e7f4-4a3f-b4d1-a40abac52bc6" name="getProducts"/>
+    </flow>
+    <flow name="get:\channels\(channelId)\products:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  products: [
+    {
+      brand: "Anypoint",
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      categoryId: [
+        "5e5b095e-8b60-429c-98bf-da36afeb1f1c"
+      ],
+      model: "Smart Slim Micro Stripe Shirt",
+      rating: 5,
+      description: "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+      pictures: [
+        "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg", 
+        "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+      ],
+      price: {
+        amount: {
+          currency: "USD",
+          currencyValue: 34.90,
+          name: "Amount"
+        },
+        salesUnit: {
+          code: "EA",
+          name: "Each"
+        }
+      }
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\shoppingCarts:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "_meta": {
+    messages: []
+  },
+  shoppingCarts: [
+    {
+      identifier: "734a04dc-2f30-11e7-93ae-92361f002671",
+      customerId: "11e7-93ae-92361f002671",
+      items: [
+        {
+          location: {
+            locationId: "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+            deliveryMethod: "PICKUP",
+            locationType: "STORE"
+          },
+          item: {
+            productId: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+            identifier: "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+            identifiers: {
+              SKU: "UGG-BB-PUR-06"
+            },
+            configuration: [
+              {
+                characteristic: {
+                  code: "size",
+                  description: "Size",
+                  name: "Size of item"
+                },
+                characteristicValue: {
+                  code: "M",
+                  name: "Medium"
+                }
+              }, 
+              {
+                characteristic: {
+                  code: "color",
+                  description: "Color",
+                  name: "Color"
+                },
+                characteristicValue: {
+                  code: "blue",
+                  name: "Blue"
+                }
+              }
+            ]
+          },
+          quantity: {
+            amount: 2,
+            quantityType: "DISCRETE",
+            unit: "EA"
+          },
+          tax: 5.00,
+          shipping: 9.00
+        }
+      ]
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\shoppingCarts:api-config">
+		<flow-ref doc:name="getShoppingCartsByCustomer" doc:id="89abf985-2bb3-4436-9c0e-58afc5801762" name="getShoppingCartsByCustomer"/>
+    </flow>
+    <flow name="get:\stores:api-config">
+		<flow-ref doc:name="getStores" doc:id="20aee69a-b142-4da0-ae01-82fc20df00fb" name="getStores"/>
+    </flow>
+    <flow name="get:\products\(productId)\variants:api-config">
+		<flow-ref doc:name="getVariantsByProduct" doc:id="fd4bd382-0b58-4060-bc11-a06ee6f24ab4" name="getVariantsByProduct"/>
+    </flow>
+    <flow name="get:\categories\(categoryId):api-config">
+		<flow-ref doc:name="getCategory" doc:id="e9eac0ba-6d7a-45d5-b7b7-ce711cc57910" name="getCategory"/>
+    </flow>
+    <flow name="get:\channels\(channelId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  channelType: "WEB",
+  url: "http://www.example.com"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId)\contactMethods\(contactMethodId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  contactMethodType: "EMAIL",
+  emailAddress: "jason.bourne@example.com"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\customers\(customerId):api-config">
+		<flow-ref doc:name="getCustomer" doc:id="b01b740f-3661-4f1e-a323-4d1b5e0d575d" name="getCustomer"/>
+    </flow>
+    <flow name="get:\customers\(customerId)\deliveryAddresses\(deliveryAddressId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  identifier: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+  "type": "BILLING",
+  address: "Main street 122",
+  city: "San Francisco",
+  state: "California",
+  postalCode: "90210",
+  recipient: "Jason Bourne",
+  country: "US",
+  secondaryAddress: null,
+  mailStopCode: null,
+  attention: null
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\products\(productId)\features\(featureId):api-config">
+        <logger level="INFO" message="get:\products\(productId)\features\(featureId):api-config" />
+    </flow>
+    <flow name="get:\partners\(partnerId):api-config">
+		<flow-ref doc:name="getPartner" doc:id="8fad4a8a-8313-474b-83be-d66898adae9c" name="getPartner"/>
+    </flow>
+    <flow name="get:\customers\(customerId)\paymentMethods\(paymentMethodId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  identifier: "deb89058-77fb-4e97-8c83-6506c38c4444",
+  paymentMethodType: {
+    medium: "CARD",
+    issuer: "BANK",
+    name: "VISA"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\products\(productId):api-config">
+		<flow-ref doc:name="getProduct" doc:id="91eab252-9cc3-4f60-bc4e-fbcc5794b9d4" name="getProduct"/>
+    </flow>
+    <flow name="get:\products\(productId)\variants\(productVariantId):api-config">
+		<flow-ref doc:name="getVariant" doc:id="7f5c7592-aab5-4ab3-b7f4-6a6af2379c8a" name="getVariant"/>
+    </flow>
+    <flow name="get:\orders\(salesOrderId):api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  customerId: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+  fulfillment: {
+    receipt: "SHIPMENT",
+    carrier: "POSTAL",
+    deliveryAddress: {
+      identifier: "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+      "type": "SHIPPING",
+      address: "Main street 122",
+      city: "San Francisco",
+      state: "California",
+      postalCode: "90210",
+      recipient: "Jason Bourne",
+      country: "US",
+      secondaryAddress: null,
+      mailStopCode: null,
+      attention: null
+    }
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\shoppingCarts\(shoppingCartId):api-config">
+		<flow-ref doc:name="getShoppingCart" doc:id="faa87c61-2d9f-40d9-b4fb-74e072350a07" name="getShoppingCart"/>
+    </flow>
+    <flow name="get:\stores\(storeId):api-config">
+		<flow-ref doc:name="getStore" doc:id="ce6502f7-bca6-49fe-a539-ef9a1d70dc02" name="getStore"/>
+    </flow>
+    <flow name="post:\customers\(customerId)\contactMethods:application\json:api-config">
+        <logger level="INFO" message="post:\customers\(customerId)\contactMethods:application\json:api-config" />
+    </flow>
+    <flow name="post:\customers:application\json:api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  identifier: "deb89058-77fb-4e97-8c83-6506c38cacf8",
+  firstName: "Jason",
+  lastName: "Bourne",
+  paymentMethods: [
+    {
+      identifier: "deb89058-77fb-4e97-8c83-6506c38c4444",
+      paymentMethodType: {
+        medium: "CARD",
+        issuer: "BANK",
+        name: "VISA"
+      }
+    }
+  ],
+  deliveryAddresses: [
+    {
+      "type": "BILLING",
+      identifier: "deb89058-77fb-4e97-8c83-6506c3855555",
+      address: "Main street 122",
+      city: "San Francisco",
+      state: "California",
+      postalCode: "90210",
+      recipient: "Jason Bourne",
+      country: "US",
+      secondaryAddress: null,
+      mailStopCode: null,
+      attention: null
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\customers\(customerId)\deliveryAddresses:application\json:api-config">
+        <logger level="INFO" message="post:\customers\(customerId)\deliveryAddresses:application\json:api-config" />
+    </flow>
+    <flow name="post:\orders:application\json:api-config">
+		<flow-ref doc:name="createOrder" doc:id="1f30ce73-ec7a-43e6-86f8-ecf816970c9e" name="createOrder"/>
+    </flow>
+    <flow name="post:\customers\(customerId)\paymentMethods:application\json:api-config">
+        <logger level="INFO" message="post:\customers\(customerId)\paymentMethods:application\json:api-config" doc:name="Logger"/>
+    </flow>
+    <flow name="post:\shoppingCarts:application\json:api-config">
+		<flow-ref doc:name="createShoppingCart" doc:id="de368ba3-43c6-4fb2-8b99-5448412a7073" name="createShoppingCart"/>
+    </flow>
+</mule>
