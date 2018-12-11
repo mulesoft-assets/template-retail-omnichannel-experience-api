@@ -17,13 +17,14 @@ http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api http:/
 http://www.mulesoft.org/schema/mule/retail-partners-system-api http://www.mulesoft.org/schema/mule/retail-partners-system-api/current/mule-retail-partners-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api/current/mule-retail-shopping-cart-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mulesoft.org/schema/mule/retail-locations-system-api/current/mule-retail-locations-system-api.xsd">
-	    <http:listener-config name="api-httpListenerConfig" doc:name="HTTP Listener config">
+	
+	<global-property doc:name="Global Property" doc:id="77e37e3d-f7cb-480c-bb81-0c55e14bb752" name="mule.env" value="dev" />
+	<http:listener-config name="api-httpListenerConfig" doc:name="HTTP Listener config">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
     <apikit:config name="api-config" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="Router"/>
     <configuration-properties doc:name="Configuration properties" doc:id="1df5e889-716f-4c69-9688-3a3241e85a32" file="common.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="0d1c9ed3-0a5d-4e37-afa6-8d12a336b1da" file="mule.${mule.env}.properties" />
-	<configuration-properties doc:name="Configuration properties" doc:id="9686e83c-4245-41d7-87d1-df29781320fe" file="mule-artifact.properties" />
 	
 	<retail-product-system-api:config name="Retail_Product_System_API_Config" doc:name="Retail Product System API Config" doc:id="267461ee-8fe0-4840-a49c-79f895c9202f" 
 		property_host="${product-system-api.host}" 
@@ -64,7 +65,6 @@ http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mules
 		property_host="${locations-system-api.host}" 
 		property_port="${locations-system-api.port}" 
 		property_basePath="${locations-system-api.basePath}" 
-		property_protocol="${locations-system-api.protocol}" />
-	
+		property_protocol="${locations-system-api.protocol}" />	
 	
 </mule>

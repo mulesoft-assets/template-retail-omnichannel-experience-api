@@ -4,24 +4,24 @@ baseUri: http://localhost:8081/api
 title: Retail Omnichannel Experience API
 
 traits:
-  geoSearch: !include /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_geosearch/1.0.1/retail_geosearch.raml
+  geoSearch: !include /exchange_modules/org.mule.templates/retail-geosearch/1.0.0/retail_geosearch.raml
 
 uses:
 
-  common: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
+  common: /exchange_modules/org.mule.templates/retail-common/1.0.0/retail_common.raml
   collection: /collections.raml
-  payment: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.1/retail_payment.raml
-  contact: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_contact/1.0.2/retail_contact.raml
-  fulfillment: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.3/retail_fulfillment.raml
-  taxonomy: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_taxonomy/1.0.2/retail_taxonomy.raml
-  customer: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_customer_types/1.0.4/retail_customer_types.raml
+  payment: /exchange_modules/org.mule.templates/retail-payment/1.0.0/retail_payment.raml
+  contact: /exchange_modules/org.mule.templates/retail-contact/1.0.0/retail_contact.raml
+  fulfillment: /exchange_modules/org.mule.templates/retail-fulfillment/1.0.0/retail_fulfillment.raml
+  taxonomy: /exchange_modules/org.mule.templates/retail-taxonomy/1.0.0/retail_taxonomy.raml
+  customer: /exchange_modules/org.mule.templates/retail-customer-types/1.0.0/retail_customer_types.raml
   channel: /channel-types.raml
-  order: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_order_types/1.0.21/retail_order_types.raml
-  product: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.8/retail_product.raml
-  session: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_shopping_cart_types/1.0.1/retail_shopping_cart_types.raml
-  inventory: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_inventory/1.0.6/retail_inventory.raml
-  store: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_store/1.0.4/retail_store.raml
-  partner: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_partner/1.0.3/retail_partner.raml
+  order: /exchange_modules/org.mule.templates/retail-order-types/1.0.0/retail_order_types.raml
+  product: /exchange_modules/org.mule.templates/retail-product/1.0.0/retail_product.raml
+  session: /exchange_modules/org.mule.templates/retail-shopping-cart-types/1.0.0/retail_shopping_cart_types.raml
+  inventory: /exchange_modules/org.mule.templates/retail-inventory/1.0.0/retail_inventory.raml
+  store: /exchange_modules/org.mule.templates/retail-store/1.0.0/retail_store.raml
+  partner: /exchange_modules/org.mule.templates/retail-partner/1.0.0/retail_partner.raml
 
 types:
 
@@ -202,6 +202,7 @@ types:
       collectionMemberPrototypeType: customer.Customer
       collectionMemberResponseType: customer.CustomerResponse
   post:
+    displayName: Create customer
     body:
       application/json:
         example: |
@@ -271,7 +272,8 @@ types:
                 ]
               }
 
-  get:
+  get: 
+    displayName: Get customers
     is: &queryableCollection [ collection.pageable, collection.sortable ]
     queryParameters:
       firstName: string
@@ -327,6 +329,7 @@ types:
         collectionMemberResponseType: customer.CustomerResponse
         collectionMemberPrototypeType: customer.Customer
     get:
+      displayName: Get customer
       responses:
         200:
           body:
@@ -375,6 +378,7 @@ types:
                   ]
                 }
     put:
+      displayName: Update customer
       body:
             application/json:
               example:
@@ -479,6 +483,7 @@ types:
           collectionMemberPrototypeType: common.PostalAddress
           collectionMemberResponseType: customer.DeliveryAddressResponse
       get:
+        displayName: Get delivery addresses for customer
         is: *queryableCollection
         responses:
           200:
@@ -517,6 +522,7 @@ types:
             collectionMemberPrototypeType: common.PostalAddress
 
         get:
+          displayName: Get delivery address for customer
           responses:
             200:
               body:
@@ -544,6 +550,7 @@ types:
           collectionMemberPrototypeType: contact.ContactMethod
           collectionMemberResponseType: ContactMethodResponse
       get:
+        displayName: Get contact methods for customer
         is: *queryableCollection
         responses:
           200:
@@ -570,6 +577,7 @@ types:
             collectionMemberResponseType: ContactMethodResponse
             collectionMemberPrototypeType: contact.ContactMethod
         get:
+          displayName: Get contact method for customer
           responses:
             200:
               body:
@@ -588,6 +596,7 @@ types:
           collectionMemberPrototypeType: payment.PaymentMethod
           collectionMemberResponseType: customer.PaymentMethodResponse
       get:
+        displayName: Get payment methods for customer
         is: *queryableCollection
         responses:
           200:
@@ -621,6 +630,7 @@ types:
             collectionMemberResponseType: customer.PaymentMethodResponse
             collectionMemberPrototypeType: payment.PaymentMethod
         get:
+          displayName: Get payment method for customer
           responses:
             200:
               body:
@@ -641,6 +651,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: OrderCollectionResponse
       get:
+        displayName: Get orders for customer
         is: *queryableCollection
         responses:
           200:
@@ -745,6 +756,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ShoppingCartCollectionResponse
       get:
+        displayName: Get shopping carts for customer
         is: *queryableCollection
         responses:
           200:
@@ -815,6 +827,7 @@ types:
     collection.readOnlyCollection:
       collectionResponseType: ChannelCollectionResponse
   get:
+    displayName: Get channels
     is: &queryableCollection [ collection.pageable, collection.sortable ]
     queryParameters:
       paymentMedium?: payment.PaymentMediumType
@@ -852,6 +865,7 @@ types:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: ChannelResponse
     get:
+      displayName: Get channel
       responses:
         200:
           body:
@@ -868,6 +882,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: customer.PaymentMethodCollectionResponse
       get:
+        displayName: Get payment methods for channel
         is: *queryableCollection
         queryParameters:
           paymentMedium: payment.PaymentMediumType
@@ -916,6 +931,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: FulfillmentMethodCollectionResponse
       get:
+        displayName: Get fulfillment methods for channel
         is: *queryableCollection
         queryParameters:
           receipt: fulfillment.ReceiptType
@@ -956,6 +972,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ProductCollectionResponse
       get:
+        displayName: Get products for channel
         is: *queryableCollection
         queryParameters:
           name?: string
@@ -1003,6 +1020,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: CategoryCollectionResponse
       get:
+        displayName: Get categories for channel
         is: *queryableCollection
         responses:
           200:
@@ -1041,6 +1059,7 @@ types:
     collection.readOnlyCollection:
       collectionResponseType: CategoryCollectionResponse
   get:
+    displayName: Get categories
     is: *queryableCollection
     responses:
       200:
@@ -1093,6 +1112,7 @@ types:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: CategoryResponse
     get:
+      displayName: Get category
       responses:
         200:
           body:
@@ -1112,6 +1132,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ProductCollectionResponse
       get:
+        displayName: Get products for category
         is: *queryableCollection
         queryParameters:
             name?: string
@@ -1181,6 +1202,7 @@ types:
     collection.readOnlyCollection:
       collectionResponseType: StoreCollectionResponse
   get:
+    displayName: Get stores
     is: *queryableCollection
     queryParameters:
       paymentMedium?: payment.PaymentMediumType
@@ -1228,6 +1250,7 @@ types:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: StoreResponse
     get:
+      displayName: Get store
       responses:
         200:
           body:
@@ -1262,6 +1285,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: customer.PaymentMethodCollectionResponse
       get:
+        displayName: Get payment methods for store
         is: *queryableCollection
         queryParameters:
           paymentMedium: payment.PaymentMediumType
@@ -1295,6 +1319,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: FulfillmentMethodCollectionResponse
       get:
+        displayName: Get fulfillment methods for store
         is: *queryableCollection
         queryParameters:
           receipt: fulfillment.ReceiptType
@@ -1306,6 +1331,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ProductCollectionResponse
       get:
+        displayName: Get products in store
         is: *queryableCollection
     /categories:
       description: |
@@ -1314,6 +1340,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ProductCollectionResponse
       get:
+        displayName: Get categories in store
         is: *queryableCollection
     /nearbyStores:
       description: |
@@ -1322,6 +1349,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: StoreCollectionResponse
       get:
+        displayName: Get the nearest located stores
         is: *queryableCollection
         queryParameters:
           radius:
@@ -1338,6 +1366,7 @@ types:
     collection.readOnlyCollection:
       collectionResponseType: PartnerCollectionResponse
   get:
+    displayName: Get partners
     is: *queryableCollection
     responses:
       200:
@@ -1378,6 +1407,7 @@ types:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: PartnerResponse
     get:
+      displayName: Get partner
       responses:
         200:
           body:
@@ -1402,6 +1432,7 @@ types:
       collectionMemberPrototypeType: order.SalesOrder
       collectionMemberResponseType: SalesOrderResponse
   get:
+    displayName: Get orders
     is: &queryableCollection [ collection.pageable, collection.sortable ]
     responses:
       200:
@@ -1453,6 +1484,7 @@ types:
                 ]
               }
   post:
+    displayName: Create order
     body:
       application/json:
         example: |
@@ -1607,6 +1639,7 @@ types:
         collectionMemberResponseType: SalesOrderResponse
         collectionMemberPrototypeType: order.SalesOrder
     get:
+      displayName: Get order
       responses:
         200:
           body:
@@ -1633,6 +1666,7 @@ types:
                   }
                 }
     put:
+      displayName: Update order
       responses:
         200:
           body:
@@ -1659,6 +1693,7 @@ types:
                   }
                 }
     delete:
+      displayName: Delete order
       responses:
         200:
           body:
@@ -1677,6 +1712,7 @@ types:
           collectionMemberPrototypeType: payment.PaymentMethod
           collectionMemberResponseType: SalesOrderPaymentMethodResponse
       get:
+        displayName: Get payment method for order
         responses:
           200:
             body:
@@ -1690,6 +1726,7 @@ types:
                       }
                   }
       put:
+        displayName: Update payment method for order
         responses:
           200:
             body:
@@ -1710,6 +1747,7 @@ types:
           collectionMemberPrototypeType: fulfillment.Fulfillment
           collectionMemberResponseType: SalesOrderFulfillmentResponse
       get:
+        displayName: Get fulfillment for order
         responses:
           200:
             body:
@@ -1733,6 +1771,7 @@ types:
                     "receipt": "PICKUP"
                   }
       put:
+        displayName: Update fulfillment for order
         responses:
           200:
             body:
@@ -1763,6 +1802,7 @@ types:
           collectionMemberPrototypeType: order.SalesOrderItems
           collectionMemberResponseType: SalesOrderItemCollectionResponse
       get:
+        displayName: Get order items
         responses:
           200:
             body:
@@ -1833,6 +1873,7 @@ types:
                     ]
                   }
       put:
+        displayName: Update order items
         responses:
           200:
             body:
@@ -1911,6 +1952,7 @@ types:
     collection.readOnlyCollection:
       collectionResponseType: ProductCollectionResponse
   get:
+    displayName: Get products
     is: &queryableCollection [ collection.pageable, collection.sortable ]
     queryParameters:
       name?: string
@@ -1956,6 +1998,7 @@ types:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: ProductResponse
     get:
+      displayName: Get product
       responses:
         200:
           body:
@@ -1992,6 +2035,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: FeatureCollectionResponse
       get:
+        displayName: Get features for product
         is: &queryableCollection [ collection.pageable, collection.sortable ]
 
       /{featureId}:
@@ -2009,6 +2053,7 @@ types:
         collection.readOnlyCollection:
           collectionResponseType: ProductVariantCollectionResponse
       get:
+        displayName: Get variants for product
         is: &queryableCollection [ collection.pageable, collection.sortable ]
         responses:
           200:
@@ -2075,6 +2120,7 @@ types:
            collection.readOnlyCollectionMember:
              collectionMemberResponseType: ProductVariantResponse
         get:
+          displayName: Get variant for product
           responses:
             200:
               body:
@@ -2133,6 +2179,7 @@ types:
              collection.readOnlyCollectionMember:
                collectionMemberResponseType: ProductVariantAvailabilityResponse
           get:
+            displayName: Get availability for product variant
             is: [ geoSearch]
             queryParameters:
               quantity:
@@ -2212,6 +2259,7 @@ types:
       collectionMemberPrototypeType: session.ShoppingCart
       collectionMemberResponseType: ShoppingCartResponse
   get:
+    displayName: Get shopping carts
     is: &queryableCollection [ collection.pageable, collection.sortable ]
     responses:
       200:
@@ -2277,6 +2325,7 @@ types:
                 ]
               }
   post:
+    displayName: Create shopping cart
     body:
       application/json:
         example: |
@@ -2337,6 +2386,7 @@ types:
          collectionMemberPrototypeType: session.ShoppingCart
          collectionMemberResponseType: ShoppingCartResponse
     get:
+      displayName: Get shopping cart
       responses:
         200:
           body:
@@ -2394,6 +2444,7 @@ types:
                   ]
                 }
     put:
+      displayName: Update shopping cart
       body:
         application/json:
           example: |
@@ -2444,6 +2495,7 @@ types:
                   "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75"
                 }
     delete:
+      displayName: Delete shopping cart
       responses:
         200:
           body:
