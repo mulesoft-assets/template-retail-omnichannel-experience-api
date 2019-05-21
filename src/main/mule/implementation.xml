@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:retail-salesforce-customer-system-api="http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api"
-	xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api"
-	xmlns:retail-order-fulfilment-process-api="http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api" xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api" xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:retail-salesforce-customer-system-api="http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api"
+	xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api" xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api" xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/retail-product-system-api http://www.mulesoft.org/schema/mule/retail-product-system-api/current/mule-retail-product-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-product-availability-process-api http://www.mulesoft.org/schema/mule/retail-product-availability-process-api/current/mule-retail-product-availability-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mulesoft.org/schema/mule/retail-locations-system-api/current/mule-retail-locations-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-partners-system-api http://www.mulesoft.org/schema/mule/retail-partners-system-api/current/mule-retail-partners-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-orders-system-api http://www.mulesoft.org/schema/mule/retail-orders-system-api/current/mule-retail-orders-system-api.xsd
-http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api/current/mule-retail-order-fulfilment-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api/current/mule-retail-shopping-cart-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api/current/mule-retail-salesforce-customer-system-api.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="getProducts" doc:id="103cfb62-09fa-41d3-9a01-430191919e46" >
 		<retail-product-system-api:retrieve-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config"/>
 	</flow>
@@ -125,8 +125,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="0222d886-c272-4fd4-bf4e-3bfdd3f11dee" message="#[payload]"/>
-		<retail-order-fulfilment-process-api:create-order doc:name="Create order" doc:id="d8ec47ed-1687-4535-b29a-15f5768d4545" config-ref="Retail_Order_Fulfilment_Process_API_Config">
-		</retail-order-fulfilment-process-api:create-order>
+		<http:request method="POST" doc:name="Create order" doc:id="ee2c8dc0-9a10-4cfe-8984-570ae55e8a15" config-ref="HTTP_Request_fulfilment_configuration" path="/orders" responseTimeout="50000"/>
 	</flow>
 	<flow name="createShoppingCart" doc:id="674709f3-d2bb-43b0-9111-61487df527b5" >
 		<retail-shopping-cart-process-api:create-shopping-cart doc:name="Create shopping cart" doc:id="8fe28454-106b-4648-9e46-bc2ee1a740e1" config-ref="Retail_Shopping_Cart_Process_API_Config">
