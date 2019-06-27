@@ -53,12 +53,6 @@
         </dependency>
         <dependency>
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
-            <artifactId>mule-plugin-catalyst-retail-fulfilment-process</artifactId>
-            <version>2.0.1</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
             <artifactId>mule-plugin-catalyst-retail-shopping-cart-proc</artifactId>
             <version>2.0.1</version>
             <classifier>mule-plugin</classifier>
@@ -67,6 +61,18 @@
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
             <artifactId>mule-plugin-catalyst-retail-product-api</artifactId>
             <version>2.0.1</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>mule-plugin-retail_order_fulfilment_process_api</artifactId>
+            <version>2.0.6</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
+            <artifactId>mule-plugin-retail_payment_process_api</artifactId>
+            <version>2.0.6</version>
             <classifier>mule-plugin</classifier>
         </dependency>
     </dependencies>
