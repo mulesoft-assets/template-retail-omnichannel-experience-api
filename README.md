@@ -79,6 +79,12 @@ This endpoint will trigger flow getShoppingCartsForCustomer which obtains list o
 ### POST/orders/
 This endpoint will trigger flow createOrder which creates new order by customer.
 
+### PUT/orders/{salesOrderId}
+This endpoint will trigger flow updateOrder which updates order.
+
+### POST/orders/{salesOrderId}/payment
+This endpoint will trigger flow createPaymentFlow which creates a new payment for an order.
+
 ### GET/customers/{customerId}/orders/
 This endpoint will trigger flow getOrdersByCustomer which obtains list of orders for customer by customerId.
 
@@ -197,3 +203,9 @@ Detailed list with examples:
 + partners-system-api.port `80`
 + partners-system-api.basePath `/api`
 + partners-system-api.protocol `HTTP`
+
+####Partners system API
++ payment-process-api.host `payment.example.com`
++ payment-process-api.port `80`
++ payment-process-api.basePath `/api`
++ payment-process-api.protocol `HTTP`

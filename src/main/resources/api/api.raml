@@ -1,27 +1,27 @@
 #%RAML 1.0
+title: Retail Omnichannel Experience API
 version: v2.0
 baseUri: http://localhost:8081/api
-title: Retail Omnichannel Experience API
 
 traits:
-  geoSearch: !include /exchange_modules/org.mule.templates/retail-geosearch/1.0.0/retail_geosearch.raml
+  geoSearch: !include exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_geosearch/1.0.1/retail_geosearch.raml
 
 uses:
 
-  common: /exchange_modules/org.mule.templates/retail-common/1.0.0/retail_common.raml
-  collection: /collections.raml
-  payment: /exchange_modules/org.mule.templates/retail-payment/1.0.0/retail_payment.raml
-  contact: /exchange_modules/org.mule.templates/retail-contact/1.0.0/retail_contact.raml
-  fulfillment: /exchange_modules/org.mule.templates/retail-fulfillment/1.0.0/retail_fulfillment.raml
-  taxonomy: /exchange_modules/org.mule.templates/retail-taxonomy/1.0.0/retail_taxonomy.raml
-  customer: /exchange_modules/org.mule.templates/retail-customer-types/1.0.0/retail_customer_types.raml
-  channel: /channel-types.raml
-  order: /exchange_modules/org.mule.templates/retail-order-types/1.0.0/retail_order_types.raml
-  product: /exchange_modules/org.mule.templates/retail-product/1.0.0/retail_product.raml
-  session: /exchange_modules/org.mule.templates/retail-shopping-cart-types/1.0.0/retail_shopping_cart_types.raml
-  inventory: /exchange_modules/org.mule.templates/retail-inventory/1.0.0/retail_inventory.raml
-  store: /exchange_modules/org.mule.templates/retail-store/1.0.0/retail_store.raml
-  partner: /exchange_modules/org.mule.templates/retail-partner/1.0.0/retail_partner.raml
+  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
+  collection: collections.raml
+  payment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.9/retail_payment.raml
+  contact: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_contact/1.0.2/retail_contact.raml
+  fulfillment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.4/retail_fulfillment.raml
+  taxonomy: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_taxonomy/1.0.2/retail_taxonomy.raml
+  customer: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_customer_types/1.0.7/retail_customer_types.raml
+  channel: channel-types.raml
+  order: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_order_types/1.0.22/retail_order_types.raml
+  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.8/retail_product.raml
+  session: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_shopping_cart_types/1.0.3/retail_shopping_cart_types.raml
+  inventory: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_inventory/1.0.6/retail_inventory.raml
+  store: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_store/1.0.4/retail_store.raml
+  partner: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_partner/1.0.3/retail_partner.raml
 
 types:
 
@@ -36,6 +36,11 @@ types:
     type: contact.ContactMethod
     description: |
       contact method response
+
+  PaymentResponse:
+    type: payment.PaymentResponse
+    description: |
+      payment response
 
   ChannelCollectionResponse:
     type: common.CollectionResponse
@@ -574,7 +579,7 @@ types:
             type: common.resourceId
         type:
           collection.collectionMember:
-            collectionMemberResponseType: ContactMethodResponse
+            collectionMemberResponseType: contact.ContactMethod
             collectionMemberPrototypeType: contact.ContactMethod
         get:
           displayName: Get contact method for customer
@@ -863,7 +868,7 @@ types:
       channelId: common.resourceId
     type:
        collection.readOnlyCollectionMember:
-         collectionMemberResponseType: ChannelResponse
+         collectionMemberResponseType: channel.Channel
     get:
       displayName: Get channel
       responses:
@@ -1636,8 +1641,8 @@ types:
         type: string
     type:
       collection.collectionMember:
-        collectionMemberResponseType: SalesOrderResponse
-        collectionMemberPrototypeType: order.SalesOrder
+        collectionMemberResponseType: SalesOrderResponse | PaymentResponse
+        collectionMemberPrototypeType: order.OrderSummary
     get:
       displayName: Get order
       responses:
@@ -1673,24 +1678,13 @@ types:
             application/json:
               example: |
                 {
-                  "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                  "fulfillment": {
-                    "receipt": "SHIPMENT",
-                    "carrier": "POSTAL",
-                    "deliveryAddress": {
-                      "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "type": "SHIPPING",
-                        "address": "Main street 122",
-                        "city": "San Francisco",
-                        "state": "California",
-                        "postalCode": "90210",
-                        "recipient": "Jason Bourne",
-                        "country": "US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      }
-                  }
+                  "identifier" : "123456-erer",
+                  "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
+                  },
+                  "status": "Processing"
                 }
     delete:
       displayName: Delete order
@@ -1727,17 +1721,78 @@ types:
                   }
       put:
         displayName: Update payment method for order
+        body:
+          application/json:
+            example: |
+             {
+                "paymentMethodType": {
+                    "medium": "CARD",
+                    "issuer": "BANK",
+                    "name": "VISA"
+                }
+             }
         responses:
           200:
             body:
               application/json:
                 example: |
                   {
+                    "identifier" : "paypal_order_id",
                     "paymentMethodType": {
                         "medium": "CARD",
                         "issuer": "BANK",
                         "name": "VISA"
                       }
+                  }
+
+    /payment:
+      description: |
+        Creates od retrievs payment for order
+      type:
+        collection.updatableCollectionMember:
+          collectionMemberPrototypeType: payment.PaymentMethod
+          collectionMemberResponseType: payment.PaymentMethod
+      get:
+        displayName: Gets info about payment for order
+      post:
+        displayName: Prepares payment for order
+        body:
+          application/json:
+            type: payment.PaymentMethod
+            example: |
+              {
+                 "paymentMethodType": {
+                   "medium": "CARD",
+                   "issuer": "BANK",
+                   "name": "VISA"
+                }
+              }
+        responses:
+          200:
+            body:
+              application/json:
+                type: PaymentResponse
+                example: |
+                  {
+                    "identifier": "5O190127TN364715T",
+                    "status": "PAID",
+                    "links": [
+                      {
+                        "href": "https://api.paypal.com/v2/checkout/orders/5O190127TN364715T",
+                        "rel": "self",
+                        "method": "GET"
+                      },
+                      {
+                        "href": "https://api.sandbox.paypal.com/checkoutnow?token=5O190127TN364715T",
+                        "rel": "approve",
+                        "method": "GET"
+                      },
+                      {
+                        "href": "https://api.paypal.com/v2/checkout/orders/5O190127TN364715T/capture",
+                        "rel": "capture",
+                        "method": "POST"
+                      }
+                    ]
                   }
     /fulfillment:
       description: |

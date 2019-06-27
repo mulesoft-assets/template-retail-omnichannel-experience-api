@@ -1,0 +1,56 @@
+#%RAML 1.0 Library
+
+usage: |
+  data types specific to the experience layer customer api
+uses:
+  common: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
+  payment: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.6/retail_payment.raml
+
+types:
+  Customer:
+    type: object
+    description: Customer information
+    properties:
+      identifier?: common.resourceId
+      firstName?:
+        description: First name of the customer
+        type: string?
+      lastName:
+        description: Last name of the customer
+        type: string
+      paymentMethods?:
+        type: payment.PaymentMethod[]
+        description: Customer payment methods collection
+      deliveryAddresses?:
+        type: common.PostalAddress[]
+        description: Customer delivery addresses collection
+
+  CustomerCollectionResponse:
+    type: common.CollectionResponse
+    description: Customer collection response object
+    properties:
+      customers: Customer[]
+
+  CustomerResponse:
+    description: Customer response object
+    type: Customer
+
+  DeliveryAddressCollectionResponse:
+    type: common.CollectionResponse
+    description: Delivery address collection response object
+    properties:
+      deliveryAddresses: common.PostalAddress[]
+
+  DeliveryAddressResponse:
+    description: Delivery address response object
+    type: common.PostalAddress
+
+  PaymentMethodCollectionResponse:
+    description: Payment method collection response object
+    type: common.CollectionResponse
+    properties:
+      paymentMethods: payment.PaymentMethod[]
+
+  PaymentMethodResponse:
+    description: Payment method response object
+    type: payment.PaymentMethod
