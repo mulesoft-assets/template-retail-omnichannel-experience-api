@@ -63,7 +63,7 @@ payload.results
 		<retail-locations-system-api:retrieve-specific-store doc:name="Get store by store id" doc:id="0814cb24-cbf2-451d-b450-8bbc6eb3dc80" config-ref="Retail_Locations_System_API_Config" store-id="#[attributes.uriParams.storeId]"/>
 	</flow>
 	<flow name="getPartners" doc:id="3d5c1ad9-4028-4441-94ca-9a93baef3aa1" >
-		<retail-partners-system-api:retrieve-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]" name="vars.nonExistVariableForNullValue"/>
+		<retail-partners-system-api:retrieve-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]" name="#[vars.nonExistVariableForNullValue]"/>
 		<ee:transform doc:name="Message Response" doc:id="4b627c38-acb9-4546-8a0c-0f1b7b0e1b4c" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
