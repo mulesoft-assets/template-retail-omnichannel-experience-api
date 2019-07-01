@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api http://www.mu
 http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api/current/mule-retail-order-fulfilment-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.mulesoft.org/schema/mule/retail-payment-process-api/current/mule-retail-payment-process-api.xsd">
 	<flow name="getProducts" doc:id="103cfb62-09fa-41d3-9a01-430191919e46" >
-		<retail-product-system-api:retrieve-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config"/>
+		<retail-product-system-api:retrieve-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config" name="#[vars.nonExistVariableForNullValue]"/>
 	</flow>
 	<flow name="getProduct" doc:id="1f91f984-a148-4a00-a73d-58c8817133f3" >
 		<retail-product-system-api:retrieve-product doc:name="Get product by product id" doc:id="2c1820f0-1251-4b63-bb5c-4079102ce71c" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]">
@@ -63,7 +63,7 @@ payload.results
 		<retail-locations-system-api:retrieve-specific-store doc:name="Get store by store id" doc:id="0814cb24-cbf2-451d-b450-8bbc6eb3dc80" config-ref="Retail_Locations_System_API_Config" store-id="#[attributes.uriParams.storeId]"/>
 	</flow>
 	<flow name="getPartners" doc:id="3d5c1ad9-4028-4441-94ca-9a93baef3aa1" >
-		<retail-partners-system-api:retrieve-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]"/>
+		<retail-partners-system-api:retrieve-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]" name="vars.nonExistVariableForNullValue"/>
 		<ee:transform doc:name="Message Response" doc:id="4b627c38-acb9-4546-8a0c-0f1b7b0e1b4c" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
