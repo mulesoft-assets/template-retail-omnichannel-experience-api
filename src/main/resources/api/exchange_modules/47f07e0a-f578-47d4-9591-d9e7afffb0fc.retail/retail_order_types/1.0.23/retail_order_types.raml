@@ -2,9 +2,9 @@
 usage: |
   data types specific to omnichannel api and orders system api
 uses:
-  common: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
-  product: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.8/retail_product.raml
-  fulfillment: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.4/retail_fulfillment.raml
+  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.10/retail_common.raml
+  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.10/retail_product.raml
+  fulfillment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.6/retail_fulfillment.raml
   
 types:
 
@@ -13,7 +13,7 @@ types:
     description: |
       an individual component of an order
     properties:
-      identifier?: common.resourceId
+      identifier?: common.ResourceId
       quantity:
         type: common.Quantity
       location: common.Location
@@ -35,7 +35,7 @@ types:
     type: object
     description: Sales order header - info about fulfillment of order
     properties:
-      customerId: common.resourceId
+      customerId: common.ResourceId
       fulfillment?:
         type: fulfillment.Fulfillment
 
@@ -43,7 +43,7 @@ types:
     type: SalesOrderHeader
     description: Collection of sales order items including fulfillment info
     properties:
-      identifier?: common.resourceId | nil
+      identifier?: common.ResourceId | nil
       orderItems:
         type: SalesOrderItem[]
 

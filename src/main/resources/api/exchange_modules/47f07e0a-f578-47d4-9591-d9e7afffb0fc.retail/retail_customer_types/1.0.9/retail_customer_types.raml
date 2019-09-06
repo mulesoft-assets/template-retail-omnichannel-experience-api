@@ -3,15 +3,15 @@
 usage: |
   data types specific to the experience layer customer api
 uses:
-  common: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
-  payment: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.6/retail_payment.raml
+  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.10/retail_common.raml
+  payment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.10/retail_payment.raml
 
 types:
   Customer:
     type: object
     description: Customer information
     properties:
-      identifier?: common.resourceId
+      identifier?: common.ResourceId
       firstName?:
         description: First name of the customer
         type: string?

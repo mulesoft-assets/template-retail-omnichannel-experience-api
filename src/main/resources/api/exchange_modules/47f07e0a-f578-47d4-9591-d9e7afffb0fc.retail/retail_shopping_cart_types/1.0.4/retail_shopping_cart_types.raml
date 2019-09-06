@@ -4,8 +4,8 @@ usage: |
   reusable cart order data types
 
 uses:
-  common: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
-  product: /exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.8/retail_product.raml
+  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.10/retail_common.raml
+  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.10/retail_product.raml
 types:
 
   ShoppingCartItem:
@@ -23,10 +23,10 @@ types:
         description: |
           Where is your cart item located. It describes the type of location and possible delivery methods.
       tax?:
-        type: number?
+        type: number | nil
         description: Tax price for specific product.
       shipping?:
-        type: number?
+        type: number | nil
         description: Shipping price for specific product
 
   ShoppingCartItems: 
@@ -36,9 +36,9 @@ types:
     description: Information about the items in shopping cart
     type: object
     properties:
-      identifier?: common.resourceId
+      identifier?: common.ResourceId
       customerId?:
-        type: common.resourceId
+        type: common.ResourceId
         description: Identifier of customer
       items?: 
         description: Collection of items in shopping cart
@@ -68,11 +68,11 @@ types:
         description: |
           Number of product (variant)
       tax?: 
-        type: number?
+        type: number | nil
         description: |
           total tax for product
       shipping?:
-        type: number?
+        type: number | nil
         description: |
           total shipping cost for product   
            
