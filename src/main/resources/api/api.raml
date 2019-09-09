@@ -7,20 +7,19 @@ traits:
   geoSearch: !include exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_geosearch/1.0.1/retail_geosearch.raml
 
 uses:
-
-  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.8/retail_common.raml
+  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.10/retail_common.raml
   collection: collections.raml
-  payment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.9/retail_payment.raml
-  contact: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_contact/1.0.2/retail_contact.raml
-  fulfillment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.4/retail_fulfillment.raml
+  payment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.10/retail_payment.raml
+  contact: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_contact/1.0.4/retail_contact.raml
+  fulfillment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.6/retail_fulfillment.raml
   taxonomy: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_taxonomy/1.0.2/retail_taxonomy.raml
-  customer: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_customer_types/1.0.7/retail_customer_types.raml
+  customer: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_customer_types/1.0.9/retail_customer_types.raml
   channel: channel-types.raml
-  order: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_order_types/1.0.22/retail_order_types.raml
-  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.8/retail_product.raml
-  session: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_shopping_cart_types/1.0.3/retail_shopping_cart_types.raml
-  inventory: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_inventory/1.0.6/retail_inventory.raml
-  store: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_store/1.0.4/retail_store.raml
+  order: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_order_types/1.0.23/retail_order_types.raml
+  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.10/retail_product.raml
+  session: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_shopping_cart_types/1.0.4/retail_shopping_cart_types.raml
+  inventory: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_inventory/1.0.8/retail_inventory.raml
+  store: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_store/1.0.6/retail_store.raml
   partner: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_partner/1.0.3/retail_partner.raml
 
 types:
@@ -520,7 +519,7 @@ types:
       /{deliveryAddressId}:
         uriParameters:
           deliveryAddressId:
-            type: common.resourceId
+            type: common.ResourceId
         type:
           collection.collectionMember:
             collectionMemberResponseType: customer.DeliveryAddressResponse
@@ -576,7 +575,7 @@ types:
       /{contactMethodId}:
         uriParameters:
           contactMethodId:
-            type: common.resourceId
+            type: common.ResourceId
         type:
           collection.collectionMember:
             collectionMemberResponseType: contact.ContactMethod
@@ -629,7 +628,7 @@ types:
       /{paymentMethodId}:
         uriParameters:
           paymentMethodId:
-            type: common.resourceId
+            type: common.ResourceId
         type:
           collection.collectionMember:
             collectionMemberResponseType: customer.PaymentMethodResponse
@@ -865,7 +864,7 @@ types:
               }
   /{channelId}:
     uriParameters:
-      channelId: common.resourceId
+      channelId: common.ResourceId
     type:
        collection.readOnlyCollectionMember:
          collectionMemberResponseType: channel.Channel
@@ -2095,7 +2094,7 @@ types:
 
       /{featureId}:
         uriParameters:
-          featureId: common.resourceId
+          featureId: common.ResourceId
         type:
            collection.readOnlyCollectionMember:
              collectionMemberResponseType: FeatureResponse

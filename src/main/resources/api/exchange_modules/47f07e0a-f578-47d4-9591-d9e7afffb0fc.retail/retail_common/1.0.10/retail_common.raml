@@ -6,10 +6,10 @@ usage: |
 
 types:
 
-  url:
+  Url:
     type: string
 
-  resourceId:
+  ResourceId:
     type: string
    # pattern: ^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$
     description: |
@@ -47,7 +47,7 @@ types:
         required: false
         default: 2100-01-01T00:00:00.000Z
 
-  language:
+  Language:
     type: string
     enum: [
       hy, zh, nl, en, eo, fr, ka, de, el, it,
@@ -105,12 +105,12 @@ types:
       identifier?: 
         type: string
       mailStopCode?:
-        type: string?
+        type: string | nil
         description: |
           an internal organization mail delivery location
           or box number
       attention?:
-        type: string?
+        type: string | nil
         description:
           the name of an individual who should receive
           deliveries on behalf of a recipient organization
@@ -120,12 +120,12 @@ types:
           type of address
         enum: [ BILLING, SHIPPING]
       recipient?:
-        type: string?
+        type: string | nil
         description: |
           the name of the party responsible for receiving
           deliveries to this address
       address?:
-        type: string?
+        type: string | nil
         description: |
           the unit number and street name
       addressUnit?:
@@ -133,26 +133,26 @@ types:
         description: |
           a subdivision within the address, such as an apartment or floor
       secondaryAddress?:
-        type: string?
+        type: string | nil
         description: |
           any additional addressing information needed to describe a
           delivery location that does not fit within address or
           secondaryUnit
       city?:
-        type: string?
+        type: string | nil
         description: |
           the municipality of the address
       state?:
-        type: string?
+        type: string | nil
         description: |
           the state or other national region of the address
       postalCode?:
-        type: string?
+        type: string | nil
         description: |
           the delivery code assigned to this address by a national
           or governmental postal agency
       country?:
-        type: string?
+        type: string | nil
         description: |
           the two character ISO 3166 country code
           [http://www.iso.org/iso/home/standards/country_codes.htm]
@@ -166,7 +166,7 @@ types:
       a hypermedia link
     properties:
       href:
-        type: url
+        type: Url
       title?:
         type: string
 
@@ -238,20 +238,20 @@ types:
       hypermedia error response
 
 #metadata
-  collectionTotalItems:
+  CollectionTotalItems:
     type: integer
     description: |
       total amount of items
     minimum: 0
 
-  pagingOffset:
+  PagingOffset:
     type: integer
     description: |
       offset is the beggining item number
     minimum: 0
     default: 0
 
-  pagingLimit:
+  PagingLimit:
     type: integer
     description: |
       maximum number of items to return
@@ -259,7 +259,7 @@ types:
     default: 10
     maximum: 20
 
-  sortingSortKey:
+  SortingSortKey:
     type: string
     description: |
       sorting key
@@ -288,10 +288,10 @@ types:
     description: |
       collection of response messages
     properties:
-      totalItems?: collectionTotalItems
-      offset?: pagingOffset
-      limit?: pagingLimit
-      sortBy?: sortingSortKey
+      totalItems?: CollectionTotalItems
+      offset?: PagingOffset
+      limit?: PagingLimit
+      sortBy?: SortingSortKey
 
   DefaultResponse:
     type: object
@@ -445,7 +445,7 @@ types:
       location
     properties:
       locationId:
-        type: string?
+        type: string | nil
         description: |
           Identifier of location (storeId or warehouseId or partnerId)
       locationType:
