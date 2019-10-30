@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
     <parent>
         <groupId>org.mule.templates</groupId>
         <artifactId>templates-tooling-parent-pom</artifactId>
-        <version>2.1.19</version>
+        <version>2.1.22</version>
     </parent>
+    
     <modelVersion>4.0.0</modelVersion>
     <artifactId>template-retail-omnichannel-experience-api</artifactId>
     <version>2.1.1-SNAPSHOT</version>
     <packaging>mule-application</packaging>
     <name>template-retail-omnichannel-experience-api</name>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>mule-maven-plugin</artifactId>
+                <version>${mule.maven.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <classifier>mule-application-template</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
     <dependencies>
         <dependency>
             <groupId>org.mule.modules</groupId>
@@ -21,61 +38,62 @@
             <artifactId>mule-http-connector</artifactId>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
-            <groupId>org.mule.templates</groupId>
-            <artifactId>mule-plugin-catalyst-retail-partner-system-api</artifactId>
-            <version>2.0.1</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
-            <artifactId>mule-plugin-catalyst-retail-customer-system-api</artifactId>
-            <version>2.0.1</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
-            <artifactId>mule-plugin-catalyst-retail-order-system-api</artifactId>
-            <version>2.0.1</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
+    		<dependency>
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
             <artifactId>mule-plugin-catalyst-retail-location-api</artifactId>
-            <version>2.0.1</version>
+            <version>2.0.2</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
+    		<dependency>
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
-            <artifactId>mule-plugin-catalyst-retail-product-availabilit</artifactId>
-            <version>2.0.1</version>
+            <artifactId>mule-plugin-catalyst-retail-fulfilment-process</artifactId>
+            <version>2.0.3</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
+    		<dependency>
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
-            <artifactId>mule-plugin-catalyst-retail-shopping-cart-proc</artifactId>
-            <version>2.0.1</version>
+            <artifactId>mule-plugin-catalyst-retail-order-system-api</artifactId>
+            <version>2.0.3</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
+    		<dependency>
+            <groupId>org.mule.templates</groupId>
+            <artifactId>mule-plugin-catalyst-retail-payment-process</artifactId>
+            <version>2.0.3</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    		<dependency>
             <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
             <artifactId>mule-plugin-catalyst-retail-product-api</artifactId>
-            <version>2.0.1</version>
+            <version>2.0.2</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-    	<dependency>
-            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
-            <artifactId>mule-plugin-retail_order_fulfilment_process_api</artifactId>
-            <version>2.0.6</version>
+    		<dependency>
+            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
+            <artifactId>mule-plugin-catalyst-retail-customer-system-api</artifactId>
+            <version>2.0.3</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-    	<dependency>
-            <groupId>47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail</groupId>
-            <artifactId>mule-plugin-retail_payment_process_api</artifactId>
-            <version>2.0.6</version>
+    		<dependency>
+            <groupId>org.mule.templates</groupId>
+            <artifactId>mule-plugin-catalyst-retail-partner-system-api</artifactId>
+            <version>2.0.2</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    		<dependency>
+            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
+            <artifactId>mule-plugin-catalyst-retail-product-availabilit</artifactId>
+            <version>2.0.2</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    		<dependency>
+            <groupId>68ef9520-24e9-4cf2-b2f5-620025690913</groupId>
+            <artifactId>mule-plugin-catalyst-retail-shopping-cart-proc</artifactId>
+            <version>2.0.3</version>
             <classifier>mule-plugin</classifier>
         </dependency>
     </dependencies>
+    
     <repositories>
         <repository>
             <id>anypoint-exchange</id>
@@ -90,17 +108,5 @@
             <layout>default</layout>
         </repository>
     </repositories>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <classifier>mule-application-template</classifier>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    
 </project>

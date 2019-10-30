@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:retail-payment-process-api="http://www.mulesoft.org/schema/mule/retail-payment-process-api" xmlns:retail-order-fulfilment-process-api="http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api"
-	xmlns:dev-retail-payment-process-api="http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:retail-salesforce-customer-system-api="http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api" xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api" xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api" xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:retail-customer-system-api="http://www.mulesoft.org/schema/mule/retail-customer-system-api" 
+	xmlns:retail-payment-process-api="http://www.mulesoft.org/schema/mule/retail-payment-process-api"
+	xmlns:retail-order-fulfilment-process-api="http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+	xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api" 
+	xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" 
+	xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" 
+	xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api" 
+	xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" 
+	xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/retail-product-system-api http://www.mulesoft.org/schema/mule/retail-product-system-api/current/mule-retail-product-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-product-availability-process-api http://www.mulesoft.org/schema/mule/retail-product-availability-process-api/current/mule-retail-product-availability-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mulesoft.org/schema/mule/retail-locations-system-api/current/mule-retail-locations-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-partners-system-api http://www.mulesoft.org/schema/mule/retail-partners-system-api/current/mule-retail-partners-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-orders-system-api http://www.mulesoft.org/schema/mule/retail-orders-system-api/current/mule-retail-orders-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api/current/mule-retail-shopping-cart-process-api.xsd
-http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api/current/mule-retail-salesforce-customer-system-api.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api/current/mule-dev-retail-payment-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api/current/mule-retail-order-fulfilment-process-api.xsd
-http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.mulesoft.org/schema/mule/retail-payment-process-api/current/mule-retail-payment-process-api.xsd">
+http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.mulesoft.org/schema/mule/retail-payment-process-api/current/mule-retail-payment-process-api.xsd
+http://www.mulesoft.org/schema/mule/retail-customer-system-api http://www.mulesoft.org/schema/mule/retail-customer-system-api/current/mule-retail-customer-system-api.xsd">
 	<flow name="getProducts" doc:id="103cfb62-09fa-41d3-9a01-430191919e46" >
-		<retail-product-system-api:retrieve-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config" name="#[vars.nonExistVariableForNullValue]"/>
+		<retail-product-system-api:get-products doc:name="Get products" doc:id="b497414e-08ed-4765-8a99-365948bd75ce" config-ref="Retail_Product_System_API_Config" name="#[vars.nonExistVariableForNullValue]"/>
 	</flow>
 	<flow name="getProduct" doc:id="1f91f984-a148-4a00-a73d-58c8817133f3" >
-		<retail-product-system-api:retrieve-product doc:name="Get product by product id" doc:id="2c1820f0-1251-4b63-bb5c-4079102ce71c" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]">
-		</retail-product-system-api:retrieve-product>
+		<retail-product-system-api:get-product doc:name="Get product by product id" doc:id="2c1820f0-1251-4b63-bb5c-4079102ce71c" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]">
+		</retail-product-system-api:get-product>
 	</flow>
 	<flow name="getVariantsByProduct" doc:id="4086e798-0c7f-453e-9d6f-334b701cec34" >
-		<retail-product-system-api:retrieve-variants doc:name="Get variants by product id" doc:id="9f4dfff8-cc35-4b4c-a8df-730a8658fa26" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]"/>
+		<retail-product-system-api:get-variants doc:name="Get variants by product id" doc:id="9f4dfff8-cc35-4b4c-a8df-730a8658fa26" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]"/>
 	</flow>
 	<flow name="getVariant" doc:id="e66dc0d3-b9a7-43b5-a055-fe68e7530b2a" >
-		<retail-product-system-api:retrieve-variant doc:name="Get variant by product id variant id" doc:id="6209ac5c-5f19-4652-a442-4ea5bee97ad7" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]"/>
+		<retail-product-system-api:get-variant doc:name="Get variant by product id variant id" doc:id="6209ac5c-5f19-4652-a442-4ea5bee97ad7" config-ref="Retail_Product_System_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]"/>
 	</flow>
 	<flow name="getCategories" doc:id="18765b04-71fb-481c-9c80-f5a53c994df7" >
-		<retail-product-system-api:retrieve-categories doc:name="Get categories" doc:id="1859b921-90d2-4922-9b4a-b8a918a550a1" config-ref="Retail_Product_System_API_Config" name="#[vars.nonExistVariableForNullValue]"/>
+		<retail-product-system-api:get-categories doc:name="Get categories" doc:id="1859b921-90d2-4922-9b4a-b8a918a550a1" config-ref="Retail_Product_System_API_Config" name="#[vars.nonExistVariableForNullValue]"/>
 	</flow>
 	<flow name="getCategory" doc:id="512ac07f-936a-4341-8777-aa109f6f09b5" >
-		<retail-product-system-api:retrieve-category doc:name="Get category by category id" doc:id="85318b3e-beb6-485e-9d79-c98ba6002b13" config-ref="Retail_Product_System_API_Config" category-id="#[attributes.uriParams.categoryId]"/>
+		<retail-product-system-api:get-category doc:name="Get category by category id" doc:id="85318b3e-beb6-485e-9d79-c98ba6002b13" config-ref="Retail_Product_System_API_Config" category-id="#[attributes.uriParams.categoryId]"/>
 	</flow>
 	<flow name="getProductsByCategory" doc:id="3bce957e-a984-4ac1-8c6e-725683ca7f89" >
-		<retail-product-system-api:retrieve-products-for-category doc:name="Get products by category id" doc:id="cafcf0e6-398f-4c06-ac4d-7a7d1f86c245" config-ref="Retail_Product_System_API_Config" category-id="#[attributes.uriParams.categoryId]"/>
+		<retail-product-system-api:get-products-for-category doc:name="Get products by category id" doc:id="cafcf0e6-398f-4c06-ac4d-7a7d1f86c245" config-ref="Retail_Product_System_API_Config" category-id="#[attributes.uriParams.categoryId]"/>
 	</flow>
 	<flow name="getAvailability" doc:id="082bd9cc-16f9-4594-9509-fed3a252bfc9" >
 		<choice doc:name="Base location known?" doc:id="789c7af0-a16d-4b76-ae61-6264f221f1e0" >
 			<when expression="#[attributes.queryParams.latitude != null and attributes.queryParams.longitude != null]" >
-				<retail-product-availability-process-api:retrieve-availability doc:name="Get availabilities" doc:id="00aefc31-f436-4515-bddf-902e49eb8f84" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" latitude="#[attributes.queryParams.latitude]" longitude="#[attributes.queryParams.longitude]" radius="#[attributes.queryParams.radius]" metric="#[attributes.queryParams.metric]" quantity="#[attributes.queryParams.quantity]" />
+				<retail-product-availability-process-api:get-availability doc:name="Get availabilities" doc:id="00aefc31-f436-4515-bddf-902e49eb8f84" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" latitude="#[attributes.queryParams.latitude]" longitude="#[attributes.queryParams.longitude]" radius="#[attributes.queryParams.radius]" metric="#[attributes.queryParams.metric]" quantity="#[attributes.queryParams.quantity]" />
 			</when>
 			<otherwise >
-				<retail-product-availability-process-api:retrieve-availability doc:name="Get availabilities" doc:id="0d8779b8-16cf-4aa2-a4be-42116fcd9089" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" quantity="#[attributes.queryParams.quantity]"/>
+				<retail-product-availability-process-api:get-availability doc:name="Get availabilities" doc:id="0d8779b8-16cf-4aa2-a4be-42116fcd9089" config-ref="Retail_Product_Availability_Process_API_Config" product-id="#[attributes.uriParams.productId]" variant-id="#[attributes.uriParams.productVariantId]" quantity="#[attributes.queryParams.quantity]"/>
 			</otherwise>
 		</choice>
 	</flow>
 	<flow name="getStores" doc:id="6fbf39de-9528-499c-8d13-5468a6fb1ea3" >
-		<retail-locations-system-api:retrieve-stores doc:name="Get stores" doc:id="6b7f759d-9f41-43d8-93f7-dbae55c5a22c" config-ref="Retail_Locations_System_API_Config"/>
+		<retail-locations-system-api:get-stores doc:name="Get stores" doc:id="6b7f759d-9f41-43d8-93f7-dbae55c5a22c" config-ref="Retail_Locations_System_API_Config"/>
 		<ee:transform doc:name="Message Response" doc:id="7c9b569c-19b9-4d98-8703-aee7b3f8a85f" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -60,10 +67,10 @@ payload.results
 		</ee:transform>
 	</flow>
 	<flow name="getStore" doc:id="591c8ebe-34a9-433d-80ef-bf0fab920614" >
-		<retail-locations-system-api:retrieve-specific-store doc:name="Get store by store id" doc:id="0814cb24-cbf2-451d-b450-8bbc6eb3dc80" config-ref="Retail_Locations_System_API_Config" store-id="#[attributes.uriParams.storeId]"/>
+		<retail-locations-system-api:get-store doc:name="Get store by store id" doc:id="0814cb24-cbf2-451d-b450-8bbc6eb3dc80" config-ref="Retail_Locations_System_API_Config" store-id="#[attributes.uriParams.storeId]"/>
 	</flow>
 	<flow name="getPartners" doc:id="3d5c1ad9-4028-4441-94ca-9a93baef3aa1" >
-		<retail-partners-system-api:retrieve-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]" name="#[vars.nonExistVariableForNullValue]"/>
+		<retail-partners-system-api:get-partners doc:name="Get partners" doc:id="1f706e07-791b-4038-8e3c-5176c6fc0b61" config-ref="Retail_Partners_System_API_Config" targetValue="#[payload.results]" name="#[vars.nonExistVariableForNullValue]"/>
 		<ee:transform doc:name="Message Response" doc:id="4b627c38-acb9-4546-8a0c-0f1b7b0e1b4c" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -74,10 +81,10 @@ payload.results]]></ee:set-payload>
 		</ee:transform>
 	</flow>
 	<flow name="getPartner" doc:id="f366a74b-627e-48f7-9b5c-54eaa019a420" >
-		<retail-partners-system-api:retrieve-partner-info doc:name="Get partner by partner id" doc:id="74afb09c-2b5e-4dca-98a5-da268b90a191" config-ref="Retail_Partners_System_API_Config" partner-id="#[attributes.uriParams.partnerId]"/>
+		<retail-partners-system-api:get-partner doc:name="Get partner by partner id" doc:id="74afb09c-2b5e-4dca-98a5-da268b90a191" config-ref="Retail_Partners_System_API_Config" partner-id="#[attributes.uriParams.partnerId]"/>
 	</flow>
 	<flow name="getOrdersByCustomer" doc:id="c0cfc010-0e8f-4532-ae8e-a607ebdf7ded" >
-		<retail-orders-system-api:retrieve-customer-orders doc:name="Get customer by customer id" doc:id="7b9ecc01-18ee-40ee-95d7-09c45fe73506" config-ref="Retail_Orders_System_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
+		<retail-orders-system-api:get-orders-for-customer doc:name="Get customer by customer id" doc:id="7b9ecc01-18ee-40ee-95d7-09c45fe73506" config-ref="Retail_Orders_System_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
 	</flow>
 	<flow name="createOrder" doc:id="29eed4b5-fdee-4c71-baa0-585c9a98c173" >
 		<ee:transform doc:name="Set Variables" doc:id="908ff880-8e1f-4730-a5f8-2ca1a631547f" >
@@ -96,7 +103,7 @@ output application/java
 		</ee:transform>
 		<foreach doc:name="For Each" doc:id="20a32118-dcaa-4343-8e1e-d81bbb4bc561" collection="#[vars.order.orderItems]">
 			<set-variable value="#[payload]" doc:name="Save itemDetails" doc:id="b79fe80a-5316-4ff3-adce-0dddfd637611" variableName="itemDetails"/>
-			<retail-product-system-api:retrieve-product doc:name="Get product by product id" doc:id="317c7fb5-5f4d-4125-aa4a-cedb40b3f34e" config-ref="Retail_Product_System_API_Config" product-id="#[payload.item.productId]"/>
+			<retail-product-system-api:get-product doc:name="Get product by product id" doc:id="317c7fb5-5f4d-4125-aa4a-cedb40b3f34e" config-ref="Retail_Product_System_API_Config" product-id="#[payload.item.productId]"/>
 			<ee:transform doc:name="Add item to items" doc:id="5cf41715-1d18-4e1c-aadd-2767aed98ec7" >
 				<ee:message >
 				</ee:message>
@@ -144,7 +151,7 @@ output application/json
 		<logger level="INFO" doc:name="Success operation" doc:id="8f31a7a4-11f5-4203-bffd-0f3f92d7059c" message="Shopping Cart was created"/>
 	</flow>
 	<flow name="getShoppingCart" doc:id="6e3a0d64-46e0-4443-aa34-c813e9812ff0" >
-		<retail-shopping-cart-process-api:retrieve-shopping-cart doc:name="Get shopping cart by shopping cart id" doc:id="1ccdb27f-0b0f-4712-8ebc-5195233b8557" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
+		<retail-shopping-cart-process-api:get-shopping-cart doc:name="Get shopping cart by shopping cart id" doc:id="1ccdb27f-0b0f-4712-8ebc-5195233b8557" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
 		<ee:transform doc:name="Set Variables" doc:id="9aff74e7-c643-4ca6-b237-34eb19633739" >
 			<ee:message >
 			</ee:message>
@@ -161,7 +168,7 @@ output application/java
 		</ee:transform>
 		<foreach doc:name="For Each" doc:id="e0a9c627-00f8-45f2-9d55-e3e25801e46f" collection="#[vars.shoppingCart.items]">
 			<set-variable value="#[payload]" doc:name="Save itemDetails" doc:id="6867699e-3332-43dc-a72c-c68dd536f8a5" variableName="itemDetails"/>
-			<retail-product-system-api:retrieve-variant doc:name="Get variant by product id variant id" doc:id="7a6ed467-69f4-4158-a90f-f7e23d2f4cb3" config-ref="Retail_Product_System_API_Config" product-id="#[payload.productId]" variant-id="#[payload.variantId]"/>
+			<retail-product-system-api:get-variant doc:name="Get variant by product id variant id" doc:id="7a6ed467-69f4-4158-a90f-f7e23d2f4cb3" config-ref="Retail_Product_System_API_Config" product-id="#[payload.productId]" variant-id="#[payload.variantId]"/>
 			<ee:transform doc:name="Add item to items" doc:id="50a32514-16c4-486b-86f7-320bc955bab8" >
 				<ee:message >
 				</ee:message>
@@ -214,14 +221,14 @@ output application/json
 		<logger level="INFO" doc:name="Success operation" doc:id="638031ab-d3e4-414d-8a88-1ee0369bd379" message="Shopping Cart was updated"/>
 	</flow>
 	<flow name="deleteShoppingCart" doc:id="9682e4f6-df78-4e0a-ad56-15d8ba38c7fd" >
-		<retail-shopping-cart-process-api:remove-shopping-cart doc:name="Delete shopping cart by shopping cart id" doc:id="9d2d016e-c5c9-4c28-a9dc-a906ab87f723" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
+		<retail-shopping-cart-process-api:delete-shopping-cart doc:name="Delete shopping cart by shopping cart id" doc:id="9d2d016e-c5c9-4c28-a9dc-a906ab87f723" config-ref="Retail_Shopping_Cart_Process_API_Config" shopping-cart-id="#[attributes.uriParams.shoppingCartId]"/>
 		<logger level="INFO" doc:name="Success operation" doc:id="6415d192-8f34-4c36-8c3b-6d0fb15d727f" message="Shopping Cart was deleted"/>
 	</flow>
 	<flow name="getShoppingCartsByCustomer" doc:id="62bc6e7f-f152-4fad-9472-ea58da2bb042" >
-		<retail-shopping-cart-process-api:retrieve-shopping-carts-of-customer doc:name="Get shopping carts by customer id" doc:id="f659baf9-f862-4851-9bea-2a29ad712937" config-ref="Retail_Shopping_Cart_Process_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
+		<retail-shopping-cart-process-api:get-shopping-carts-for-customer doc:name="Get shopping carts by customer id" doc:id="f659baf9-f862-4851-9bea-2a29ad712937" config-ref="Retail_Shopping_Cart_Process_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
 	</flow>
 	<flow name="getCustomer" doc:id="d1ebd3c3-3eb5-43c3-b289-1804d80f6f1c" >
-		<retail-salesforce-customer-system-api:retrieve-customer-contact doc:name="Get customer by customer id" doc:id="d20b0f04-ab0d-4fb8-bb35-4743dc07067c" config-ref="Retail_Salesforce_Customer_System_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
+		<retail-customer-system-api:get-customers doc:name="Get customer by customer id" doc:id="d20b0f04-ab0d-4fb8-bb35-4743dc07067c" config-ref="Retail_Salesforce_Customer_System_API_Config" customer-id="#[attributes.uriParams.customerId]"/>
 		<ee:transform doc:name="Response message" doc:id="db4dcf5d-ecaf-4e75-ba0b-f215c5ef2c74" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -259,19 +266,19 @@ output application/json
 		</ee:transform>
 	</flow>
 	<flow name="updateCustomer" doc:id="d06da15e-49bc-4ad1-bafc-62b388e08774" >
-		<retail-salesforce-customer-system-api:update-customer-contact doc:name="Update customer by customer id" doc:id="e99ca9c6-dd39-4251-a8d8-8c7697284c9d" config-ref="Retail_Salesforce_Customer_System_API_Config" customer-id="#[attributes.uriParams.customerId]">
-			<retail-salesforce-customer-system-api:update-customer-contact-request-data ><![CDATA[#[{
+		<retail-customer-system-api:update-customer doc:name="Update customer by customer id" doc:id="e99ca9c6-dd39-4251-a8d8-8c7697284c9d" config-ref="Retail_Salesforce_Customer_System_API_Config" customer-id="#[attributes.uriParams.customerId]">
+			<retail-customer-system-api:update-customer-request-data ><![CDATA[#[{
 	customerId: payload.identifier,
     firstName: payload.firstName,
     lastName: payload.lastName,
     (phone: payload.phone) if not isEmpty(payload.phone),
     deliveryAddresses: payload.deliveryAddresses
-}]]]></retail-salesforce-customer-system-api:update-customer-contact-request-data>
-		</retail-salesforce-customer-system-api:update-customer-contact>
+}]]]></retail-customer-system-api:update-customer-request-data>
+		</retail-customer-system-api:update-customer>
 		<logger level="INFO" doc:name="Success operation" doc:id="e99cc16b-3c35-48dc-a1cb-8df76a449e11" message="Customer was updated"/>
 	</flow>
 	<flow name="createPaymentFlow" doc:id="e6f926ae-9fc4-48c1-bc4c-81b2b2cba215" >
-		<retail-orders-system-api:retrieve-customer-order doc:name="Get order by order id" doc:id="9e8530dd-a42e-4457-91f8-4490092c5546" config-ref="Retail_Orders_System_API_Config" order-id="#[attributes.uriParams.salesOrderId]" target="GETorderResponse"/>
+		<retail-orders-system-api:get-order doc:name="Get order by order id" doc:id="9e8530dd-a42e-4457-91f8-4490092c5546" config-ref="Retail_Orders_System_API_Config" order-id="#[attributes.uriParams.salesOrderId]" target="GETorderResponse"/>
 		<logger level="INFO" doc:name="Log request response" doc:id="6e1b9cf5-7cab-4c24-a8f0-b8076a0a5d07" message="vars.GETorderResponse=#[output application/json --- vars.GETorderResponse]"/>
 		<ee:transform doc:name="Prepare request data" doc:id="b19ae9be-c367-4b89-a178-95fa03fcb5a1" >
 			<ee:message >
