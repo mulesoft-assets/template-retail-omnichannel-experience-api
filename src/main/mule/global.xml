@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:retail-payment-process-api="http://www.mulesoft.org/schema/mule/retail-payment-process-api"
+<mule xmlns:retail-customer-system-api="http://www.mulesoft.org/schema/mule/retail-customer-system-api"
+	xmlns:retail-payment-process-api="http://www.mulesoft.org/schema/mule/retail-payment-process-api"
 	xmlns:retail-order-fulfilment-process-api="http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api"
-	xmlns:dev-retail-payment-process-api="http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api"
-	xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api" xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" xmlns:retail-salesforce-customer-system-api="http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api" xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+	xmlns:retail-locations-system-api="http://www.mulesoft.org/schema/mule/retail-locations-system-api"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+	xmlns:retail-shopping-cart-process-api="http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api" 
+	xmlns:retail-partners-system-api="http://www.mulesoft.org/schema/mule/retail-partners-system-api" 
+	xmlns:retail-orders-system-api="http://www.mulesoft.org/schema/mule/retail-orders-system-api" 
+	xmlns:retail-product-availability-process-api="http://www.mulesoft.org/schema/mule/retail-product-availability-process-api" 
+	xmlns:retail-product-system-api="http://www.mulesoft.org/schema/mule/retail-product-system-api" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/retail-product-system-api http://www.mulesoft.org/schema/mule/retail-product-system-api/current/mule-retail-product-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-product-availability-process-api http://www.mulesoft.org/schema/mule/retail-product-availability-process-api/current/mule-retail-product-availability-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-orders-system-api http://www.mulesoft.org/schema/mule/retail-orders-system-api/current/mule-retail-orders-system-api.xsd
-http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api http://www.mulesoft.org/schema/mule/retail-salesforce-customer-system-api/current/mule-retail-salesforce-customer-system-api.xsd
+http://www.mulesoft.org/schema/mule/retail-customer-system-api http://www.mulesoft.org/schema/mule/retail-customer-system-api/current/mule-retail-customer-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-partners-system-api http://www.mulesoft.org/schema/mule/retail-partners-system-api/current/mule-retail-partners-system-api.xsd
 http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api http://www.mulesoft.org/schema/mule/retail-shopping-cart-process-api/current/mule-retail-shopping-cart-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-locations-system-api http://www.mulesoft.org/schema/mule/retail-locations-system-api/current/mule-retail-locations-system-api.xsd
-http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api http://www.mulesoft.org/schema/mule/dev-retail-payment-process-api/current/mule-dev-retail-payment-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api http://www.mulesoft.org/schema/mule/retail-order-fulfilment-process-api/current/mule-retail-order-fulfilment-process-api.xsd
 http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.mulesoft.org/schema/mule/retail-payment-process-api/current/mule-retail-payment-process-api.xsd">
 	
@@ -28,7 +32,7 @@ http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.muleso
         <http:request-connection host="${order-fulfilment-process-api.host}" port="${order-fulfilment-process-api.port}">
         </http:request-connection>
     </http:request-config>
-    <apikit:config name="api-config" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="Router"/>
+    <apikit:config name="api-config" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="Router" api="api/api.raml"/>
     <configuration-properties doc:name="Configuration properties" doc:id="1df5e889-716f-4c69-9688-3a3241e85a32" file="common.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="0d1c9ed3-0a5d-4e37-afa6-8d12a336b1da" file="mule.${mule.env}.properties" />
 	
@@ -36,38 +40,64 @@ http://www.mulesoft.org/schema/mule/retail-payment-process-api http://www.muleso
 		property_host="${product-system-api.host}" 
 		property_port="${product-system-api.port}" 
 		property_basePath="${product-system-api.basePath}" 
-		property_protocol="${product-system-api.protocol}" />
+		property_protocol="${product-system-api.protocol}" >
+		<retail-product-system-api:connection/>
+	</retail-product-system-api:config>	
 	<retail-product-availability-process-api:config name="Retail_Product_Availability_Process_API_Config" doc:name="Retail_Product_Availability_Process_API Config" doc:id="0616ca18-9638-4e85-96fd-6d23c04e8669" 
 		property_host="${product-availability-process-api.host}" 
 		property_port="${product-availability-process-api.port}" 
 		property_basePath="${product-availability-process-api.basePath}" 
-		property_protocol="${product-availability-process-api.protocol}"/>
+		property_protocol="${product-availability-process-api.protocol}">
+		<retail-product-availability-process-api:connection/>
+	</retail-product-availability-process-api:config>	
 	<retail-orders-system-api:config name="Retail_Orders_System_API_Config" doc:name="Retail Orders System API Config" doc:id="fabfd291-e173-49c6-b6c6-5becd352cc46" 
 		property_host="${orders-system-api.host}" 
 		property_port="${orders-system-api.port}" 
 		property_basePath="${orders-system-api.basePath}" 
-		property_protocol="${orders-system-api.protocol}" />
-	<retail-salesforce-customer-system-api:config name="Retail_Salesforce_Customer_System_API_Config" doc:name="Retail Salesforce Customer System API Config" doc:id="b7d754b6-5f78-4fc9-b2ce-ea9e59b80e76" 
+		property_protocol="${orders-system-api.protocol}">
+		<retail-orders-system-api:connection />
+	</retail-orders-system-api:config>	
+	<retail-customer-system-api:config name="Retail_Salesforce_Customer_System_API_Config" doc:name="Retail Salesforce Customer System API Config" doc:id="b7d754b6-5f78-4fc9-b2ce-ea9e59b80e76" 
 		property_host="${customers-system-api.host}" 
 		property_port="${customers-system-api.port}" 
 		property_basePath="${customers-system-api.basePath}" 
-		property_protocol="${customers-system-api.protocol}" />	
+		property_protocol="${customers-system-api.protocol}">
+		<retail-customer-system-api:connection />
+	</retail-customer-system-api:config>			
 	<retail-partners-system-api:config name="Retail_Partners_System_API_Config" doc:name="Retail_Partners_System_API Config" doc:id="a5682548-b6a2-46ce-bde0-f2a4c424629c" 
 		property_host="${partners-system-api.host}" 
 		property_port="${partners-system-api.port}" 
 		property_basePath="${partners-system-api.basePath}" 
-		property_protocol="${partners-system-api.protocol}" />
+		property_protocol="${partners-system-api.protocol}">
+		<retail-partners-system-api:connection />
+	</retail-partners-system-api:config>	
 	<retail-shopping-cart-process-api:config name="Retail_Shopping_Cart_Process_API_Config" doc:name="Retail_Shopping_Cart_Process_API Config" doc:id="1d8b0390-cd39-4626-9f0b-5e8757f36ace" 
 		property_host="${shopping-cart-process-api.host}" 
 		property_port="${shopping-cart-process-api.port}" 
 		property_basePath="${shopping-cart-process-api.basePath}" 
-		property_protocol="${shopping-cart-process-api.protocol}" />	
+		property_protocol="${shopping-cart-process-api.protocol}">
+		<retail-shopping-cart-process-api:connection />
+	</retail-shopping-cart-process-api:config>		
 	<retail-locations-system-api:config name="Retail_Locations_System_API_Config" doc:name="Retail Locations System API Config" doc:id="005fdccb-f8b5-4d45-a615-37136d962556" 
 		property_host="${locations-system-api.host}" 
 		property_port="${locations-system-api.port}" 
 		property_basePath="${locations-system-api.basePath}" 
-		property_protocol="${locations-system-api.protocol}" />
-	<retail-order-fulfilment-process-api:config name="Retail_Order_Fulfilment_Process_API_Config" doc:name="Retail Order Fulfilment Process API Config" doc:id="0bb9c904-973a-4eee-b04e-9f2ea76154a1" property_host="${order-fulfilment-process-api.host}" property_port="${order-fulfilment-process-api.port}" property_protocol="${order-fulfilment-process-api.protocol}" property_basePath="${order-fulfilment-process-api.basePath}"/>
-	<retail-payment-process-api:config name="Retail_Payment_Process_API_Config" doc:name="Retail Payment Process API Config" doc:id="ece71f99-3fe3-4a97-84bd-7dbfa6203646" property_host="${payment-process-api.host}" property_port="${payment-process-api.port}" property_basePath="${payment-process-api.basePath}" property_protocol="${payment-process-api.protocol}"/>	
+		property_protocol="${locations-system-api.protocol}">
+		<retail-locations-system-api:connection />
+	</retail-locations-system-api:config>	
+	<retail-order-fulfilment-process-api:config name="Retail_Order_Fulfilment_Process_API_Config" doc:name="Retail Order Fulfilment Process API Config" doc:id="0bb9c904-973a-4eee-b04e-9f2ea76154a1" 
+		property_host="${order-fulfilment-process-api.host}" 
+		property_port="${order-fulfilment-process-api.port}" 
+		property_protocol="${order-fulfilment-process-api.protocol}" 
+		property_basePath="${order-fulfilment-process-api.basePath}">
+		<retail-order-fulfilment-process-api:connection />
+	</retail-order-fulfilment-process-api:config>		
+	<retail-payment-process-api:config name="Retail_Payment_Process_API_Config" doc:name="Retail Payment Process API Config" doc:id="ece71f99-3fe3-4a97-84bd-7dbfa6203646" 
+		property_host="${payment-process-api.host}" 
+		property_port="${payment-process-api.port}" 
+		property_basePath="${payment-process-api.basePath}" 
+		property_protocol="${payment-process-api.protocol}">
+		<retail-payment-process-api:connection />
+	</retail-payment-process-api:config>		
 	
 </mule>

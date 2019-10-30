@@ -4,85 +4,85 @@ version: v2.0
 baseUri: http://localhost:8081/api
 
 traits:
-  geoSearch: !include exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_geosearch/1.0.1/retail_geosearch.raml
+  geoSearch: !include /exchange_modules/org.mule.templates/retail-geosearch/1.0.0/retail_geosearch.raml
 
 uses:
-  common: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_common/1.0.10/retail_common.raml
+  common: /exchange_modules/org.mule.templates/retail-common/1.0.1/retail_common.raml
   collection: collections.raml
-  payment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_payment/1.0.10/retail_payment.raml
-  contact: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_contact/1.0.4/retail_contact.raml
-  fulfillment: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_fulfillment/1.0.6/retail_fulfillment.raml
-  taxonomy: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_taxonomy/1.0.2/retail_taxonomy.raml
-  customer: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_customer_types/1.0.9/retail_customer_types.raml
+  payment: /exchange_modules/org.mule.templates/retail-payment/1.0.2/retail_payment.raml
+  contact: /exchange_modules/org.mule.templates/retail-contact/1.0.1/retail_contact.raml
+  fulfillment: /exchange_modules/org.mule.templates/retail-fulfillment/1.0.2/retail_fulfillment.raml
+  taxonomy: /exchange_modules/org.mule.templates/retail-taxonomy/1.0.0/retail_taxonomy.raml
+  customer: /exchange_modules/org.mule.templates/retail-customer-types/1.0.2/retail_customer_types.raml
   channel: channel-types.raml
-  order: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_order_types/1.0.23/retail_order_types.raml
-  product: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_product/1.0.10/retail_product.raml
-  session: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_shopping_cart_types/1.0.4/retail_shopping_cart_types.raml
-  inventory: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_inventory/1.0.8/retail_inventory.raml
-  store: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_store/1.0.6/retail_store.raml
-  partner: exchange_modules/47f07e0a-f578-47d4-9591-d9e7afffb0fc.retail/retail_partner/1.0.3/retail_partner.raml
+  order: /exchange_modules/org.mule.templates/retail-order-types/1.0.2/retail_order_types.raml
+  product: /exchange_modules/org.mule.templates/retail-product/1.0.1/retail_product.raml
+  session: /exchange_modules/org.mule.templates/retail-shopping-cart-types/1.0.2/retail_shopping_cart_types.raml
+  inventory: /exchange_modules/org.mule.templates/retail-inventory/1.0.1/retail_inventory.raml
+  store: /exchange_modules/org.mule.templates/retail-store/1.0.1/retail_store.raml
+  partner: /exchange_modules/org.mule.templates/retail-partner/1.0.0/retail_partner.raml
 
 types:
 
   ContactMethodCollectionResponse:
     type: common.CollectionResponse
     description: |
-      contact method response collection
+      Contact method response collection
     properties:
       contactMethods: contact.ContactMethod[]
 
   ContactMethodResponse:
     type: contact.ContactMethod
     description: |
-      contact method response
+      Contact method response
 
   PaymentResponse:
     type: payment.PaymentResponse
     description: |
-      payment response
+      Payment response
 
   ChannelCollectionResponse:
     type: common.CollectionResponse
     description: |
-      channel response collection
+      Channel response collection
     properties:
       channels: channel.Channel[]
 
   ChannelResponse:
     type: channel.Channel
     description: |
-      channel response
+      Channel response
 
   FulfillmentMethodCollectionResponse:
     type: common.CollectionResponse
     description: |
-      fulfillment method response collection
+      Fulfillment method response collection
     properties:
       fulfillmentMethods: fulfillment.Fulfillment[]
 
   StoreCollectionResponse:
     type: common.CollectionResponse
     description: |
-      store response collection
+      Store response collection
     properties:
       stores: store.StoreInfo[]
 
   StoreResponse:
     type: store.StoreInfo
     description: |
-      store response
+      Store response
 
   PartnerCollectionResponse:
     type: common.CollectionResponse
     description: |
-      partner response collection
+      Partner response collection
     properties:
       partners: partner.PartnerInfo[]
 
   PartnerResponse:
     type: partner.PartnerInfo
     description: |
-      partner response
+      Partner response
 
   CategoryCollectionResponse:
     type: common.CollectionResponse
@@ -94,108 +94,96 @@ types:
   CategoryResponse:
     type: taxonomy.Category
     description: |
-      category response
+      Category response
 
   SalesOrderCollectionResponse:
     type: common.CollectionResponse
     description: |
-      sales order response collection
+      Sales order response collection
     properties:
       orders: order.SalesOrder[]
 
   OrderCollectionResponse:
     type: common.CollectionResponse
     description: |
-      order response collection
+      Order response collection
     properties:
       orders: order.OrderSummary[]
 
   SalesOrderResponse:
     type: order.SalesOrderHeader
     description: |
-      sales order response
+      Sales order response
 
   SalesOrderPaymentMethodResponse:
     type: payment.PaymentMethod
     description: |
-      sales order payment method response
+      Sales order payment method response
 
   SalesOrderFulfillmentResponse:
     type: fulfillment.Fulfillment
     description: |
-      sales order fulfillment response
+      Sales order fulfillment response
 
   SalesOrderItemCollectionResponse:
     type: order.SalesOrderItems
     description: |
-      sales order item response collection
+      Sales order item response collection
 
   ProductResponse:
     type: product.Product
     description: |
-      product response
+      Product response
 
   ProductCollectionResponse:
     type: common.CollectionResponse
     description: |
-      product response collection
+      Product response collection
     properties:
       products: product.Product[]
 
   FeatureCollectionResponse:
     type: common.CollectionResponse
     description: |
-      feature response collection
+      Feature response collection
     properties:
       features: product.ProductFeature[]
 
   FeatureResponse:
     type: product.ProductFeature
     description: |
-      feature response
+      Feature response
     properties:
 
   ProductVariantCollectionResponse:
     type: common.CollectionResponse
     description: |
-      product variant response collection
+      Product variant response collection
     properties:
       variants: product.ProductVariant[]
 
   ProductVariantResponse:
     type: product.ProductVariant
     description: |
-      product variant response
+      Product variant response
 
   ProductVariantAvailabilityResponse:
     type: inventory.Availability
     description: |
-      product variant availability response
+      Product variant availability response
     properties:
 
   ShoppingCartCollectionResponse:
     type: common.CollectionResponse
     description: |
-      shopping cart response collection
+      Shopping cart response collection
     properties:
       shoppingCarts: session.ShoppingCart[]
 
   ShoppingCartResponse:
     type: session.ShoppingCart
     description: |
-      shopping cart response
-
-#  InventoryCollectionResponse:
-#    type: common.CollectionResponse
-#    description: |
-#      inventory response collection
-#    properties:
-#      inventory: inventory.WarehouseInventory[]
-
-#  InventoryResponse:
-#    type: inventory.WarehouseInventory
-#    description: |
-#      inventory response
+      Shopping cart response
 
 /customers:
   description: |
@@ -209,30 +197,30 @@ types:
     displayName: Create customer
     body:
       application/json:
-        example: |
+        example: 
           {
                 "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                 "firstName": "Jason",
                 "lastName": "Bourne",
                 "paymentMethods": [
                     {
-                      "paymentMethodType":{
-                        "medium":"CARD",
-                        "issuer":"BANK",
-                        "name":"VISA"
+                      "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
                       }
                     }
                 ],
                 "deliveryAddresses": [
                     {
                       "type": "BILLING",
-                      "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
-                      "address":"Main street 122",
-                      "city":"San Francisco",
-                      "state":"California",
-                      "postalCode":"90210",
-                      "recipient":"Jason Bourne",
-                      "country":"US",
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c3855555",
+                      "address": "Main street 122",
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
                       "secondaryAddress": null,
                       "mailStopCode": null,
                       "attention": null
@@ -244,31 +232,31 @@ types:
       201:
         body:
           application/json:
-            example: |
+            example: 
               {
                 "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                 "firstName": "Jason",
                 "lastName": "Bourne",
                 "paymentMethods": [
                     {
-                      "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
-                      "paymentMethodType":{
-                        "medium":"CARD",
-                        "issuer":"BANK",
-                        "name":"VISA"
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c38c4444",
+                      "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
                       }
                     }
                 ],
                 "deliveryAddresses": [
                     {
                       "type": "BILLING",
-                      "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
-                      "address":"Main street 122",
-                      "city":"San Francisco",
-                      "state":"California",
-                      "postalCode":"90210",
-                      "recipient":"Jason Bourne",
-                      "country":"US",
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c3855555",
+                      "address": "Main street 122",
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
                       "secondaryAddress": null,
                       "mailStopCode": null,
                       "attention": null
@@ -286,7 +274,7 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example: 
               {
                 "_meta": {
                   "messages": []
@@ -297,28 +285,28 @@ types:
                     "firstName": "Jason",
                     "lastName": "Bourne",
                     "paymentMethods": [
-                        {
-                          "paymentMethodType":{
-                            "medium":"CARD",
-                            "issuer":"BANK",
-                            "name":"VISA"
-                          }
+                      {
+                        "paymentMethodType": {
+                          "medium": "CARD",
+                          "issuer": "BANK",
+                          "name": "VISA"
                         }
+                      }
                     ],
                     "deliveryAddresses": [
-                        {
-                          "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                          "type": "BILLING",
-                          "address":"Main street 122",
-                          "city":"San Francisco",
-                          "state":"California",
-                          "postalCode":"90210",
-                          "recipient":"Jason Bourne",
-                          "country":"US",
-                          "secondaryAddress":"",
-                          "mailStopCode":"",
-                          "attention":""
-                        }
+                      {
+                        "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                        "type": "BILLING",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": "",
+                        "mailStopCode": "",
+                        "attention": ""
+                      }
                     ]
                   }
                 ]
@@ -338,145 +326,143 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example: 
                 {
-                  "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
-                  "firstName":"Jason",
-                  "lastName":"Bourne",
-                  "paymentMethods":[
+                  "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "firstName": "Jason",
+                  "lastName": "Bourne",
+                  "paymentMethods": [
                     {
-                      "paymentMethodType":{
-                        "medium":"CARD",
-                        "issuer":"BANK",
-                        "name":"VISA"
+                      "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
                       }
                     }
                   ],
-                  "deliveryAddresses":[
+                  "deliveryAddresses": [
                     {
                       "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                      "address":"Main street 122",
+                      "address": "Main street 122",
                       "type": "BILLING",
-                      "city":"San Francisco",
-                      "state":"California",
-                      "postalCode":"90210",
-                      "recipient":"Jason Bourne",
-                      "country":"US",
-                      "secondaryAddress":null,
-                      "mailStopCode":null,
-                      "attention":null
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
                     },
                     {
                       "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                      "address":"Main street 122",
+                      "address": "Main street 122",
                       "type": "SHIPPING",
-                      "city":"San Francisco",
-                      "state":"California",
-                      "postalCode":"90210",
-                      "recipient":"Jason Bourne",
-                      "country":"US",
-                      "secondaryAddress":null,
-                      "mailStopCode":null,
-                      "attention":null
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
                     }
                   ]
                 }
     put:
       displayName: Update customer
       body:
-            application/json:
-              example:
-                  {
-                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
-                    "firstName":"Jason",
-                    "lastName":"Bourne",
-                    "paymentMethods":[
-                      {
-                        "paymentMethodType":{
-                          "medium":"CARD",
-                          "issuer":"BANK",
-                          "name":"VISA"
-                        }
-                      }
-                    ],
-                    "deliveryAddresses":[
-                      {
-                        "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                        "type": "BILLING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention":null
-                      },
-                      {
-                        "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                        "type": "SHIPPING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      }
-                    ]
+        application/json:
+          example:
+            {
+              "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+              "firstName": "Jason",
+              "lastName": "Bourne",
+              "paymentMethods": [
+                {
+                  "paymentMethodType": {
+                    "medium": "CARD",
+                    "issuer": "BANK",
+                    "name": "VISA"
                   }
+                }
+              ],
+              "deliveryAddresses": [
+                {
+                  "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "type": "BILLING",
+                  "address": "Main street 122",
+                  "city": "San Francisco",
+                  "state": "California",
+                  "postalCode": "90210",
+                  "recipient": "Jason Bourne",
+                  "country": "US",
+                  "secondaryAddress": null,
+                  "mailStopCode": null,
+                  "attention": null
+                },
+                {
+                  "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "type": "SHIPPING",
+                  "address": "Main street 122",
+                  "city": "San Francisco",
+                  "state": "California",
+                  "postalCode": "90210",
+                  "recipient": "Jason Bourne",
+                  "country": "US",
+                  "secondaryAddress": null,
+                  "mailStopCode": null,
+                  "attention": null
+                }
+              ]
+            }
       responses:
         200:
           body:
             application/json:
               example:
-
-                  {
-                    "identifier":"deb89058-77fb-4e97-8c83-6506c38cacf8",
-                    "firstName":"Jason",
-                    "lastName":"Bourne",
-                    "paymentMethods":[
-                      {
-                        "paymentMethodType":{
-                          "medium":"CARD",
-                          "issuer":"BANK",
-                          "name":"VISA"
-                        }
+                {
+                  "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                  "firstName": "Jason",
+                  "lastName": "Bourne",
+                  "paymentMethods": [
+                    {
+                      "paymentMethodType": {
+                        "medium": "CARD",
+                        "issuer": "BANK",
+                        "name": "VISA"
                       }
-                    ],
-                    "deliveryAddresses":[
-                      {
-                        "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                        "type": "BILLING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      },
-                      {
-                        "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
-                        "type": "SHIPPING",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress": null,
-                        "mailStopCode": null,
-                        "attention": null
-                      }
-                    ]
-                  }
-
+                    }
+                  ],
+                  "deliveryAddresses": [
+                    {
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                      "type": "BILLING",
+                      "address": "Main street 122",
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
+                    },
+                    {
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
+                      "type": "SHIPPING",
+                      "address": "Main street 122",
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "90210",
+                      "recipient": "Jason Bourne",
+                      "country": "US",
+                      "secondaryAddress": null,
+                      "mailStopCode": null,
+                      "attention": null
+                    }
+                  ]
+                }
 
     /deliveryAddresses:
       description: |
@@ -493,7 +479,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example: 
                   {
                     "_meta": {
                       "messages": []
@@ -501,20 +487,19 @@ types:
                     "deliveryAddresses": [
                       {
                         "type": "BILLING",
-                        "identifier":"deb89058-77fb-4e97-8c83-6506c3855555",
-                        "address":"Main street 122",
-                        "city":"San Francisco",
-                        "state":"California",
-                        "postalCode":"90210",
-                        "recipient":"Jason Bourne",
-                        "country":"US",
-                        "secondaryAddress":null,
-                        "mailStopCode":null,
-                        "attention":null
+                        "identifier": "deb89058-77fb-4e97-8c83-6506c3855555",
+                        "address": "Main street 122",
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "90210",
+                        "recipient": "Jason Bourne",
+                        "country": "US",
+                        "secondaryAddress": null,
+                        "mailStopCode": null,
+                        "attention": null
                       }
                     ]
                   }
-
 
       /{deliveryAddressId}:
         uriParameters:
@@ -524,14 +509,13 @@ types:
           collection.collectionMember:
             collectionMemberResponseType: customer.DeliveryAddressResponse
             collectionMemberPrototypeType: common.PostalAddress
-
         get:
           displayName: Get delivery address for customer
           responses:
             200:
               body:
                 application/json:
-                  example: |
+                  example:
                     {
                       "identifier": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                       "type": "BILLING",
@@ -560,7 +544,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
@@ -586,7 +570,7 @@ types:
             200:
               body:
                 application/json:
-                  example: |
+                  example:
                     {
                       "contactMethodType": "EMAIL",
                       "emailAddress": "jason.bourne@example.com"
@@ -606,7 +590,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": [],
@@ -616,15 +600,16 @@ types:
                     },
                     "paymentMethods": [
                       {
-                        "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
-                        "paymentMethodType":{
-                          "medium":"CARD",
-                          "issuer":"BANK",
-                          "name":"VISA"
+                        "identifier": "deb89058-77fb-4e97-8c83-6506c38c4444",
+                        "paymentMethodType": {
+                          "medium": "CARD",
+                          "issuer": "BANK",
+                          "name": "VISA"
                         }
                       }
                     ]
                   }
+
       /{paymentMethodId}:
         uriParameters:
           paymentMethodId:
@@ -639,9 +624,9 @@ types:
             200:
               body:
                 application/json:
-                  example: |
+                  example:
                     {
-                      "identifier":"deb89058-77fb-4e97-8c83-6506c38c4444",
+                      "identifier": "deb89058-77fb-4e97-8c83-6506c38c4444",
                       "paymentMethodType": {
                         "medium": "CARD",
                         "issuer": "BANK",
@@ -661,97 +646,97 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
                     },
                     "orders": [
-                        {
-                          "identifier": "8010J0000022iETQAY",
-                          "customerId": "951",
-                          "taxPrice": "4.25",
-                          "shippingPrice": "5.00",
-                          "shippingAddress": {
-                            "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "type": "SHIPPING",
-                            "address": "Main Street 40",
-                            "city": "San Francisco",
-                            "postalCode": "94210",
-                            "state": "CA",
-                            "country": "US"
-                          },
-                          "billingAddress": {
-                            "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                            "type": "SHIPPING",
-                            "address": "Main Street 40",
-                            "city": "San Francisco",
-                            "postalCode": "94210",
-                            "state": "CA",
-                            "country": "US"
-                          },
-                          "subtotal": "125.43",
-                          "status": "Draft",
-                          "trackingNumber": "8010J0000022iETQAY",
-                          "orderItems": {
-                            "pickupItems": [
-                              {
-                                "orderItemId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                                "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                                "productName": "Smart Slim Micro Stripe Shirt",
-                                "location": {
-                                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                  "deliveryMethod": "PICKUP",
-                                  "locationType": "STORE"
-                                },
-                                "price" : "50",
-                                "quantity": 1
+                      {
+                        "identifier": "8010J0000022iETQAY",
+                        "customerId": "951",
+                        "taxPrice": "4.25",
+                        "shippingPrice": "5.00",
+                        "shippingAddress": {
+                          "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "type": "SHIPPING",
+                          "address": "Main Street 40",
+                          "city": "San Francisco",
+                          "postalCode": "94210",
+                          "state": "CA",
+                          "country": "US"
+                        },
+                        "billingAddress": {
+                          "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "type": "SHIPPING",
+                          "address": "Main Street 40",
+                          "city": "San Francisco",
+                          "postalCode": "94210",
+                          "state": "CA",
+                          "country": "US"
+                        },
+                        "subtotal": "125.43",
+                        "status": "Draft",
+                        "trackingNumber": "8010J0000022iETQAY",
+                        "orderItems": {
+                          "pickupItems": [
+                            {
+                              "orderItemId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                              "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                              "productName": "Smart Slim Micro Stripe Shirt",
+                              "location": {
+                                "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                "deliveryMethod": "PICKUP",
+                                "locationType": "STORE"
                               },
-                              {
-                                "orderItemId": "dfc25820-c37d-456c-8867-4a89a51b7f75",
-                                "productId": "7c9be8ad-0791-4362-b195-a53dcca4e1d7",
-                                "productName": "Men's Regular Fit V-Neck Knit Sweater",
-                                "location": {
-                                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                  "deliveryMethod": "PICKUP",
-                                  "locationType": "STORE"
-                                },
-                                "price" : "60",
-                                "quantity": 2
-                              }
-                            ],
-                            "shipmentItems": [
-                              {
-                                "orderItemId": "3c1eb223-811c-4e86-8ea3-4a06a002a79a",
-                                "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                                "productName": "Men's Chino Jogger Pants",
-                                "location": {
-                                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                  "deliveryMethod": "SHIPMENT",
-                                  "locationType": "WAREHOUSE"
-                                },
-                                "price" : "30",
-                                "quantity": 3
-                              }
-                            ],
-                            "partnersItems": [
-                              {
-                                "orderItemId": "fc3d4900-c5ac-4649-8bc8-cbbef4fe8fde",
-                                "productId": "e1c515f9-102d-4830-b353-18fe48065732",
-                                "productName": "Uniforms Modern Fit Short Sleeve Polo Shirt",
-                                "location": {
-                                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                  "deliveryMethod": "SHIPMENT",
-                                  "locationType": "PARTNER"
-                                },
-                                "price" : "20",
-                                "quantity": 1
-                              }
-                            ]
-                          }
+                              "price" : "50",
+                              "quantity": 1
+                            },
+                            {
+                              "orderItemId": "dfc25820-c37d-456c-8867-4a89a51b7f75",
+                              "productId": "7c9be8ad-0791-4362-b195-a53dcca4e1d7",
+                              "productName": "Men's Regular Fit V-Neck Knit Sweater",
+                              "location": {
+                                "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                "deliveryMethod": "PICKUP",
+                                "locationType": "STORE"
+                              },
+                              "price" : "60",
+                              "quantity": 2
+                            }
+                          ],
+                          "shipmentItems": [
+                            {
+                              "orderItemId": "3c1eb223-811c-4e86-8ea3-4a06a002a79a",
+                              "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                              "productName": "Men's Chino Jogger Pants",
+                              "location": {
+                                "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                "deliveryMethod": "SHIPMENT",
+                                "locationType": "WAREHOUSE"
+                              },
+                              "price" : "30",
+                              "quantity": 3
+                            }
+                          ],
+                          "partnersItems": [
+                            {
+                              "orderItemId": "fc3d4900-c5ac-4649-8bc8-cbbef4fe8fde",
+                              "productId": "e1c515f9-102d-4830-b353-18fe48065732",
+                              "productName": "Uniforms Modern Fit Short Sleeve Polo Shirt",
+                              "location": {
+                                "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                                "deliveryMethod": "SHIPMENT",
+                                "locationType": "PARTNER"
+                              },
+                              "price" : "20",
+                              "quantity": 1
+                            }
+                          ]
                         }
-                      ]
-                    }
+                      }
+                    ]
+                  }
 
     /shoppingCarts:
       description: |
@@ -765,63 +750,63 @@ types:
         responses:
           200:
             body:
-                application/json:
-                  example: |
+              application/json:
+                example:
+                  {
+                    "_meta": {
+                      "messages": []
+                    },
+                    "shoppingCarts": [
                       {
-                          "_meta": {
-                            "messages": []
-                          },
-                         "shoppingCarts": [
-                                  {
-                                    "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
-                                    "customerId": "11e7-93ae-92361f002671",
-                                    "items": [
-                                      {
-                                        "location": {
-                                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                          "deliveryMethod": "PICKUP",
-                                          "locationType": "STORE"
-                                        },
-                                        "item": {
-                                          "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                                          "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
-                                        },
-                                        "quantity": {
-                                          "amount": 2,
-                                          "quantityType": "DISCRETE",
-                                          "unit": "EA"
-                                        },
-                                        "tax": 5.00,
-                                        "shipping": 9.00
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "identifier": "734a04dc-2f30-11e7-93ae-92361f002675",
-                                    "customerId": "11e7-93ae-92361f002671",
-                                    "items": [
-                                      {
-                                        "location": {
-                                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                          "deliveryMethod": "PICKUP",
-                                          "locationType": "STORE"
-                                        },
-                                        "item": {
-                                          "productId": "eb8c8ca7-3c42-5489-a820-3aa138430b70",
-                                          "identifier": "8866846-2c6d-4fa7-9e17-4b2c42e0f051"
-                                        },
-                                        "quantity": {
-                                          "amount": 1,
-                                          "quantityType": "DISCRETE",
-                                          "unit": "EA"
-                                        },
-                                        "tax": 5.00,
-                                        "shipping": 9.00
-                                      }
-                                    ]
-                                  }
-                          ]
-                       }
+                        "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
+                        "customerId": "11e7-93ae-92361f002671",
+                        "items": [
+                          {
+                            "location": {
+                              "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                              "deliveryMethod": "PICKUP",
+                              "locationType": "STORE"
+                            },
+                            "item": {
+                              "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                              "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                            },
+                            "quantity": {
+                              "amount": 2,
+                              "quantityType": "DISCRETE",
+                              "unit": "EA"
+                            },
+                            "tax": 5.00,
+                            "shipping": 9.00
+                          }
+                        ]
+                      },
+                      {
+                        "identifier": "734a04dc-2f30-11e7-93ae-92361f002675",
+                        "customerId": "11e7-93ae-92361f002671",
+                        "items": [
+                          {
+                            "location": {
+                              "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                              "deliveryMethod": "PICKUP",
+                              "locationType": "STORE"
+                            },
+                            "item": {
+                              "productId": "eb8c8ca7-3c42-5489-a820-3aa138430b70",
+                              "identifier": "8866846-2c6d-4fa7-9e17-4b2c42e0f051"
+                            },
+                            "quantity": {
+                              "amount": 1,
+                              "quantityType": "DISCRETE",
+                              "unit": "EA"
+                            },
+                            "tax": 5.00,
+                            "shipping": 9.00
+                          }
+                        ]
+                      }
+                    ]
+                  }
 
 /channels:
   description: |
@@ -842,7 +827,7 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example:
               {
                 "_meta": {
                   "messages": []
@@ -862,6 +847,7 @@ types:
                   }
                 ]
               }
+
   /{channelId}:
     uriParameters:
       channelId: common.ResourceId
@@ -874,7 +860,7 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
                   "channelType": "WEB",
                   "url": "http://www.example.com"
@@ -895,7 +881,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": [],
@@ -904,27 +890,27 @@ types:
                       "limit": 5
                     },
                     "paymentMethods": [
-                         {
-                            "paymentMethodType": {
-                                "medium": "PHYSICAL",
-                                "issuer": "GOVT",
-                                "name": "CASH"
-                            }
-                         },
-                         {
-                            "paymentMethodType": {
-                                "medium": "PHYSICAL",
-                                "issuer": "BANK",
-                                "name": "CHECK"
-                            }
-                         },
-                         {
-                            "paymentMethodType": {
-                                "medium": "CARD",
-                                "issuer": "BANK",
-                                "name": "VISA"
-                            }
-                         }
+                        {
+                          "paymentMethodType": {
+                              "medium": "PHYSICAL",
+                              "issuer": "GOVT",
+                              "name": "CASH"
+                          }
+                        },
+                        {
+                          "paymentMethodType": {
+                              "medium": "PHYSICAL",
+                              "issuer": "BANK",
+                              "name": "CHECK"
+                          }
+                        },
+                        {
+                          "paymentMethodType": {
+                              "medium": "CARD",
+                              "issuer": "BANK",
+                              "name": "VISA"
+                          }
+                        }
                     ]
                   }
 
@@ -944,7 +930,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
@@ -965,10 +951,11 @@ types:
                             "mailStopCode": null,
                             "attention": null
                         },
-                      "receipt": "PICKUP"
+                        "receipt": "PICKUP"
                       }
                     ]
                   }
+
     /products:
       description: |
         Products are provided by particular channel.
@@ -986,7 +973,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example: 
                   {
                     "_meta": {
                       "messages": []
@@ -1017,6 +1004,7 @@ types:
                       }
                     ]
                   }
+
     /categories:
       description: |
         Categories of products are provided by selected channel.
@@ -1030,7 +1018,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
@@ -1069,46 +1057,47 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example:
               {
                 "_meta": {
                   "messages": []
                 },
                 "categories": [
-                      {
-                          "identifier": "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
-                          "name": "Most popular items",
-                          "description": "Most popular items",
-                          "abstract": true
-                      },
-                      {
-                          "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
-                          "name": "Sweaters",
-                          "description": "Sweaters"
-                      },
-                      {
-                          "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
-                          "name": "Jeans",
-                          "description": "Jeans"
-                      },
-                      {
-                          "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
-                          "name": "Shirts",
-                          "description": "Shirts"
-                      },
-                      {   "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
-                          "identifier": "67912d0b-1dfa-4a62-a552-f0d01d5b0c79",
-                          "name": "Hats",
-                          "description": "Hats"
-                      },
-                      {
-                          "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
-                          "identifier": "c9032941-b3a5-4e8e-8134-baee3a751eb9",
-                          "name": "Shoes",
-                          "description": "Shoes"
-                      }
-                    ]
+                  {
+                      "identifier": "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                      "name": "Most popular items",
+                      "description": "Most popular items",
+                      "abstract": true
+                  },
+                  {
+                      "identifier": "fe3d0325-be8c-45b8-aa96-2331f25542be",
+                      "name": "Sweaters",
+                      "description": "Sweaters"
+                  },
+                  {
+                      "identifier": "d3d0d1fd-b33c-4d40-b559-04665aa9ead6",
+                      "name": "Jeans",
+                      "description": "Jeans"
+                  },
+                  {
+                      "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                      "name": "Shirts",
+                      "description": "Shirts"
+                  },
+                  {   "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                      "identifier": "67912d0b-1dfa-4a62-a552-f0d01d5b0c79",
+                      "name": "Hats",
+                      "description": "Hats"
+                  },
+                  {
+                      "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                      "identifier": "c9032941-b3a5-4e8e-8134-baee3a751eb9",
+                      "name": "Shoes",
+                      "description": "Shoes"
                   }
+                ]
+              }
+
   /{categoryId}:
     uriParameters:
       categoryId: string
@@ -1121,12 +1110,12 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
-                    "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
-                    "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
-                    "name": "Shirts",
-                    "description": "Shirts"
+                  "parentId" : "49ed1d7f-9583-40aa-8e80-bfea709b16a4",
+                  "identifier": "5e5b095e-8b60-429c-98bf-da36afeb1f1c",
+                  "name": "Shirts",
+                  "description": "Shirts"
                 }
 
     /products:
@@ -1146,59 +1135,60 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
                     },
-                    "products":[
-                        {
-                           "brand":"Anypoint",
-                           "identifier":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                           "categoryId": ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
-                           "model":"Smart Slim Micro Stripe Shirt",
-                           "rating":5,
-                           "description":"Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
-                           "pictures":[
-                              "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
-                              "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                           ],
-                           "price":{
-                              "amount":{
-                                 "currency":"USD",
-                                 "currencyValue":34.90,
-                                 "name":"Amount"
-                              },
-                              "salesUnit":{
-                                 "code":"EA",
-                                 "name":"Each"
-                              }
-                           }
-                        },
-                        {
-                           "brand":"Anypoint",
-                           "identifier":"e1c515f9-102d-4830-b353-18fe48065732",
-                           "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
-                           "model":"Uniforms Modern Fit Short Sleeve Polo Shirt",
-                           "rating":5,
-                           "description":"Machine Wash, Tumble Dry. True to Size.",
-                           "pictures":[
-                              "https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg"
-                           ],
-                           "price":{
-                              "amount":{
-                                 "currency":"USD",
-                                 "currencyValue":12.95,
-                                 "name":"Amount"
-                              },
-                              "salesUnit":{
-                                 "code":"EA",
-                                 "name":"Each"
-                              }
-                           }
-                        }
-                     ]
+                    "products": [
+                      {
+                          "brand": "Anypoint",
+                          "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                          "categoryId": ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                          "model": "Smart Slim Micro Stripe Shirt",
+                          "rating": 5,
+                          "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                          "pictures": [
+                            "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                            "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                          ],
+                          "price": {
+                            "amount": {
+                                "currency": "USD",
+                                "currencyValue": 34.90,
+                                "name": "Amount"
+                            },
+                            "salesUnit": {
+                                "code": "EA",
+                                "name": "Each"
+                            }
+                          }
+                      },
+                      {
+                          "brand": "Anypoint",
+                          "identifier": "e1c515f9-102d-4830-b353-18fe48065732",
+                          "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                          "model": "Uniforms Modern Fit Short Sleeve Polo Shirt",
+                          "rating":5,
+                          "description": "Machine Wash, Tumble Dry. True to Size.",
+                          "pictures": [
+                            "https://images-na.ssl-images-amazon.com/images/I/41p0XBBb6vL.jpg"
+                          ],
+                          "price": {
+                            "amount": {
+                                "currency": "USD",
+                                "currencyValue": 12.95,
+                                "name": "Amount"
+                            },
+                            "salesUnit": {
+                                "code": "EA",
+                                "name": "Each"
+                            }
+                          }
+                      }
+                    ]
                   }
+
 /stores:
   description: |
     Stores which can provide products to customers.
@@ -1217,49 +1207,12 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example: 
                {
-                  "_meta": {
-                    "messages": []
-                  },
-                 "stores": [
-                    {
-                      "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                      "name": "Anypoint Store 1",
-                      "description": "Department store chain providing brand-name c",
-                      "notes": "Department store chain providing brand-name c",
-                      "openingHours": "Mo,Tu,We,Th,Fr 09:00-20:00",
-                      "address": {
-                        "address": "170 O'Farrell St",
-                        "city": "San Francisco",
-                        "postalCode": "94102",
-                        "state": "California",
-                        "country": "USA"
-                      },
-                      "contact": {
-                        "email": "store1@anypointstore.example.com",
-                        "phone": "+1-202-555-0111"
-                      },
-                      "geo": {
-                        "latitude": 37.78703308105469,
-                        "longitude": -122.4060287475586
-                      }
-                    }
-                 ]
-               }
-  /{storeId}:
-    uriParameters:
-      storeId: string
-    type:
-       collection.readOnlyCollectionMember:
-         collectionMemberResponseType: StoreResponse
-    get:
-      displayName: Get store
-      responses:
-        200:
-          body:
-            application/json:
-              example: |
+                "_meta": {
+                  "messages": []
+                },
+                "stores": [
                   {
                     "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
                     "name": "Anypoint Store 1",
@@ -1282,6 +1235,45 @@ types:
                       "longitude": -122.4060287475586
                     }
                   }
+                 ]
+               }
+
+  /{storeId}:
+    uriParameters:
+      storeId: string
+    type:
+       collection.readOnlyCollectionMember:
+         collectionMemberResponseType: StoreResponse
+    get:
+      displayName: Get store
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                {
+                  "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                  "name": "Anypoint Store 1",
+                  "description": "Department store chain providing brand-name c",
+                  "notes": "Department store chain providing brand-name c",
+                  "openingHours": "Mo,Tu,We,Th,Fr 09:00-20:00",
+                  "address": {
+                    "address": "170 O'Farrell St",
+                    "city": "San Francisco",
+                    "postalCode": "94102",
+                    "state": "California",
+                    "country": "USA"
+                  },
+                  "contact": {
+                    "email": "store1@anypointstore.example.com",
+                    "phone": "+1-202-555-0111"
+                  },
+                  "geo": {
+                    "latitude": 37.78703308105469,
+                    "longitude": -122.4060287475586
+                  }
+                }
+
     /paymentMethods:
       description: |
         Represents of different payment methods for particular store.
@@ -1298,7 +1290,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": [],
@@ -1308,14 +1300,15 @@ types:
                     },
                     "paymentMethods": [
                       {
-                        "paymentMethodType":{
-                          "medium":"CARD",
-                          "issuer":"BANK",
-                          "name":"VISA"
+                        "paymentMethodType": {
+                          "medium": "CARD",
+                          "issuer": "BANK",
+                          "name": "VISA"
                         }
                       }
                     ]
                   }
+
     /fulfillmentMethods:
       description: |
         Fulfillment methods are provided by selected store.
@@ -1328,6 +1321,7 @@ types:
         queryParameters:
           receipt: fulfillment.ReceiptType
           carrier: fulfillment.CarrierType
+
     /products:
       description: |
         Products are provided by selected store.
@@ -1337,6 +1331,7 @@ types:
       get:
         displayName: Get products in store
         is: *queryableCollection
+    
     /categories:
       description: |
         Categories are provided by selected store.
@@ -1346,6 +1341,7 @@ types:
       get:
         displayName: Get categories in store
         is: *queryableCollection
+    
     /nearbyStores:
       description: |
         Stores are located nearby.
@@ -1376,34 +1372,35 @@ types:
       200:
         body:
           application/json:
-            example: |
-               {
-                  "_meta": {
-                    "messages": []
+            example:
+              {
+                "_meta": {
+                  "messages": []
+                },
+                "partners": [
+                  {
+                    "partnerId": "2d9df8be-a185-4dde-9577-d6edf6cdb398",
+                    "name": "Best Amazing Store",
+                    "description": "",
+                    "email": "info@luckystore.example.com",
+                    "phone": "+1-202-555-0119",
+                    "url": "www.luckystore.example.com",
+                    "shippingPrice": 5.5,
+                    "rating": 4
                   },
-                 "partners": [
-                      {
-                        "partnerId": "2d9df8be-a185-4dde-9577-d6edf6cdb398",
-                        "name": "Best Amazing Store",
-                        "description": "",
-                        "email": "info@luckystore.example.com",
-                        "phone": "+1-202-555-0119",
-                        "url": "www.luckystore.example.com",
-                        "shippingPrice": 5.5,
-                        "rating": 4
-                      },
-                      {
-                        "partnerId": "84c95f82-c435-4de0-8964-82e16bd23689",
-                        "name": "Shop For You",
-                        "description": "",
-                        "email": "info@shopforyou.example.com",
-                        "phone": "+1-202-555-0146",
-                        "url": "www.shopforyou.example.com",
-                        "shippingPrice": 7.5,
-                        "rating": 4
-                      }
-                    ]
-                 }
+                  {
+                    "partnerId": "84c95f82-c435-4de0-8964-82e16bd23689",
+                    "name": "Shop For You",
+                    "description": "",
+                    "email": "info@shopforyou.example.com",
+                    "phone": "+1-202-555-0146",
+                    "url": "www.shopforyou.example.com",
+                    "shippingPrice": 7.5,
+                    "rating": 4
+                  }
+                ]
+              }
+
   /{partnerId}:
     uriParameters:
       partnerId: string
@@ -1416,17 +1413,18 @@ types:
         200:
           body:
             application/json:
-              example: |
-                  {
-                    "partnerId": "2d9df8be-a185-4dde-9577-d6edf6cdb398",
-                    "name": "Best Amazing Store",
-                    "description": "",
-                    "email": "info@luckystore.example.com",
-                    "phone": "+1-202-555-0119",
-                    "url": "www.luckystore.example.com",
-                    "shippingPrice": 5.5,
-                    "rating": 4
-                  }
+              example:
+                {
+                  "partnerId": "2d9df8be-a185-4dde-9577-d6edf6cdb398",
+                  "name": "Best Amazing Store",
+                  "description": "",
+                  "email": "info@luckystore.example.com",
+                  "phone": "+1-202-555-0119",
+                  "url": "www.luckystore.example.com",
+                  "shippingPrice": 5.5,
+                  "rating": 4
+                }
+
 /orders:
   description: |
     Order is a document issued by a customer to a store, indicating types, quantities and prices for selected products.
@@ -1442,7 +1440,7 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example:
               {
                 "_meta": {
                   "messages": []
@@ -1491,145 +1489,145 @@ types:
     displayName: Create order
     body:
       application/json:
-        example: |
-            {
-              "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-              "customerId": "facebook_1234567890123456",
-              "orderItems": [
-                {
-                  "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                  "quantity": {
-                    "quantityType": "DISCRETE",
-                    "unit": "EA",
-                    "amount": 1
-                  },
-                  "location": {
-                              "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                              "deliveryMethod": "PICKUP",
-                              "locationType": "STORE"
-                  },
-                  "item": {
-                    "configuration": [
-                      {
-                        "characteristic": {
-                          "code": "size",
-                          "description": "Size",
-                          "name": "Size of item"
-                        },
-                        "characteristicValue": {
-                          "code": "M",
-                          "name": "Medium"
-                        }
+        example:
+          {
+            "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+            "customerId": "facebook_1234567890123456",
+            "orderItems": [
+              {
+                "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                "quantity": {
+                  "quantityType": "DISCRETE",
+                  "unit": "EA",
+                  "amount": 1
+                },
+                "location": {
+                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                  "deliveryMethod": "PICKUP",
+                  "locationType": "STORE"
+                },
+                "item": {
+                  "configuration": [
+                    {
+                      "characteristic": {
+                        "code": "size",
+                        "description": "Size",
+                        "name": "Size of item"
                       },
-                      {
-                        "characteristic": {
-                          "code": "color",
-                          "description": "Color",
-                          "name": "Color"
-                        },
-                        "characteristicValue": {
-                          "code": "blue",
-                          "name": "Blue"
-                        }
+                      "characteristicValue": {
+                        "code": "M",
+                        "name": "Medium"
                       }
-                    ],
-                    "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                    "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                    "identifiers": {
-                      "SKU": "UGG-BB-PUR-06"
                     },
-                    "pictures": [
-                      "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
-                      "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                    ]
-                  },
-                  "itemUnitPrice": {
-                    "amount": {
-                      "currency": "USD",
-                      "currencyValue": 34.9,
-                      "name": "Amount"
-                    },
-                    "salesUnit": {
-                      "code": "EA",
-                      "name": "Each"
+                    {
+                      "characteristic": {
+                        "code": "color",
+                        "description": "Color",
+                        "name": "Color"
+                      },
+                      "characteristicValue": {
+                        "code": "blue",
+                        "name": "Blue"
+                      }
                     }
+                  ],
+                  "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                  "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                  "identifiers": {
+                    "SKU": "UGG-BB-PUR-06"
                   },
-                  "itemExtendedPrice": {
+                  "pictures": [
+                    "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                    "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                  ]
+                },
+                "itemUnitPrice": {
+                  "amount": {
                     "currency": "USD",
                     "currencyValue": 34.9,
                     "name": "Amount"
+                  },
+                  "salesUnit": {
+                    "code": "EA",
+                    "name": "Each"
                   }
                 },
-                {
-                  "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                  "quantity": {
-                    "quantityType": "DISCRETE",
-                    "unit": "EA",
-                    "amount": 1
-                  },
-                  "location": {
-                      "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                      "deliveryMethod": "PICKUP",
-                      "locationType": "STORE"
-                  },
-                  "item": {
-                    "configuration": [
-                      {
-                        "characteristic": {
-                          "code": "size",
-                          "description": "Size",
-                          "name": "Size of item"
-                        },
-                        "characteristicValue": {
-                          "code": "L",
-                          "name": "Large"
-                        }
+                "itemExtendedPrice": {
+                  "currency": "USD",
+                  "currencyValue": 34.9,
+                  "name": "Amount"
+                }
+              },
+              {
+                "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                "quantity": {
+                  "quantityType": "DISCRETE",
+                  "unit": "EA",
+                  "amount": 1
+                },
+                "location": {
+                  "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                  "deliveryMethod": "PICKUP",
+                  "locationType": "STORE"
+                },
+                "item": {
+                  "configuration": [
+                    {
+                      "characteristic": {
+                        "code": "size",
+                        "description": "Size",
+                        "name": "Size of item"
                       },
-                      {
-                        "characteristic": {
-                          "code": "color",
-                          "description": "Color",
-                          "name": "Color"
-                        },
-                        "characteristicValue": {
-                          "code": "tan",
-                          "name": "Tan"
-                        }
+                      "characteristicValue": {
+                        "code": "L",
+                        "name": "Large"
                       }
-                    ],
-                    "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f",
-                    "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                    "identifiers": {
-                      "SKU": "UGG-BB-PUR-06"
                     },
-                    "pictures": [
-                      "https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg"
-                    ]
-                  },
-                  "itemUnitPrice": {
-                    "amount": {
-                      "currency": "USD",
-                      "currencyValue": 47.95,
-                      "name": "Amount"
-                    },
-                    "salesUnit": {
-                      "code": "EA",
-                      "name": "Each"
+                    {
+                      "characteristic": {
+                        "code": "color",
+                        "description": "Color",
+                        "name": "Color"
+                      },
+                      "characteristicValue": {
+                        "code": "tan",
+                        "name": "Tan"
+                      }
                     }
+                  ],
+                  "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f",
+                  "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                  "identifiers": {
+                    "SKU": "UGG-BB-PUR-06"
                   },
-                  "itemExtendedPrice": {
+                  "pictures": [
+                    "https://images-na.ssl-images-amazon.com/images/I/61Ezqhc-8AL._UX342_.jpg"
+                  ]
+                },
+                "itemUnitPrice": {
+                  "amount": {
                     "currency": "USD",
                     "currencyValue": 47.95,
                     "name": "Amount"
+                  },
+                  "salesUnit": {
+                    "code": "EA",
+                    "name": "Each"
                   }
+                },
+                "itemExtendedPrice": {
+                  "currency": "USD",
+                  "currencyValue": 47.95,
+                  "name": "Amount"
                 }
-              ]
-            }
+              }
+            ]
+          }
     responses:
       201:
         body:
           application/json:
-           example: |
+           example:
             {
               "customerId": "facebook_1234567890123456"
             }
@@ -1648,7 +1646,7 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example: 
                 {
                   "customerId": "deb89058-77fb-4e97-8c83-6506c38cacf8",
                   "fulfillment": {
@@ -1675,13 +1673,13 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example: 
                 {
                   "identifier" : "123456-erer",
                   "paymentMethodType": {
-                        "medium": "CARD",
-                        "issuer": "BANK",
-                        "name": "VISA"
+                    "medium": "CARD",
+                    "issuer": "BANK",
+                    "name": "VISA"
                   },
                   "status": "Processing"
                 }
@@ -1691,12 +1689,13 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
                   "_meta": {
                     "messages": []
                   }
                 }
+
     /paymentMethod:
       description: |
         The way that a customer chooses to pay to the seller for a product.
@@ -1710,60 +1709,60 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "paymentMethodType": {
-                        "medium": "CARD",
-                        "issuer": "BANK",
-                        "name": "VISA"
-                      }
+                      "medium": "CARD",
+                      "issuer": "BANK",
+                      "name": "VISA"
+                    }
                   }
       put:
         displayName: Update payment method for order
         body:
           application/json:
-            example: |
-             {
+            example: 
+              {
                 "paymentMethodType": {
-                    "medium": "CARD",
-                    "issuer": "BANK",
-                    "name": "VISA"
+                  "medium": "CARD",
+                  "issuer": "BANK",
+                  "name": "VISA"
                 }
-             }
+              }
         responses:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "identifier" : "paypal_order_id",
                     "paymentMethodType": {
-                        "medium": "CARD",
-                        "issuer": "BANK",
-                        "name": "VISA"
-                      }
+                      "medium": "CARD",
+                      "issuer": "BANK",
+                      "name": "VISA"
+                    }
                   }
 
     /payment:
       description: |
-        Creates od retrievs payment for order
+        Creates or retrieves payment for order
       type:
         collection.updatableCollectionMember:
           collectionMemberPrototypeType: payment.PaymentMethod
           collectionMemberResponseType: payment.PaymentMethod
       get:
-        displayName: Gets info about payment for order
+        displayName: Get payment info for order
       post:
-        displayName: Prepares payment for order
+        displayName: Create payment for order
         body:
           application/json:
             type: payment.PaymentMethod
-            example: |
+            example: 
               {
-                 "paymentMethodType": {
-                   "medium": "CARD",
-                   "issuer": "BANK",
-                   "name": "VISA"
+                "paymentMethodType": {
+                  "medium": "CARD",
+                  "issuer": "BANK",
+                  "name": "VISA"
                 }
               }
         responses:
@@ -1771,7 +1770,7 @@ types:
             body:
               application/json:
                 type: PaymentResponse
-                example: |
+                example:
                   {
                     "identifier": "5O190127TN364715T",
                     "status": "PAID",
@@ -1793,6 +1792,7 @@ types:
                       }
                     ]
                   }
+
     /fulfillment:
       description: |
         Order fulfillment is represented by steps involved in receiving, processing and delivering orders to customers.
@@ -1806,7 +1806,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "carrier": "POSTAL",
                     "deliveryAddress": {
@@ -1830,7 +1830,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "carrier": "POSTAL",
                     "deliveryAddress": {
@@ -1848,6 +1848,7 @@ types:
                     },
                     "receipt": "PICKUP"
                   }
+
     /orderItems:
       description: |
         Represents products in selected order.
@@ -1861,7 +1862,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "orderItems": [
                       {
@@ -1932,7 +1933,7 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "orderItems": [
                       {
@@ -1998,7 +1999,6 @@ types:
                     ]
                   }
 
-
 /products:
   description: |
     Product is a single item (some goods or a service) which can be provided by a store.
@@ -2014,37 +2014,38 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example:
               {
                 "_meta": {
                   "messages": []
                 },
                 "products": [
-                      {
-                        "brand": "Anypoint",
-                        "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
-                        "model": "Smart Slim Micro Stripe Shirt",
-                        "rating": 5,
-                        "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
-                        "pictures": [
-                          "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
-                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                        ],
-                        "price": {
-                          "amount": {
-                            "currency": "USD",
-                            "currencyValue": 34.90,
-                            "name": "Amount"
-                          },
-                           "salesUnit": {
-                            "code": "EA",
-                            "name": "Each"
-                          }
-                        }
+                  {
+                    "brand": "Anypoint",
+                    "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                    "categoryId" : ["5e5b095e-8b60-429c-98bf-da36afeb1f1c"],
+                    "model": "Smart Slim Micro Stripe Shirt",
+                    "rating": 5,
+                    "description": "Shirt by ASOS Tall. Stripe woven fabric. Added stretch for comfort. Spread collar. Button placket. Slim fit - cut close to the body. Machine wash. 98% Cotton, 2% Elastane. Our model wears a size Medium Long and is 193cm/6'4\" tall",
+                    "pictures": [
+                      "https://launderkart.com/wp-content/uploads/2016/07/Shirt.jpg",
+                      "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                    ],
+                    "price": {
+                      "amount": {
+                        "currency": "USD",
+                        "currencyValue": 34.90,
+                        "name": "Amount"
+                      },
+                        "salesUnit": {
+                        "code": "EA",
+                        "name": "Each"
                       }
-                    ]
+                    }
                   }
+                ]
+              }
+
   /{productId}:
     uriParameters:
       productId: string
@@ -2057,7 +2058,7 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
                   "brand": "Anypoint",
                   "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
@@ -2099,7 +2100,6 @@ types:
            collection.readOnlyCollectionMember:
              collectionMemberResponseType: FeatureResponse
 
-
     /variants:
       description: |
         Set of characteristics of particular product.
@@ -2113,60 +2113,61 @@ types:
           200:
             body:
               application/json:
-                example: |
+                example:
                   {
                     "_meta": {
                       "messages": []
                     },
-                    "variants":[
+                    "variants": [
                       {
-                         "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                         "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                         "identifiers":{
-                            "SKU":"UGG-BB-PUR-06"
-                         },
-                         "pictures":[
-                            "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
-                            "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                         ],
-                         "price": {
-                            "amount": {
-                              "currency": "USD",
-                              "currencyValue": 47.95,
-                              "name": "Amount"
+                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                        "identifiers": {
+                          "SKU": "UGG-BB-PUR-06"
+                        },
+                        "pictures": [
+                          "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                        ],
+                        "price": {
+                          "amount": {
+                            "currency": "USD",
+                            "currencyValue": 47.95,
+                            "name": "Amount"
+                          },
+                          "salesUnit": {
+                            "code": "EA",
+                            "name": "EACH"
+                          }
+                        },
+                        "configuration": [
+                          {
+                            "characteristic": {
+                              "code": "size",
+                              "description": "Size",
+                              "name": "Size of item"
                             },
-                            "salesUnit": {
-                              "code": "EA",
-                              "name": "EACH"
+                            "characteristicValue": {
+                              "code": "M",
+                              "name": "Medium"
                             }
                           },
-                         "configuration":[
-                            {
-                               "characteristic":{
-                                  "code":"size",
-                                  "description":"Size",
-                                  "name":"Size of item"
-                               },
-                               "characteristicValue":{
-                                  "code":"M",
-                                  "name":"Medium"
-                               }
+                          {
+                            "characteristic": {
+                              "code": "color",
+                              "description": "Color",
+                              "name": "Color"
                             },
-                            {
-                               "characteristic":{
-                                  "code":"color",
-                                  "description":"Color",
-                                  "name":"Color"
-                               },
-                               "characteristicValue":{
-                                  "code":"blue",
-                                  "name":"Blue"
-                               }
+                            "characteristicValue": {
+                              "code": "blue",
+                              "name": "Blue"
                             }
-                         ]
+                          }
+                        ]
                       }
                     ]
                   }
+
       /{productVariantId}:
         uriParameters:
           productVariantId: string
@@ -2179,56 +2180,57 @@ types:
             200:
               body:
                 application/json:
-                  example: |
+                  example: 
                     {
-                       "productId":"eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                       "identifier":"88668866-2c6d-4fa6-9e17-4b2c42e0f051",
-                       "identifiers":{
-                          "SKU":"UGG-BB-PUR-06"
-                       },
-                       "pictures":[
-                          "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
-                          "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
-                       ],
-                       "price": {
-                          "amount": {
-                            "currency": "USD",
-                            "currencyValue": 47.95,
-                            "name": "Amount"
+                      "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                      "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
+                      "identifiers": {
+                        "SKU": "UGG-BB-PUR-06"
+                      },
+                      "pictures": [
+                        "https://cdni.llbean.net/is/image/wim/251423_0_52??wid=428&hei=494",
+                        "https://cdni.llbean.net/is/image/wim/251423_47_41?wid=428&hei=494"
+                      ],
+                      "price": {
+                        "amount": {
+                          "currency": "USD",
+                          "currencyValue": 47.95,
+                          "name": "Amount"
+                        },
+                        "salesUnit": {
+                          "code": "EA",
+                          "name": "EACH"
+                        }
+                      },
+                      "configuration": [
+                        {
+                          "characteristic": {
+                            "code": "size",
+                            "description": "Size",
+                            "name": "Size of item"
                           },
-                          "salesUnit": {
-                            "code": "EA",
-                            "name": "EACH"
+                          "characteristicValue": {
+                            "code": "M",
+                            "name": "Medium"
                           }
                         },
-                       "configuration":[
-                          {
-                             "characteristic":{
-                                "code":"size",
-                                "description":"Size",
-                                "name":"Size of item"
-                             },
-                             "characteristicValue":{
-                                "code":"M",
-                                "name":"Medium"
-                             }
+                        {
+                          "characteristic": {
+                            "code": "color",
+                            "description": "Color",
+                            "name": "Color"
                           },
-                          {
-                             "characteristic":{
-                                "code":"color",
-                                "description":"Color",
-                                "name":"Color"
-                             },
-                             "characteristicValue":{
-                                "code":"blue",
-                                "name":"Blue"
-                             }
+                          "characteristicValue": {
+                            "code": "blue",
+                            "name": "Blue"
                           }
-                       ]
+                        }
+                      ]
                     }
+
         /availability:
           description: |
-            Represents information about availability of products in stores.
+            Represents information about availability of product variant.
           type:
              collection.readOnlyCollectionMember:
                collectionMemberResponseType: ProductVariantAvailabilityResponse
@@ -2246,7 +2248,7 @@ types:
               200:
                 body:
                   application/json:
-                    example: |
+                    example:
                         {
                           "productId": "122332665555",
                           "variantId": "88668866-2c6d-4fa6-9e17-4b2c42e0f051",
@@ -2274,32 +2276,32 @@ types:
                             }
                           ],
                           "storesAvailability": [
-                              {
-                              "quantityInStock" : 55,
-                              "storeInfo": {
-                                "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                                "name": "Anypoint Store 1",
-                                "description": "Department store chain providing brand-name c",
-                                "notes": "",
-                                "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
-                                "address": {
-                                  "address": "170 O'Farrell St",
-                                  "city": "San Francisco",
-                                  "postalCode": "94102",
-                                  "state": "California",
-                                  "country": "USA"
-                                },
-                                "contact": {
-                                  "email": "store1@anypointstore.example.com",
-                                  "phone": "+1-202-555-0111"
-                                },
-                                "geo": {
-                                  "latitude": 37.78703308105469,
-                                  "longitude": -122.4060287475586
-                                },
-                                "distance": 0.12951756569805717,
-                                "distanceUnit": "km"
-                              }
+                            {
+                            "quantityInStock" : 55,
+                            "storeInfo": {
+                              "storeId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                              "name": "Anypoint Store 1",
+                              "description": "Department store chain providing brand-name c",
+                              "notes": "",
+                              "openingHours": "Mo,Tu,We,Th,Fr 08:00-18:00",
+                              "address": {
+                                "address": "170 O'Farrell St",
+                                "city": "San Francisco",
+                                "postalCode": "94102",
+                                "state": "California",
+                                "country": "USA"
+                              },
+                              "contact": {
+                                "email": "store1@anypointstore.example.com",
+                                "phone": "+1-202-555-0111"
+                              },
+                              "geo": {
+                                "latitude": 37.78703308105469,
+                                "longitude": -122.4060287475586
+                              },
+                              "distance": 0.12951756569805717,
+                              "distanceUnit": "km"
+                            }
                             }
                           ]
                         }
@@ -2319,7 +2321,7 @@ types:
       200:
         body:
           application/json:
-            example: |
+            example:
               {
                 "_meta": {
                   "messages": []
@@ -2382,55 +2384,53 @@ types:
     displayName: Create shopping cart
     body:
       application/json:
-        example: |
-            {
-              "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-              "customerId": "provider_0123456789",
-              "items":
-                  [
-                    {
-                      "location": {
-                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                          "deliveryMethod": "PICKUP",
-                          "locationType": "STORE"
-                       },
-                      "item": {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
-
-                      },
-                      "quantity": {
-                        "amount": 2,
-                        "quantityType": "DISCRETE",
-                        "unit": "EA"
-                      }
-                    },
-                    {
-                      "location": {
-                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                          "deliveryMethod": "PICKUP",
-                          "locationType": "STORE"
-                        },
-                      "item": {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
-                      },
-                      "quantity": {
-                        "amount": 2,
-                        "quantityType": "DISCRETE",
-                        "unit": "EA"
-                      }
-                    }
-                  ]
+        example:
+          {
+            "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+            "customerId": "provider_0123456789",
+            "items": [
+              {
+                "location": {
+                    "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                    "deliveryMethod": "PICKUP",
+                    "locationType": "STORE"
+                  },
+                "item": {
+                  "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                  "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                },
+                "quantity": {
+                  "amount": 2,
+                  "quantityType": "DISCRETE",
+                  "unit": "EA"
+                }
+              },
+              {
+                "location": {
+                    "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                    "deliveryMethod": "PICKUP",
+                    "locationType": "STORE"
+                  },
+                "item": {
+                  "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                  "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                },
+                "quantity": {
+                  "amount": 2,
+                  "quantityType": "DISCRETE",
+                  "unit": "EA"
+                }
               }
+            ]
+          }
     responses:
       201:
         body:
           application/json:
-            example: |
-                {
-                  "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75"
-                }
+            example:
+              {
+                "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75"
+              }
 
   /{shoppingCartId}:
     uriParameters:
@@ -2445,7 +2445,7 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example: 
                 {
                   "identifier": "734a04dc-2f30-11e7-93ae-92361f002671",
                   "customerId": "11e7-93ae-92361f002671",
@@ -2501,50 +2501,49 @@ types:
       displayName: Update shopping cart
       body:
         application/json:
-          example: |
+          example:
             {
               "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-              "items":
-                [
-                    {
-                      "location": {
-                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                          "deliveryMethod": "PICKUP",
-                          "locationType": "STORE"
-                        },
-                      "item": {
-                        "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
-                        "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
-                      },
-                      "quantity": {
-                        "amount": 2,
-                        "quantityType": "DISCRETE",
-                        "unit": "EA"
-                      }
-                    },
-                    {
-                      "location": {
-                          "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
-                          "deliveryMethod": "PICKUP",
-                          "locationType": "STORE"
-                        },
-                      "item": {
-                        "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
-                        "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
-                      },
-                      "quantity": {
-                        "amount": 2,
-                        "quantityType": "DISCRETE",
-                        "unit": "EA"
-                      }
-                    }
-               ]
+              "items": [
+                {
+                  "location": {
+                    "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                    "deliveryMethod": "PICKUP",
+                    "locationType": "STORE"
+                  },
+                  "item": {
+                    "productId": "eb8c8ca7-3c42-4489-a820-3aa138430b75",
+                    "identifier": "88668866-2c6d-4fa6-9e17-4b2c42e0f051"
+                  },
+                  "quantity": {
+                    "amount": 2,
+                    "quantityType": "DISCRETE",
+                    "unit": "EA"
+                  }
+                },
+                {
+                  "location": {
+                    "locationId": "1c9a20dc-c585-42fd-ac1a-1216085b76d2",
+                    "deliveryMethod": "PICKUP",
+                    "locationType": "STORE"
+                  },
+                  "item": {
+                    "productId": "cd67cd8a-8901-48c5-890b-0a21f4a0f8ad",
+                    "identifier": "355d4130-1e3a-4795-aada-c960c89f6d9f"
+                  },
+                  "quantity": {
+                    "amount": 2,
+                    "quantityType": "DISCRETE",
+                    "unit": "EA"
+                  }
+                }
+              ]
             }
       responses:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
                   "identifier": "eb8c8ca7-3c42-4489-a820-3aa138430b75"
                 }
@@ -2554,7 +2553,7 @@ types:
         200:
           body:
             application/json:
-              example: |
+              example:
                 {
                   "_meta": {
                     "messages": []
